@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+{% block title %}Complain Detail{% endblock %}
+
+{% block content %}
+<div>
+	<p>{{ complain_detail.title }}</p>
+	<p>{{ complain_detail.description }}</p>
+	<p>{{ complain_detail.type_of_complain }}  Locality: {{ complain_detail.complain_place }}</p>
+	<p>{{ complain_detail.complain_date }} Upvotes: {{ complain_detail.upvotes }}</p>
+	<p>Status:{{ complain_detail.govt_complain_status }}</p> <!-- change integer to appropriate status 0-submitted 1-review(if middlemen has not checked but has sent someone to check complaint) 2-accept 3-reject 4-complete  -->
+	<p>{{ complain_detail.complain_address }}</p> 
+	<p>{{ complain_detail.complain_image }}</p>
+</div>
+{% endblock %} 

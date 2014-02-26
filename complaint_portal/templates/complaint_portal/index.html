@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+{% block title %}Home{% endblock %}
+
+{% block content %}
+
+<div>
+<!-- 
+How method works
+-->
+</div>
+
+<div>
+	{% for complain in current_complains %}
+		<div>
+			<p>{{ complain.title }}</p>
+			<p>{{ complain.type_of_complain }}   Place: {{ complain.complain_place }} </p>
+			<p>{{ complain.complain_date }} </p>
+		</div>
+	{% endfor %}
+</div>
+
+{% endblock %}
+

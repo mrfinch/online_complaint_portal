@@ -1,0 +1,114 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% block title %}Register{% endblock %}
+{% block css_js %}
+<style>
+.jumbotron {
+background: #358CCE;
+color: #FFF;
+border-radius: 0px;
+}
+.jumbotron-sm { padding-top: 24px;
+padding-bottom: 24px; }
+.jumbotron small {
+color: #FFF;
+}
+.h1 small {
+font-size: 24px;
+}
+</style>
+{% endblock %}
+
+
+{% block content %}
+<div class="jumbotron jumbotron-sm">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12 col-lg-12">
+                <h1 class="h1">
+                    Register</h1>
+            </div>
+        </div>
+    </div>
+</div>		
+
+<div class="container">
+	{% if msg %}
+		{{ msg }}
+	{% endif %}
+</div>	
+<div class="container">
+    <div class="row">
+        <div class="col-md-8">
+            <div class="well well-sm">
+                <form action="{% url 'complaint_portal:register' %}" method="post">
+                {% csrf_token %}
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="username">
+                                Username</label>
+                            <input type="text" name="username" class="form-control" id="username" placeholder="Enter username" required="required" />
+                        </div>
+                        <div class="form-group">
+                            <label for="password">
+                                Password</label>
+                            <input type="password" name="password" class="form-control" id="password" placeholder="Enter password" required="required" />
+                        </div>
+                        <div class="form-group">
+                            <label for="confirm_password">
+                                Confirm Password</label>
+                            <input type="password" name="confirm_password"class="form-control" id="confirm_password" placeholder="Confirm Password" required="required" />
+                        </div>
+                        <div class="form-group">
+                            <label for="firstname">
+                                Firstname</label>
+                            <input type="text" name="firstname" class="form-control" id="firstname" placeholder="Enter firstname" required="required" />
+                        </div>
+                        <div class="form-group">
+                            <label for="lastname">
+                                Lastname</label>
+                            <input type="text" name="lastname" class="form-control" id="lastname" placeholder="Enter lastname" required="required" />
+                        </div>
+                        <div class="form-group">
+                            <label for="phone">
+                                Phone</label>
+                            <input type="text" name="phone" class="form-control" id="phone" placeholder="Enter phone no." required="required" />
+                        </div>
+                        <div class="form-group">
+                            <label for="email">
+                                Email Address</label>
+                            <div class="input-group">
+                                <span class="input-group-addon"><span class="glyphicon glyphicon-envelope"></span>
+                                </span>
+                                <input type="email" name="email" class="form-control" id="email" placeholder="Enter email" required="required" /></div>
+                        </div>
+                        <div class="form-group">
+                            <label for="locality">
+                                Locality</label>
+                            <select id="locality" name="locality" class="form-control" required="required">
+                                {% for place in places %}
+									<option value="{{ place.local_name }}">{{ place.local_name }}</option>
+								{% endfor %}
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="address">
+                                Address</label>
+                            <textarea name="address" id="address" class="form-control" rows="9" cols="25" required="required"
+                                placeholder="Address"></textarea>
+                        </div>
+                        <div class="col-md-12">
+                        <button type="submit" class="btn btn-primary pull-left" id="complainbtn" value="Register">
+                            Register</button>
+                    	</div>	
+                    </div>
+                 	
+                </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>  
+</div>
+{% endblock %}

@@ -1,0 +1,10 @@
+{% extends 'base.html' %}
+{% block title %}Ranking{% endblock %}
+
+{% block content %}
+	<div>
+	{% for user in users_rank %} <!-- make a table -->
+		{{ forloop.counter }} {{ user.username }}  {{ user.total_upvotes }}
+	{% endfor %}
+	</div>
+{% endblock %} 

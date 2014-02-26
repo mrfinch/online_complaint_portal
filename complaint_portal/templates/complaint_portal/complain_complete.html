@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+{% block title %}Complaint Status{% endblock %}
+
+{% block content %}
+	{{ complain_info.title }}
+
+	<form action="{% url 'complaint_portal:complain_complete' {{ complain_info.id }} %}" method="post">
+		<p>Complaint Status</p>
+		<input type="radio" name="user_complain_update" value="True" />Yes<br />
+		<input type="radio" name="user_complain_update" value="False" />No
+		<p><textarea name="user_complain_reason"></textarea></p>
+	</form>
+{% endblock %}

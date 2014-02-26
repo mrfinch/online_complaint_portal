@@ -1,0 +1,42 @@
+<!DOCTYPE html> 
+{% load staticfiles %}
+<html>
+<head>
+	<title>{% block title %} {% endblock %}</title>
+	<script type="text/javascript" src="http://code.jquery.com/jquery-latest.min.js"></script>
+	<script type="text/javascript" src="{% static 'complaint_portal/js/bootstrap.min.js' %}"></script>
+	<link rel="stylesheet" href="{% static 'complaint_portal/css/bootstrap.min.css' %}">
+	<link rel="stylesheet" href="{% static 'complaint_portal/css/flat-ui.css' %}">
+	{% block css_js %}{% endblock %}
+</head>
+
+<body>
+<div class="container">
+<nav class="navbar navbar-inverse navbar-embossed " role="navigation">
+	<div class="collapse navbar-collapse" id="navbar-collapse-01">
+	    <ul class="nav navbar-nav">
+			<li class="active"><a href="{% url 'complaint_portal:index' %}">Home</a></li><!-- change active property with help of js -->
+			<li><a href="{% url 'complaint_portal:all_complains' %}">All Complaints</a></li>
+			<li><a href="{% url 'complaint_portal:ranking' %}">Leader Board</a></li>
+			<li><a href="{% url 'complaint_portal:complainform' %}">Complain</a></li>
+			{% if user.is_authenticated %}
+			<li><a href="{% url 'complaint_portal:userprofile' %}">{{ user.username }}</a></li>
+			{% else %}
+			<li><a href="{% url 'complaint_portal:login' %}">Login</a></li>
+			{% endif %}
+		</ul>
+	</div>
+</nav>
+</div>
+	<div>
+		{% block content %}
+		{% endblock %}
+	</div>
+
+	<div align="center">
+		{% if user.is_authenticated %}
+			<a href="{% url 'complaint_portal:logout' %}">Logout</a>
+		{% endif %}	
+	</div>
+</body>
+</html>
