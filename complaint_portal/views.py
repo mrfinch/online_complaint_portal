@@ -44,9 +44,10 @@ def login(request):
 		user = auth.authenticate(username=username,password=password)
 		if user is not None and user.is_active:
 			auth.login(request,user)
-			return render(request,"complaint_portal/index.html")  #change login to userprofilename on homepage
+			current_complains = Complain.objects.order_by('complain_date')[:5]
+			return render(request,"complaint_portal/index.html",{"current_complains":current_complains})  #change login to userprofilename on homepage
 		else:
-			return render(request,"complaint_portal/login.html",{"msg":"Username and Password combination incorrect"})
+			return render(request,"complaint_portal/login.html",{"msg":"Username and Password combination incorrect OR Account not activated by email"})
 	else:
 		return render(request,"complaint_portal/login.html")			
 
