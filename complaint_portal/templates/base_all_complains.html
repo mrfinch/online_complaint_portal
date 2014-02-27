@@ -25,6 +25,17 @@
 				{% else %}
 				<li><a href="{% url 'complaint_portal:login' %}">Login</a></li>
 				{% endif %}
+				<li class="dropdown">
+		          <a href="#" class="dropdown-toggle" data-toggle="dropdown">Sort By <b class="caret"></b></a>
+		          <ul class="dropdown-menu">
+		            <li><a href="{% url 'complaint_portal:sorted_complains' 1 %}">Ascending by Time</a></li>
+		            <li><a href="{% url 'complaint_portal:sorted_complains' 2 %}">Descending by Time</a></li>
+		            <li class="divider"></li>
+		            <li><a href="{% url 'complaint_portal:sorted_complains' 3 %}">Alphabetical (A-Z)</a></li>
+		            <li><a href="{% url 'complaint_portal:sorted_complains' 4 %}">Alphabetical (Z-A)</a></li>
+		          </ul>
+		        </li>
+				
 			</ul>
 		</div>
 	</nav>
@@ -41,4 +52,4 @@
 	</div>
 
 </body>
-</html>
+</html> 

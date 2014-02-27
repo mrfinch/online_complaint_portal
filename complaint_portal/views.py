@@ -89,6 +89,19 @@ def all_complains(request):
 	complain_list = Complain.objects.all()
 	return render(request,"complaint_portal/all_complain.html",{"complain_list":complain_list})
 
+def sorted_complains(request,sorted_id):
+	print "hp"
+	if sorted_id == "1":
+		complain_list = Complain.objects.order_by('complain_date')
+	elif sorted_id == "2":
+		print "f",sorted_id
+		complain_list = Complain.objects.order_by('-complain_date')
+	elif sorted_id == "3":
+		complain_list = Complain.objects.order_by('type_of_complain')
+	else:	
+		complain_list = Complain.objects.order_by('-type_of_complain')
+	return render(request,"complaint_portal/all_complain.html",{"complain_list":complain_list})
+		
 def all_complains_location(request,loc_id):
 	complain_list = Complain.objects.filter(complain_place=loc_id)
 	return render(request,"complaint_portal/all_complain.html",{"complain_list":complain_list}) 
@@ -135,6 +148,8 @@ def profile_update(request):
 
 def complain_update(request,complain_id):
 	#can be done only before it is reviewed by middlemen.In mycomplains provide option of update if status is 0
+	places = LocalPlaces.objects.all()
+	types = Complain_type.objects.all()
 	complain_info = Complain.objects.get(pk=complain_id)
 	if request.method == "POST":
 		form = ComplainForm(request.POST,request.FILES)
@@ -146,11 +161,14 @@ def complain_update(request,complain_id):
 			complain_info.complain_image = form.cleaned_data["complain_image"]
 			complain_info.complain_place = form.cleaned_data["complain_place"]
 			complain_info.save()
-			return render(request,"complaint_portal/compalinform_update.html",{"complain_info":complain_info,"msg":"Complain Updated"})
+			return render(request,"complaint_portal/complainform_update.html",{"complain_info":complain_info,"places":places,
+				"types":types,"msg":"Complain Updated"})
 		else:
-			return render(request,"complaint_portal/compalinform_update.html",{"complain_info":complain_info,"msg_dict":form.errors.as_data()})	
+			return render(request,"complaint_portal/complainform_update.html",{"complain_info":complain_info,"places":places,
+				"types":types,"msg":form.errors})	
 	else:
-		return render(request,"complaint_portal/compalinform_update.html",{"complain_info":complain_info})		
+		return render(request,"complaint_portal/complainform_update.html",{"complain_info":complain_info,"places":places,
+				"types":types})		
 
 def ranking(request):
 	users_rank = UserInfos.objects.order_by('total_upvotes')[:10]
@@ -166,6 +184,6 @@ def complain_complete(request,complain_id):
 			complain_info.save()
 			return render(request,"complaint_portal/complain_complete.html",{"msg":"Successfully Updated Complaint","complain_info":complain_info})
 		else:
-			return render(request,"complaint_portal/complain_complete.html",{"msg_dict":form.errors.as_data(),"complain_info":complain_info})
+			return render(request,"complaint_portal/complain_complete.html",{"msg":form.errors,"complain_info":complain_info})
 	else:
 		return render(request,"complaint_portal/complain_complete.html",{"complain_info":complain_info})					
