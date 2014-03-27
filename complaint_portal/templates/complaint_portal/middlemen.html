@@ -6,12 +6,29 @@
 <link rel="stylesheet" href="{% static 'complaint_portal/css/bootstrap.min.css' %}">
 <link rel="stylesheet" href="{% static 'complaint_portal/css/flat-ui.css' %}">
 </head>
+
 <div class="container">
-<h2>Complains</h2>
+	<nav class="navbar navbar-inverse navbar-embossed " role="navigation">
+		<div class="collapse navbar-collapse" id="navbar-collapse-01">
+		    <ul class="nav navbar-nav">
+			<li>
+			<a href="#" class="dropdown-toggle" data-toggle="dropdown">Filter By Place<b class="caret"></b></a>
+			<ul class="dropdown-menu">
+			<li><a href="{% url 'complaint_portal:middlemen' %}">All</a></li>	
+			{% for place in places %}
+				<li><a href="{% url 'complaint_portal:mloc_filter' place.id %}">{{ place.local_name }} </a></li>
+			{% endfor %}
+			</ul>
+			</li>
+			</ul>
+		</div>
+	</nav>
 </div>
+
+<br />
+<br />
 <div class="panel-group" id="accordion">
 {% for f in complain %}
-
 <div class="panel panel-default">
     <div class="panel-heading">
       <h4 class="panel-title">

@@ -219,18 +219,20 @@ def upvote(request,complain_id):
 
 def middlemen(request):
 	complain=Complain.objects.filter(govt_complain_status=0)
-	return render(request,"complaint_portal/middlemen.html",{"complain":complain})
+	places = LocalPlaces.objects.all()
+	return render(request,"complaint_portal/middlemen.html",{"complain":complain,"places":places})
 
 def mlogin(request):
 	print "dkjhkjh"
 	complain=Complain.objects.filter(govt_complain_status=0)
+	places = LocalPlaces.objects.all()
 	if request.method == "POST":
 		username = request.POST.get("username","")
 		password = request.POST.get("password","")
 		user = auth.authenticate(username=username,password=password)
 		if user is not None and user.is_staff:
 			auth.login(request,user)
-			return render(request,"complaint_portal/middlemen.html",{"complain":complain})  #change login to userprofilename on homepage
+			return render(request,"complaint_portal/middlemen.html",{"complain":complain,"places":places})  #change login to userprofilename on homepage
 		else:
 			return render(request,"complaint_portal/mlogin.html",{"msg":"Username and Password combination incorrect"})
 	else:
@@ -280,3 +282,10 @@ def adminregister(request):
 			return render(request,"complaint_portal/adminregister.html",{"msg":form.errors,"places":places})
 	else:
 		return render(request,"complaint_portal/adminregister.html",{"places":places})			
+
+def mloc_filter(request,loc_id):
+	print "ht"
+	p = LocalPlaces.objects.get(pk=loc_id)
+	places = LocalPlaces.objects.all()
+	complain = Complain.objects.filter(govt_complain_status=0).filter(complain_place=p.local_name)
+	return render(request,"complaint_portal/middlemen.html",{"complain":complain,"places":places})		
