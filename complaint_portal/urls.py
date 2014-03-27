@@ -19,6 +19,12 @@ urlpatterns = patterns('',
 	url(r'^profile_update/',views.profile_update,name="profile_update"),
 	url(r'^complain_update/(?P<complain_id>\d+)/',views.complain_update,name="complain_update"),
 	url(r'^(?P<complain_id>\d+)/complain_complete/',views.complain_complete,name="complain_complete"),
+	url(r'^upvote/(?P<complain_id>\d+)/',views.upvote,name="upvote"),
+	url(r'^middlemen/',views.middlemen,name="middlemen"),
+	url(r'^mlogin/',views.mlogin,name="mlogin"),
+	url(r'^govtadmin/',views.govtadmin,name="govtadmin"),
+	url(r'^glogin/',views.glogin,name="glogin"),
+	url(r'^adminregister/',views.adminregister,name="adminregister"),
 	) 
 
 #updateform for each complain

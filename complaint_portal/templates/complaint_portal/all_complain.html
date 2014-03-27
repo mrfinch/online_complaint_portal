@@ -27,6 +27,14 @@ hgroup h2.lead { font: normal normal 1.125em "Roboto",Arial,Verdana,sans-serif; 
 .search-result span.plus a i { color: #fff !important; }
 .search-result span.border { display: block; width: 97%; margin: 0 15px; border-bottom: 1px dotted #ccc; }
 </style>
+<script>
+function upvoting(c_id){
+$.post("http://localhost:8000/complaint_portal/upvote/2",{complain_id:"c_id"})
+	.done(function(my_data){
+		alert(my_data);
+	});
+}
+</script>
 {% endblock %}
 {% block content %}
 <div class="container">
@@ -48,6 +56,10 @@ hgroup h2.lead { font: normal normal 1.125em "Roboto",Arial,Verdana,sans-serif; 
 				<h3><a href="#" title="">{{complain.title}}</a></h3>
 				<p>{{complain.description}} </p>						
                 <!--<span class="plus"><a href="#" title="Lorem ipsum"><i class="glyphicon glyphicon-plus"></i></a></span> Link for details -->
+				{% if user.is_authenticated %}
+					<a href="#" onclick="upvoting({{complain.id}})">Upvote</a>
+				{% endif %}
+				
 			</div>
 			<span class="clearfix borda"></span>
 		</article>

@@ -50,7 +50,7 @@ hgroup h2.lead { font: normal normal 1.125em "Roboto",Arial,Verdana,sans-serif; 
 				{% ifequal complain.govt_complain_status 0 %}
 				<a href="{% url 'complaint_portal:complain_update' complain.id %}">Update Complaint</a></p>
 				{% endifequal %}
-				{% if complain.govt_complain_status > 0 and complain.user_complain_update == 0 %}
+				{% 	if complain.govt_complain_status > 0 and complain.user_complain_update == 0 %}
 				<p>Complete or Not Complete,<a href="{% url 'complaint_portal:complain_complete' complain.id %}">Update</a></p>
 				{% endif %}
                 <!--<span class="plus"><a href="#" title="Lorem ipsum"><i class="glyphicon glyphicon-plus"></i></a></span> Link for details -->

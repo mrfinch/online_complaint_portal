@@ -1,7 +1,13 @@
-{% extends 'base.html' %}
 {% load staticfiles %}
-{% block title %}Login{% endblock %}
-{% block css_js %}
+<title>Goverment Admin Login</title>
+
+<head>
+
+<script type="text/javascript" src="http://code.jquery.com/jquery-latest.min.js"></script>
+<script type="text/javascript" src="{% static 'complaint_portal/js/bootstrap.min.js' %}"></script>
+<script type="text/javascript" src="{% static 'complaint_portal/js/complain.js' %}"></script>
+<link rel="stylesheet" href="{% static 'complaint_portal/css/bootstrap.min.css' %}">
+<link rel="stylesheet" href="{% static 'complaint_portal/css/flat-ui.css' %}">
 <style>
 .jumbotron {
 background: #358CCE;
@@ -16,16 +22,14 @@ color: #FFF;
 .h1 small {
 font-size: 24px;
 }
-</style>
-{% endblock %}
+</style>	
+</head>
 
-
-{% block content %}
-
+<body>
 <div class="jumbotron jumbotron-sm">
     <div class="container">
         <div class="row">
-            <div class="col-sm-12 col-lg-12">
+            <div class="col-sm-8 col-lg-8">
                 <h2 class="h2">
                     Login</h2>
             </div>
@@ -33,17 +37,13 @@ font-size: 24px;
     </div>
 </div>		
 
-<div class="container">
-{% if msg %}
-		{{ msg }}
-{% endif %}
-</div>
+
 
 <div class="container">
     <div class="row">
         <div class="col-md-8">
             <div class="well well-sm">
-                <form action="{% url 'complaint_portal:login' %}" method="post">
+                <form action="{% url 'complaint_portal:glogin' %}" method="post">
                 {% csrf_token %}
                 <div class="row">
                     <div class="col-md-6">
@@ -64,10 +64,12 @@ font-size: 24px;
                     </div>
                 </div>
                 </form>
-                <p>If you have not registered,<strong><a href="{% url 'complaint_portal:register' %}">Register</a></strong></p>
+                
             </div>
         </div>
     </div>
 </div>  
-</div>
-{% endblock %}
+
+
+</body>
+</html> 

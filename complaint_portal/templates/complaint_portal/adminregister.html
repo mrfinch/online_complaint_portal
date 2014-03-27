@@ -1,7 +1,13 @@
-{% extends 'base_profile.html' %}
-{% block mytitle %}Update Profile{% endblock %}
+{% load staticfiles %}
+<title>Admin Register</title>
 
-{% block css_js %}
+
+<head>
+<script type="text/javascript" src="http://code.jquery.com/jquery-latest.min.js"></script>
+<script type="text/javascript" src="{% static 'complaint_portal/js/bootstrap.min.js' %}"></script>
+<script type="text/javascript" src="{% static 'complaint_portal/js/complain.js' %}"></script>
+<link rel="stylesheet" href="{% static 'complaint_portal/css/bootstrap.min.css' %}">
+<link rel="stylesheet" href="{% static 'complaint_portal/css/flat-ui.css' %}">
 <style>
 .jumbotron {
 background: #358CCE;
@@ -17,38 +23,31 @@ color: #FFF;
 font-size: 24px;
 }
 </style>
-{% endblock %}
 
+</head>
 
-{% block mycontent %}
 <div class="jumbotron jumbotron-sm">
     <div class="container">
         <div class="row">
-            <div class="col-sm-12 col-lg-12">
+            <div class="col-sm-7 col-lg-7">
                 <h2 class="h2">
-                    Update Profile</h2>
+                    Admin Register</h2>
             </div>
         </div>
     </div>
 </div>		
-
-<div class="container">
-	{% if msg %}
-		{{ msg }}
-	{% endif %}
-</div>	
 <div class="container">
     <div class="row">
         <div class="col-md-8">
             <div class="well well-sm">
-                <form action="{% url 'complaint_portal:profile_update' %}" method="post">
+                <form action="{% url 'complaint_portal:register' %}" method="post">
                 {% csrf_token %}
                 <div class="row">
                     <div class="col-md-6">
                         <div class="form-group">
                             <label for="username">
                                 Username</label>
-                            <input type="text" name="username" class="form-control" id="username" value="{{ profile_info.username }}" required="required" />
+                            <input type="text" name="username" class="form-control" id="username" placeholder="Enter username" required="required" />
                         </div>
                         <div class="form-group">
                             <label for="password">
@@ -58,22 +57,22 @@ font-size: 24px;
                         <div class="form-group">
                             <label for="confirm_password">
                                 Confirm Password</label>
-                            <input type="password" name="confirm_password"class="form-control" id="confirm_password" placeholder="Enter username" required="required" />
+                            <input type="password" name="confirm_password"class="form-control" id="confirm_password" placeholder="Confirm Password" required="required" />
                         </div>
                         <div class="form-group">
                             <label for="firstname">
                                 Firstname</label>
-                            <input type="text" name="firstname" class="form-control" id="firstname" value="{{ profile_info.firstname }}" required="required" />
+                            <input type="text" name="firstname" class="form-control" id="firstname" placeholder="Enter firstname" required="required" />
                         </div>
                         <div class="form-group">
                             <label for="lastname">
                                 Lastname</label>
-                            <input type="text" name="lastname" class="form-control" id="lastname" value="{{ profile_info.lastname }}" required="required" />
+                            <input type="text" name="lastname" class="form-control" id="lastname" placeholder="Enter lastname" required="required" />
                         </div>
                         <div class="form-group">
                             <label for="phone">
                                 Phone</label>
-                            <input type="text" name="phone" class="form-control" id="phone" value="{{ profile_info.phone }}" required="required" />
+                            <input type="text" name="phone" class="form-control" id="phone" placeholder="Enter phone no." required="required" />
                         </div>
                         <div class="form-group">
                             <label for="email">
@@ -81,18 +80,14 @@ font-size: 24px;
                             <div class="input-group">
                                 <span class="input-group-addon"><span class="glyphicon glyphicon-envelope"></span>
                                 </span>
-                                <input type="email" name="email" class="form-control" id="email" value="{{ profile_info.email }}" required="required" /></div>
+                                <input type="email" name="email" class="form-control" id="email" placeholder="Enter email" required="required" /></div>
                         </div>
                         <div class="form-group">
                             <label for="locality">
                                 Locality</label>
                             <select id="locality" name="locality" class="form-control" required="required">
                                 {% for place in places %}
-									{% ifnotequal place.local_name profile_info.locality %}
-										<option value="{{ place.local_name }}">{{ place.local_name }}</option>
-									{% else %}
-										<option value="{{ place.local_name }}" selected="selected">{{ place.local_name }}</option>
-									{% endifnotequal %}	
+									<option value="{{ place.local_name }}">{{ place.local_name }}</option>
 								{% endfor %}
                             </select>
                         </div>
@@ -100,11 +95,11 @@ font-size: 24px;
                             <label for="address">
                                 Address</label>
                             <textarea name="address" id="address" class="form-control" rows="9" cols="25" required="required"
-                                value="{{ profile_info.address }}">{{ profile_info.address }}</textarea>
+                                placeholder="Address"></textarea>
                         </div>
                         <div class="col-md-12">
-                        <button type="submit" class="btn btn-primary pull-left" id="complainbtn" value="Update">
-                            Update</button>
+                        <button type="submit" class="btn btn-primary pull-left" id="complainbtn" value="Register">
+                            Register</button>
                     	</div>	
                     </div>
                  	
@@ -113,6 +108,4 @@ font-size: 24px;
             </div>
         </div>
     </div>
-</div>  
-</div>
-{% endblock %}
+</div>   

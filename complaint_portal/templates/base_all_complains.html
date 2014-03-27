@@ -5,6 +5,7 @@
 	<title>{% block title %} {% endblock %}</title>
 	<script type="text/javascript" src="http://code.jquery.com/jquery-latest.min.js"></script>
 	<script type="text/javascript" src="{% static 'complaint_portal/js/bootstrap.min.js' %}"></script>
+	<script type="text/javascript" src="{% static 'complaint_portal/js/complain.js' %}"></script>
 	<link rel="stylesheet" href="{% static 'complaint_portal/css/bootstrap.min.css' %}">
 	<link rel="stylesheet" href="{% static 'complaint_portal/css/flat-ui.css' %}">
 
@@ -16,26 +17,28 @@
 	<nav class="navbar navbar-inverse navbar-embossed " role="navigation">
 		<div class="collapse navbar-collapse" id="navbar-collapse-01">
 		    <ul class="nav navbar-nav">
-				<li class="active"><a href="{% url 'complaint_portal:index' %}">Home</a></li><!-- change active property with help of js -->
-				<li><a href="{% url 'complaint_portal:all_complains' %}">All Complaints</a></li>
-				<li><a href="{% url 'complaint_portal:ranking' %}">Leader Board</a></li>
-				<li><a href="{% url 'complaint_portal:complainform' %}">Complain</a></li>
+				<li id="home"><a href="{% url 'complaint_portal:index' %}">Home</a></li><!-- change active property with help of js -->
+				<li id="all_complains"><a href="{% url 'complaint_portal:all_complains' %}">All Complaints</a></li>
+				<li id="leader_board"><a href="{% url 'complaint_portal:ranking' %}">Leader Board</a></li>
+				<li id="complain"><a href="{% url 'complaint_portal:complainform' %}">Complain</a></li>
 				{% if user.is_authenticated %}
-				<li><a href="{% url 'complaint_portal:userprofile' %}">{{ user.username }}</a></li>
+				<li id="myusername"><a href="{% url 'complaint_portal:userprofile' %}">{{ user.username }}</a></li>
 				{% else %}
-				<li><a href="{% url 'complaint_portal:login' %}">Login</a></li>
+				<li id="myusername"><a href="{% url 'complaint_portal:login' %}">Login</a></li>
 				{% endif %}
-				<li class="dropdown">
+				<li>
 		          <a href="#" class="dropdown-toggle" data-toggle="dropdown">Sort By <b class="caret"></b></a>
 		          <ul class="dropdown-menu">
 		            <li><a href="{% url 'complaint_portal:sorted_complains' 1 %}">Ascending by Time</a></li>
 		            <li><a href="{% url 'complaint_portal:sorted_complains' 2 %}">Descending by Time</a></li>
 		            <li class="divider"></li>
-		            <li><a href="{% url 'complaint_portal:sorted_complains' 3 %}">Alphabetical (A-Z)</a></li>
-		            <li><a href="{% url 'complaint_portal:sorted_complains' 4 %}">Alphabetical (Z-A)</a></li>
+		            <li><a href="{% url 'complaint_portal:sorted_complains' 3 %}">Alphabetical by Complain Type(A-Z)</a></li>
+		            <li><a href="{% url 'complaint_portal:sorted_complains' 4 %}">Alphabetical by Complain Type(Z-A)</a></li>
 		          </ul>
 		        </li>
-				
+				{% if user.is_authenticated %}
+				<li style="position:absolute; right:0"><a href="{% url 'complaint_portal:logout' %}">Logout</a></li>
+				{% endif %}
 			</ul>
 		</div>
 	</nav>
@@ -43,12 +46,6 @@
 	<div>
 		{% block content %}
 		{% endblock %}
-	</div>
-
-	<div align="center">
-		{% if user.is_authenticated %}
-			<a href="{% url 'complaint_portal:logout' %}">Logout</a>
-		{% endif %}	
 	</div>
 
 </body>

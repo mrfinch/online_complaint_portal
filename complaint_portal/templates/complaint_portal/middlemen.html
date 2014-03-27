@@ -1,0 +1,47 @@
+{% load staticfiles %}
+<head>
+<script type="text/javascript" src="http://code.jquery.com/jquery-latest.min.js"></script>
+<script type="text/javascript" src="{% static 'complaint_portal/js/bootstrap.min.js' %}"></script>
+<script type="text/javascript" src="{% static 'complaint_portal/js/complain.js' %}"></script>
+<link rel="stylesheet" href="{% static 'complaint_portal/css/bootstrap.min.css' %}">
+<link rel="stylesheet" href="{% static 'complaint_portal/css/flat-ui.css' %}">
+</head>
+<div class="container">
+<h2>Complains</h2>
+</div>
+<div class="panel-group" id="accordion">
+{% for f in complain %}
+
+<div class="panel panel-default">
+    <div class="panel-heading">
+      <h4 class="panel-title">
+      <input type="checkbox" />	
+      <a data-toggle="collapse" data-parent="#accordion" href="#{{forloop.counter}}">
+          {{ f.title }} 
+        </a>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{f.type_of_complain}}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {{f.complain_place}} &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{f.complain_date}}
+      </h4>
+    </div>
+    {% if forloop.counter != 1 %}
+    	<div id="{{forloop.counter}}" class="panel-collapse collapse">
+    {% else %}	
+    	<div id="{{forloop.counter}}" class="panel-collapse collapse in">
+    {% endif %}	
+      <div class="panel-body">	
+      {{ f.description }}<br />
+      Address:{{ f.complain_address }} <br />
+      By : {{ f.c_user.username }} <br />
+      <a href="{{f.complain_image}}" >Image</a>
+      </div>
+    </div>
+  </div>
+{% endfor %}
+</div>
+</div>
+<br />
+<br />
+<div class="container">
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<button type="button" class="btn btn-danger">Reject</button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<button type="button" class="btn btn-success">Forward</button>
+</div>

@@ -4,6 +4,7 @@ from django.contrib.auth.models import User
 from django.contrib import auth
 from django.core.mail import send_mail
 from django.contrib.auth.decorators import login_required
+from django.http import HttpResponse 
 # Create your views here.
 
 def index(request):
@@ -60,7 +61,8 @@ def activate(request,u_id):
 
 def logout(request):
 	auth.logout(request)
-	return render(request,"complaint_portal/index.html")  #change username to login on homepage
+	current_complains = Complain.objects.order_by('complain_date')[:5]
+	return render(request,"complaint_portal/index.html",{"current_complains":current_complains})  #change username to login on homepage
 
 def complainform(request):
 	places = LocalPlaces.objects.all()
@@ -87,7 +89,7 @@ def complainform(request):
 		return render(request,"complaint_portal/complainform.html",{"places":places,"types":types})
 
 def all_complains(request):
-	complain_list = Complain.objects.all()
+	complain_list = Complain.objects.order_by('id')
 	return render(request,"complaint_portal/all_complain.html",{"complain_list":complain_list})
 
 def sorted_complains(request,sorted_id):
@@ -172,7 +174,7 @@ def complain_update(request,complain_id):
 				"types":types})		
 
 def ranking(request):
-	users_rank = UserInfos.objects.order_by('total_upvotes')[:10]
+	users_rank = UserInfos.objects.order_by('-total_upvotes')[:10]
 	return render(request,"complaint_portal/ranking.html",{"users_rank":users_rank})
 
 def complain_complete(request,complain_id):
@@ -187,4 +189,94 @@ def complain_complete(request,complain_id):
 		else:
 			return render(request,"complaint_portal/complain_complete.html",{"msg":form.errors,"complain_info":complain_info})
 	else:
-		return render(request,"complaint_portal/complain_complete.html",{"complain_info":complain_info})					
+		return render(request,"complaint_portal/complain_complete.html",{"complain_info":complain_info})
+
+def upvote(request,complain_id):
+	complain_info = Complain.objects.get(pk=complain_id)
+	if not request.user.userupvotestatus_set.values('upvote').filter(upvote=complain_info.id).exists():
+		print request.user.userupvotestatus_set.values('upvote').filter(upvote=complain_info.id)
+		complain_info.upvotes += 1
+		complain_info.save()
+		user_id = complain_info.c_user.id
+		user_obj = UserInfos.objects.get(pk=user_id)
+		user_obj.total_upvotes += 1
+		user_obj.save()
+		user_up_status = UserUpvoteStatus(user_upvote=request.user,upvote=complain_info.id)
+		user_up_status.save()
+		complain_list = Complain.objects.order_by('id')
+		my_data = [complain_info.id,complain_info.upvotes]
+		return render(request,"complaint_portal/all_complain.html",{"complain_list":complain_list,"complain_id":complain_info.id,
+			"new_upvotes":complain_info.upvotes})
+		'''print my_data
+		return HttpResponse(my_data)'''
+	else:
+		complain_list = Complain.objects.order_by('id')
+		return render(request,"complaint_portal/all_complain.html",{"complain_list":complain_list,"complain_id":complain_info.id})
+		'''
+		print "ge"
+		return HttpResponse("already upvoted")
+		'''
+
+def middlemen(request):
+	complain=Complain.objects.filter(govt_complain_status=0)
+	return render(request,"complaint_portal/middlemen.html",{"complain":complain})
+
+def mlogin(request):
+	print "dkjhkjh"
+	complain=Complain.objects.filter(govt_complain_status=0)
+	if request.method == "POST":
+		username = request.POST.get("username","")
+		password = request.POST.get("password","")
+		user = auth.authenticate(username=username,password=password)
+		if user is not None and user.is_staff:
+			auth.login(request,user)
+			return render(request,"complaint_portal/middlemen.html",{"complain":complain})  #change login to userprofilename on homepage
+		else:
+			return render(request,"complaint_portal/mlogin.html",{"msg":"Username and Password combination incorrect"})
+	else:
+		return render(request,"complaint_portal/mlogin.html")			
+
+def govtadmin(request):
+	complain=Complain.objects.filter(govt_complain_status=1).filter(days_to_solve=-1)
+	print len(complain)
+	return render(request,"complaint_portal/govtadmin.html",{"complain":complain})
+
+def glogin(request):
+	complain=Complain.objects.filter(govt_complain_status=1).filter(days_to_solve=-1)
+	if request.method == "POST":
+		username = request.POST.get("username","")
+		password = request.POST.get("password","")
+		user = auth.authenticate(username=username,password=password)
+		if user is not None and user.is_superuser:
+			auth.login(request,user)
+			return render(request,"complaint_portal/govtadmin.html",{"complain":complain})  #change login to userprofilename on homepage
+		else:
+			return render(request,"complaint_portal/glogin.html",{"msg":"Username and Password combination incorrect "})
+	else:
+		return render(request,"complaint_portal/glogin.html")				
+
+def adminregister(request):
+	places = LocalPlaces.objects.all()
+	if request.method == "POST":
+		form = UserInfoForm(request.POST)
+		if form.is_valid():
+			username = form.cleaned_data["username"]
+			firstname = form.cleaned_data["firstname"]
+			lastname = form.cleaned_data["lastname"]
+			email = form.cleaned_data["email"]
+			password = form.cleaned_data["password"] #confirm_password check on frontend
+			address	= form.cleaned_data["address"]
+			phone = form.cleaned_data["phone"]
+			locality = form.cleaned_data["locality"]
+			user = User.objects.create_user(username=username,first_name=firstname,last_name=lastname,email=email,password=password)
+			user.is_active = True
+			user.save()
+			userinfo = UserInfos.objects.create(id=user.id,username=username,firstname=firstname,lastname=lastname,email=email,password=password,
+				address=address,phone=phone,locality=locality)
+			#url = "http://localhost:8000/complaint_portal/" + "activate/" + str(user.id)
+			#send_mail("Activate your account",url,"saurabh.finch@gmail.com",[user.email])
+			return render(request,"complaint_portal/adminregister.html",{"places":places,"msg":"Account Registered."})
+		else:
+			return render(request,"complaint_portal/adminregister.html",{"msg":form.errors,"places":places})
+	else:
+		return render(request,"complaint_portal/adminregister.html",{"places":places})			
