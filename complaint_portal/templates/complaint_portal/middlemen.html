@@ -30,6 +30,10 @@
 				{% endfor %}
 				</ul>
 				</li>
+				{% if user.is_authenticated and user.is_staff %}
+				<li><a href="{% url 'complaint_portal:middlemen' %}">{{user.username}}</a></li>
+				<li><a href="{% url 'complaint_portal:mlogout' %}">Logout</a></li>
+				{% endif %}
 			</ul>
 		</div>
 	</nav>

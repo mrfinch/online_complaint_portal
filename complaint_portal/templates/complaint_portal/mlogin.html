@@ -39,7 +39,9 @@ font-size: 24px;
 	{% if msg %}
 	 {{ msg }}
  	{% endif %}
-<a href="{% url 'complaint_portal:middlemen' %}">Register</a>
+{% if user.is_authenticated and user.is_staff %} 	
+	<p><a href="{% url 'complaint_portal:middlemen' %}">{{user.username}}</a> Logged In</p>
+{% endif %}
     <div class="row">
         <div class="col-md-8">
             <div class="well well-sm">

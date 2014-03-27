@@ -46,8 +46,7 @@ def login(request):
 		user = auth.authenticate(username=username,password=password)
 		if user is not None and user.is_active:
 			auth.login(request,user)
-			current_complains = Complain.objects.order_by('complain_date')[:5]
-			return render(request,"complaint_portal/index.html",{"current_complains":current_complains})  #change login to userprofilename on homepage
+			return HttpResponseRedirect(reverse('complaint_portal:index'))
 		else:
 			return render(request,"complaint_portal/login.html",{"msg":"Username and Password combination incorrect OR Account not activated by email"})
 	else:
@@ -62,8 +61,7 @@ def activate(request,u_id):
 
 def logout(request):
 	auth.logout(request)
-	current_complains = Complain.objects.order_by('complain_date')[:5]
-	return render(request,"complaint_portal/index.html",{"current_complains":current_complains})  #change username to login on homepage
+	return HttpResponseRedirect(reverse('complaint_portal:login')) 
 
 def complainform(request):
 	places = LocalPlaces.objects.all()
@@ -248,11 +246,16 @@ def mlogin(request):
 		user = auth.authenticate(username=username,password=password)
 		if user is not None and user.is_staff:
 			auth.login(request,user)
-			return render(request,"complaint_portal/middlemen.html",{"complain":complain,"places":places})  #change login to userprofilename on homepage
+			#return render(request,"complaint_portal/middlemen.html",{"complain":complain,"places":places})  #change login to userprofilename on homepage
+			return HttpResponseRedirect(reverse('complaint_portal:middlemen'))
 		else:
 			return render(request,"complaint_portal/mlogin.html",{"msg":"Username and Password combination incorrect"})
 	else:
 		return render(request,"complaint_portal/mlogin.html")			
+
+def mlogout(request):
+	auth.logout(request)
+	return HttpResponseRedirect(reverse('complaint_portal:mlogin'))
 
 def mloc_filter(request,loc_id):
 	print "ht"
@@ -295,7 +298,7 @@ def forward_reject(request):
 	complain = Complain.objects.filter(govt_complain_status=0)
 	types = Complain_type.objects.all()
 	places = LocalPlaces.objects.all()				
-	return render(request,"complaint_portal/middlemen.html",{"complain":complain,"places":places,"types":types})
+	return HttpResponseRedirect(reverse('complaint_portal:middlemen'))
 	
 def govtadmin(request):
 	complain=Complain.objects.filter(govt_complain_status=1).filter(days_to_solve=-1)
