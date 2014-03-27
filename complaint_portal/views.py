@@ -4,7 +4,8 @@ from django.contrib.auth.models import User
 from django.contrib import auth
 from django.core.mail import send_mail
 from django.contrib.auth.decorators import login_required
-from django.http import HttpResponse 
+from django.http import HttpResponse,HttpResponseRedirect
+from django.core.urlresolvers import reverse 
 # Create your views here.
 
 def index(request):
@@ -67,6 +68,8 @@ def logout(request):
 def complainform(request):
 	places = LocalPlaces.objects.all()
 	types = Complain_type.objects.all()
+	if not request.user.is_authenticated or not request.user.is_active:
+		return HttpResponseRedirect(reverse("complaint_portal:login"))
 	if request.method == "POST" and request.user.is_authenticated():
 		u = User.objects.get(pk=request.user.id)
 		form = ComplainForm(request.POST,request.FILES,instance=u)
@@ -116,6 +119,8 @@ def details(request,complain_id):
 
 def userprofile(request):
 	#get news feed of local complains of user
+	if not request.user.is_authenticated or not request.user.is_active:
+		return HttpResponseRedirect(reverse('complaint_portal:login'))
 	u = UserInfos.objects.get(pk=request.user.id)   
 	complain_feeds = Complain.objects.filter(complain_place=u.locality)
 	print len(complain_feeds),"u"
@@ -123,12 +128,16 @@ def userprofile(request):
 
 def mycomplains(request):
 	#in rendering html check if status is accepted or not and provide update button
+	if not request.user.is_authenticated or not request.user.is_active:
+		return HttpResponseRedirect(reverse('complaint_portal:login'))
 	my_complain_feeds = request.user.complain_set.all()
 	print len(my_complain_feeds),"here"
 	return render(request,"complaint_portal/complain_mine.html",{"my_complain_feeds":my_complain_feeds})
 
 def profile_update(request):
 	print "h"
+	if not request.user.is_authenticated or not request.user.is_active:
+		return HttpResponseRedirect(reverse('complaint_portal:login'))
 	places = LocalPlaces.objects.all()
 	profile_info = UserInfos.objects.get(pk=request.user.id)
 	if request.method == "POST":
@@ -151,6 +160,8 @@ def profile_update(request):
 
 def complain_update(request,complain_id):
 	#can be done only before it is reviewed by middlemen.In mycomplains provide option of update if status is 0
+	if not request.user.is_authenticated or not request.user.is_active:
+		return HttpResponseRedirect(reverse('complaint_portal:login'))
 	places = LocalPlaces.objects.all()
 	types = Complain_type.objects.all()
 	complain_info = Complain.objects.get(pk=complain_id)
@@ -178,6 +189,8 @@ def ranking(request):
 	return render(request,"complaint_portal/ranking.html",{"users_rank":users_rank})
 
 def complain_complete(request,complain_id):
+	if not request.user.is_authenticated or not request.user.is_active:
+		return HttpResponseRedirect(reverse('complaint_portal:login'))
 	complain_info = Complain.objects.get(pk=complain_id)
 	if request.method=="POST":
 		form = UpdateForm(request.POST)
@@ -218,6 +231,8 @@ def upvote(request,complain_id):
 		'''
 
 def middlemen(request):
+	if not request.user.is_authenticated or not request.user.is_staff:
+		return HttpResponseRedirect(reverse('complaint_portal:mlogin'))
 	complain=Complain.objects.filter(govt_complain_status=0)
 	types = Complain_type.objects.all()
 	places = LocalPlaces.objects.all()
@@ -239,6 +254,49 @@ def mlogin(request):
 	else:
 		return render(request,"complaint_portal/mlogin.html")			
 
+def mloc_filter(request,loc_id):
+	print "ht"
+	if not request.user.is_authenticated or not request.user.is_staff:
+		return HttpResponseRedirect(reverse('complaint_portal:mlogin'))
+	p = LocalPlaces.objects.get(pk=loc_id)
+	places = LocalPlaces.objects.all()
+	types = Complain_type.objects.all()
+	complain = Complain.objects.filter(govt_complain_status=0).filter(complain_place=p.local_name)
+	return render(request,"complaint_portal/middlemen.html",{"complain":complain,"places":places,"types":types})
+
+
+def mtype_filter(request,type_id):
+	print "hy"
+	if not request.user.is_authenticated or not request.user.is_staff:
+		return HttpResponseRedirect(reverse('complaint_portal:mlogin'))
+	places = LocalPlaces.objects.all()
+	types = Complain_type.objects.all()
+	t = Complain_type.objects.get(pk=type_id)
+	complain = Complain.objects.filter(govt_complain_status=0).filter(type_of_complain=t.name)
+	return render(request,"complaint_portal/middlemen.html",{"complain":complain,"places":places,"types":types})
+
+def forward_reject(request):
+	print "vd"#for middlemen
+	if not request.user.is_authenticated or not request.user.is_staff:
+		return HttpResponseRedirect(reverse('complaint_portal:mlogin'))
+	c_list = request.POST.getlist("sel_complain")
+	if "forward" in request.POST:
+		for c in c_list:
+			c_obj = Complain.objects.get(pk=c)
+			c_obj.govt_complain_status=1
+			c_obj.save()
+			#send_mail("Complain Accepted"+c.title,"You will be notified about further actions","saurabh.finch@gmail.com",[c.c_user.email])
+	else:
+		for c in c_list:
+			c_obj = Complain.objects.get(pk=c)
+			c_obj.govt_complain_status=2
+			c_obj.save()
+			#send_mail("Complain rejected"+c.title,"Your complain got rejected.See FAQ for reasons why complain can be rejected","saurabh.finch@gmail.com",[c.c_user.email])
+	complain = Complain.objects.filter(govt_complain_status=0)
+	types = Complain_type.objects.all()
+	places = LocalPlaces.objects.all()				
+	return render(request,"complaint_portal/middlemen.html",{"complain":complain,"places":places,"types":types})
+	
 def govtadmin(request):
 	complain=Complain.objects.filter(govt_complain_status=1).filter(days_to_solve=-1)
 	print len(complain)
@@ -284,39 +342,3 @@ def adminregister(request):
 	else:
 		return render(request,"complaint_portal/adminregister.html",{"places":places})			
 
-def mloc_filter(request,loc_id):
-	print "ht"
-	p = LocalPlaces.objects.get(pk=loc_id)
-	places = LocalPlaces.objects.all()
-	types = Complain_type.objects.all()
-	complain = Complain.objects.filter(govt_complain_status=0).filter(complain_place=p.local_name)
-	return render(request,"complaint_portal/middlemen.html",{"complain":complain,"places":places,"types":types})
-
-def tloc_filter(request,type_id):
-	print "hy"
-	places = LocalPlaces.objects.all()
-	types = Complain_type.objects.all()
-	t = Complain_type.objects.get(pk=type_id)
-	complain = Complain.objects.filter(govt_complain_status=0).filter(type_of_complain=t.name)
-	return render(request,"complaint_portal/middlemen.html",{"complain":complain,"places":places,"types":types})
-
-def forward_reject(request):
-	print "vd"
-	c_list = request.POST.getlist("sel_complain")
-	if "forward" in request.POST:
-		for c in c_list:
-			c_obj = Complain.objects.get(pk=c)
-			c_obj.govt_complain_status=1
-			c_obj.save()
-			#send_mail("Complain Accepted"+c.title,"You will be notified about further actions","saurabh.finch@gmail.com",[c.c_user.email])
-	else:
-		for c in c_list:
-			c_obj = Complain.objects.get(pk=c)
-			c_obj.govt_complain_status=2
-			c_obj.save()
-			#send_mail("Complain rejected"+c.title,"Your complain got rejected.See FAQ for reasons why complain can be rejected","saurabh.finch@gmail.com",[c.c_user.email])
-	complain = Complain.objects.filter(govt_complain_status=0)
-	types = Complain_type.objects.all()
-	places = LocalPlaces.objects.all()				
-	return render(request,"complaint_portal/middlemen.html",{"complain":complain,"places":places,"types":types})
-	

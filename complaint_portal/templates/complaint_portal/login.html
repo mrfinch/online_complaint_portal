@@ -40,6 +40,9 @@ font-size: 24px;
 </div>
 
 <div class="container">
+    {% if not user.is_authenticated %}
+        <p>Login Required to Complain</p>
+    {% endif %}
     <div class="row">
         <div class="col-md-8">
             <div class="well well-sm">

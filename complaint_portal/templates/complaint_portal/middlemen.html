@@ -26,7 +26,7 @@
 				<ul class="dropdown-menu">
 				<li><a href="{% url 'complaint_portal:middlemen' %}">All</a></li>	
 				{% for type in types %}
-					<li><a href="{% url 'complaint_portal:tloc_filter' type.id %}">{{ type.name }} </a></li>
+					<li><a href="{% url 'complaint_portal:mtype_filter' type.id %}">{{ type.name }} </a></li>
 				{% endfor %}
 				</ul>
 				</li>
@@ -53,7 +53,7 @@
 	      </a>  
 	      </h4>
 	    </div>
-	    {% if forloop.counter != 1 %}
+	    {% if forloop.counter != -1 %}
 	    	<div id="{{forloop.counter}}" class="panel-collapse collapse">
 	    {% else %}	
 	    	<div id="{{forloop.counter}}" class="panel-collapse collapse in">
