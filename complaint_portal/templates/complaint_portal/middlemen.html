@@ -1,5 +1,6 @@
 {% load staticfiles %}
 <head>
+<title>Middlemen</title>
 <script type="text/javascript" src="http://code.jquery.com/jquery-latest.min.js"></script>
 <script type="text/javascript" src="{% static 'complaint_portal/js/bootstrap.min.js' %}"></script>
 <script type="text/javascript" src="{% static 'complaint_portal/js/complain.js' %}"></script>
@@ -36,40 +37,40 @@
 
 <br />
 <br />
+<form method="post" action="{% url 'complaint_portal:forward_reject' %}">
+{% csrf_token %}
 <div class="panel-group" id="accordion">
 {% for f in complain %}
-<div class="panel panel-default">
-    <div class="panel-heading">
-      <h4 class="panel-title">
-      <input type="checkbox" />	
-      <a data-toggle="collapse" data-parent="#accordion" href="#{{forloop.counter}}">
-      {{ f.title }}
-		<span style="position:absolute; right:700">{{f.type_of_complain}}</span>
-		<span style="position:absolute; right:400">{{f.complain_place}}</span>
-		<span style="position:absolute; right:30">{{f.complain_date}}</span>
-      </a>  
-      </h4>
-    </div>
-    {% if forloop.counter != 1 %}
-    	<div id="{{forloop.counter}}" class="panel-collapse collapse">
-    {% else %}	
-    	<div id="{{forloop.counter}}" class="panel-collapse collapse in">
-    {% endif %}	
-      <div class="panel-body">	
-      {{ f.description }}<br />
-      Address:{{ f.complain_address }} <br />
-      By : {{ f.c_user.username }} <br />
-      <a href="{{f.complain_image}}" >Image</a>
-      </div>
-    </div>
-  </div>
-{% endfor %}
-</div>
+	<div class="panel panel-default">
+	    <div class="panel-heading">
+	      <h4 class="panel-title">
+	      <input type="checkbox" name="sel_complain" value="{{f.id}}"/>	
+	      <a data-toggle="collapse" data-parent="#accordion" href="#{{forloop.counter}}">
+	      {{ f.title }}
+			<span style="position:absolute; right:700">{{f.type_of_complain}}</span>
+			<span style="position:absolute; right:400">{{f.complain_place}}</span>
+			<span style="position:absolute; right:30">{{f.complain_date}}</span>
+	      </a>  
+	      </h4>
+	    </div>
+	    {% if forloop.counter != 1 %}
+	    	<div id="{{forloop.counter}}" class="panel-collapse collapse">
+	    {% else %}	
+	    	<div id="{{forloop.counter}}" class="panel-collapse collapse in">
+	    {% endif %}	
+	      <div class="panel-body">	
+	      {{ f.description }}<br />
+	      Address:{{ f.complain_address }} <br />
+	      By : {{ f.c_user.username }} <br />
+	      <a href="{{f.complain_image}}" >Image</a>
+	      </div>
+	    </div>
+	  </div>
+	{% endfor %}
+	</div>
 </div>
 <br />
 <br />
-<div class="container">
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-<button type="button" class="btn btn-danger">Reject</button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-<button type="button" class="btn btn-success">Forward</button>
-</div>
+<input type="submit" name="reject" class="btn btn-danger" value="Reject" style="position:relative; top:80%; left:40%;">
+<input type="submit" name="forward" class="btn btn-success" value="Forward" style="position:relative; top:80%; left:50%;">
+</form>

@@ -24,6 +24,7 @@ urlpatterns = patterns('',
 	url(r'^middle/(?P<loc_id>\d+)/filter/',views.mloc_filter,name="mloc_filter"),
 	url(r'^middlem/(?P<type_id>\d+)/filter/',views.tloc_filter,name="tloc_filter"),
 	url(r'^mlogin/',views.mlogin,name="mlogin"),
+	url(r'^forward_reject/',views.forward_reject,name="forward_reject"),
 	url(r'^govtadmin/',views.govtadmin,name="govtadmin"),
 	url(r'^glogin/',views.glogin,name="glogin"),
 	url(r'^adminregister/',views.adminregister,name="adminregister"),
@@ -34,3 +35,4 @@ urlpatterns = patterns('',
 #a url and view when user clicks upvote button
 #change password url and views
 #see complainform_update.html give option of complete if it is accepted adn give option of update if it is not reviewed
+#0-submitted,1-accept,2-reject,3-complete

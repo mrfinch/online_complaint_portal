@@ -299,3 +299,24 @@ def tloc_filter(request,type_id):
 	t = Complain_type.objects.get(pk=type_id)
 	complain = Complain.objects.filter(govt_complain_status=0).filter(type_of_complain=t.name)
 	return render(request,"complaint_portal/middlemen.html",{"complain":complain,"places":places,"types":types})
+
+def forward_reject(request):
+	print "vd"
+	c_list = request.POST.getlist("sel_complain")
+	if "forward" in request.POST:
+		for c in c_list:
+			c_obj = Complain.objects.get(pk=c)
+			c_obj.govt_complain_status=1
+			c_obj.save()
+			#send_mail("Complain Accepted"+c.title,"You will be notified about further actions","saurabh.finch@gmail.com",[c.c_user.email])
+	else:
+		for c in c_list:
+			c_obj = Complain.objects.get(pk=c)
+			c_obj.govt_complain_status=2
+			c_obj.save()
+			#send_mail("Complain rejected"+c.title,"Your complain got rejected.See FAQ for reasons why complain can be rejected","saurabh.finch@gmail.com",[c.c_user.email])
+	complain = Complain.objects.filter(govt_complain_status=0)
+	types = Complain_type.objects.all()
+	places = LocalPlaces.objects.all()				
+	return render(request,"complaint_portal/middlemen.html",{"complain":complain,"places":places,"types":types})
+	
