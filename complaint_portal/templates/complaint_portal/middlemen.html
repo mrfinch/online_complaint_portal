@@ -17,9 +17,11 @@
       <h4 class="panel-title">
       <input type="checkbox" />	
       <a data-toggle="collapse" data-parent="#accordion" href="#{{forloop.counter}}">
-          {{ f.title }} 
-        </a>
-        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{f.type_of_complain}}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {{f.complain_place}} &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{f.complain_date}}
+      {{ f.title }}
+		<span style="position:absolute; right:700">{{f.type_of_complain}}</span>
+		<span style="position:absolute; right:400">{{f.complain_place}}</span>
+		<span style="position:absolute; right:30">{{f.complain_date}}</span>
+      </a>  
       </h4>
     </div>
     {% if forloop.counter != 1 %}
