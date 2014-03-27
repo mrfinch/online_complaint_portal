@@ -219,8 +219,9 @@ def upvote(request,complain_id):
 
 def middlemen(request):
 	complain=Complain.objects.filter(govt_complain_status=0)
+	types = Complain_type.objects.all()
 	places = LocalPlaces.objects.all()
-	return render(request,"complaint_portal/middlemen.html",{"complain":complain,"places":places})
+	return render(request,"complaint_portal/middlemen.html",{"complain":complain,"places":places,"types":types})
 
 def mlogin(request):
 	print "dkjhkjh"
@@ -287,5 +288,14 @@ def mloc_filter(request,loc_id):
 	print "ht"
 	p = LocalPlaces.objects.get(pk=loc_id)
 	places = LocalPlaces.objects.all()
+	types = Complain_type.objects.all()
 	complain = Complain.objects.filter(govt_complain_status=0).filter(complain_place=p.local_name)
-	return render(request,"complaint_portal/middlemen.html",{"complain":complain,"places":places})		
+	return render(request,"complaint_portal/middlemen.html",{"complain":complain,"places":places,"types":types})
+
+def tloc_filter(request,type_id):
+	print "hy"
+	places = LocalPlaces.objects.all()
+	types = Complain_type.objects.all()
+	t = Complain_type.objects.get(pk=type_id)
+	complain = Complain.objects.filter(govt_complain_status=0).filter(type_of_complain=t.name)
+	return render(request,"complaint_portal/middlemen.html",{"complain":complain,"places":places,"types":types})
