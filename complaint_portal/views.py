@@ -301,23 +301,46 @@ def forward_reject(request):
 	return HttpResponseRedirect(reverse('complaint_portal:middlemen'))
 	
 def govtadmin(request):
-	complain=Complain.objects.filter(govt_complain_status=1).filter(days_to_solve=-1)
+	complain=Complain.objects.filter(govt_complain_status=1)
 	print len(complain)
-	return render(request,"complaint_portal/govtadmin.html",{"complain":complain})
+	types = Complain_type.objects.all()
+	places=LocalPlaces.objects.all()
+	return render(request,"complaint_portal/govtadmin.html",{"complain":complain,"types":types,"places":places})
 
 def glogin(request):
-	complain=Complain.objects.filter(govt_complain_status=1).filter(days_to_solve=-1)
+	complain=Complain.objects.filter(govt_complain_status=1)
 	if request.method == "POST":
 		username = request.POST.get("username","")
 		password = request.POST.get("password","")
 		user = auth.authenticate(username=username,password=password)
 		if user is not None and user.is_superuser:
 			auth.login(request,user)
-			return render(request,"complaint_portal/govtadmin.html",{"complain":complain})  #change login to userprofilename on homepage
+			return HttpResponseRedirect(reverse("complaint_portal:govtadmin")) 
 		else:
 			return render(request,"complaint_portal/glogin.html",{"msg":"Username and Password combination incorrect "})
 	else:
 		return render(request,"complaint_portal/glogin.html")				
+
+def gloc_filter(request,loc_id):
+	l = LocalPlaces.objects.get(pk=loc_id)
+	places = LocalPlaces.objects.all()
+	types = Complain_type.objects.all()
+	complain = Complain.objects.filter(govt_complain_status=1).filter(complain_place=l.local_name)
+	return render(request,"complaint_portal/govtadmin.html",{"complain":complain,"places":places,"types":types})
+
+def gtype_filter(request,type_id):
+	c = Complain_type.objects.get(pk=type_id)
+	places = LocalPlaces.objects.all()
+	types = Complain_type.objects.all()
+	complain = Complain.objects.filter(govt_complain_status=1).filter(type_of_complain=c.name)
+	return render(request,"complaint_portal/govtadmin.html",{"complain":complain,"places":places,"types":types})
+
+def glogout(request):
+	auth.logout(request)
+	return HttpResponseRedirect(reverse('complaint_portal:glogin'))
+
+def days_or_complete(request):
+	return render(request,"complaint_portal/govtadmin.html",{})
 
 def adminregister(request):
 	places = LocalPlaces.objects.all()

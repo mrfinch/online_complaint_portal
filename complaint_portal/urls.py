@@ -28,6 +28,10 @@ urlpatterns = patterns('',
 	url(r'^forward_reject/',views.forward_reject,name="forward_reject"),
 	url(r'^govtadmin/',views.govtadmin,name="govtadmin"),
 	url(r'^glogin/',views.glogin,name="glogin"),
+	url(r'^glogout/',views.logout,name="glogout"),
+	url(r'^gloc_filter/(?P<loc_id>\d+)/filter/',views.gloc_filter,name="gloc_filter"),
+	url(r'^gtype_filter/(?P<type_id>\d+)/filter/',views.gtype_filter,name="gtype_filter"),
+	url(r'^days_or_complete/',views.days_or_complete,name="days_or_complete"),
 	url(r'^adminregister/',views.adminregister,name="adminregister"),
 	) 
 

@@ -1,8 +1,86 @@
-<h2>gee</h2>
-{% if user.is_authenticated %}
-<p>vsd</p>
-{% endif %}
-{% for i in complain %} 
-{{i.title}}
-{{i.complain_place}}
-{% endfor%}
+{% load staticfiles %}
+<head>
+<title>Government Admin</title>
+<script type="text/javascript" src="http://code.jquery.com/jquery-latest.min.js"></script>
+<script type="text/javascript" src="{% static 'complaint_portal/js/bootstrap.min.js' %}"></script>
+<script type="text/javascript" src="{% static 'complaint_portal/js/complain.js' %}"></script>
+<link rel="stylesheet" href="{% static 'complaint_portal/css/bootstrap.min.css' %}">
+<link rel="stylesheet" href="{% static 'complaint_portal/css/flat-ui.css' %}">
+</head>
+
+<div class="container">
+	<nav class="navbar navbar-inverse navbar-embossed " role="navigation">
+		<div class="collapse navbar-collapse" id="navbar-collapse-01">
+		    <ul class="nav navbar-nav">
+				<li>
+				<a href="#" class="dropdown-toggle" data-toggle="dropdown">Filter By Place<b class="caret"></b></a>
+				<ul class="dropdown-menu">
+				<li><a href="{% url 'complaint_portal:govtadmin' %}">All</a></li>	
+				{% for place in places %}
+					<li><a href="{% url 'complaint_portal:gloc_filter' place.id %}">{{ place.local_name }} </a></li>
+				{% endfor %}
+				</ul>
+				</li>
+				<li>
+				<a href="#" class="dropdown-toggle" data-toggle="dropdown">Filter By Type<b class="caret"></b></a>
+				<ul class="dropdown-menu">
+				<li><a href="{% url 'complaint_portal:govtadmin' %}">All</a></li>	
+				{% for type in types %}
+					<li><a href="{% url 'complaint_portal:gtype_filter' type.id %}">{{ type.name }} </a></li>
+				{% endfor %}
+				</ul>
+				</li>
+				{% if user.is_authenticated and user.is_staff %}
+				<li><a href="{% url 'complaint_portal:govtadmin' %}">{{user.username}}</a></li>
+				<li><a href="{% url 'complaint_portal:glogout' %}">Logout</a></li>
+				{% endif %}
+			</ul>
+		</div>
+	</nav>
+</div>
+
+
+<br />
+<br />
+<form method="post" action="{% url 'complaint_portal:days_or_complete' %}">
+{% csrf_token %}
+<div class="panel-group" id="accordion">
+{% for f in complain %}
+	<div class="panel panel-default">
+	    <div class="panel-heading">
+	      <h4 class="panel-title">
+	      <input type="checkbox" name="sel_complain" value="{{f.id}}"/>	
+	      <a data-toggle="collapse" data-parent="#accordion" href="#{{forloop.counter}}">
+	      {{ f.title }}
+			<span style="position:absolute; right:700">{{f.type_of_complain}}</span>
+			<span style="position:absolute; right:400">{{f.complain_place}}</span>
+			<span style="position:absolute; right:30">{{f.complain_date}}</span>
+	      </a>  
+	      </h4>
+	    </div>
+	    {% if forloop.counter != -1 %}
+	    	<div id="{{forloop.counter}}" class="panel-collapse collapse">
+	    {% else %}	
+	    	<div id="{{forloop.counter}}" class="panel-collapse collapse in">
+	    {% endif %}	
+	      <div class="panel-body">	
+	      {{ f.description }}<br />
+	      Address:{{ f.complain_address }} <br />
+	      By : {{ f.c_user.username }} <br />
+	      <a href="{{f.complain_image}}" >Image</a>
+	      <br />
+	      Days to solve
+	      <input type="text" name="days">
+	      <input type="submit" name="days_solve" value="submit">
+	      </div>
+
+	    </div>
+	  </div>
+	{% endfor %}
+	</div>
+</div>
+<br />
+<br />
+
+<input type="submit" name="complete" class="btn btn-success" value="Complete" style="position:relative; top:80%; left:40%;">
+</form>
