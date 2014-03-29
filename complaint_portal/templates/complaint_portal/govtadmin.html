@@ -47,8 +47,17 @@
 </div>
 
 
-<br />
-<br />
+<div class="panel panel-primary">
+	<div class="panel-heading">
+		<h2 class="panel-title">
+		Title
+		<span style="position:absolute; left:650">Complain Type</span>
+		<span style="position:absolute; left:900">Complain Place</span>
+		<span style="position:absolute; left:1100">Complain Date</span>
+		</h2>
+	</div>
+</div>		
+
 <form method="post" action="{% url 'complaint_portal:days_or_complete' %}">
 {% csrf_token %}
 <div class="panel-group" id="accordion">
