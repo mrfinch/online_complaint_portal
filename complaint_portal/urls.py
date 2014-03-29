@@ -31,6 +31,8 @@ urlpatterns = patterns('',
 	url(r'^glogout/',views.logout,name="glogout"),
 	url(r'^gloc_filter/(?P<loc_id>\d+)/filter/',views.gloc_filter,name="gloc_filter"),
 	url(r'^gtype_filter/(?P<type_id>\d+)/filter/',views.gtype_filter,name="gtype_filter"),
+	url(r'^gdays_filter/',views.gdays_filter,name="gdays_filter"),
+	url(r'^gcomplete_filter',views.gcomplete_filter,name="gcomplete_filter"),
 	url(r'^days_or_complete/',views.days_or_complete,name="days_or_complete"),
 	url(r'^adminregister/',views.adminregister,name="adminregister"),
 	) 

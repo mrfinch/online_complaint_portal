@@ -30,6 +30,13 @@
 				{% endfor %}
 				</ul>
 				</li>
+				<li>
+				<a href="#" class="dropdown-toggle" data-toggle="dropdown">Filter By<b class="caret"></b></a>
+				<ul class="dropdown-menu">
+					<li><a href="{% url 'complaint_portal:gdays_filter' %}">Only days to add Complain</a></li>
+					<li><a href="{% url 'complaint_portal:gcomplete_filter' %}">Only Complete or Not Complain</a></li>
+				</ul>
+				</li>
 				{% if user.is_authenticated and user.is_staff %}
 				<li><a href="{% url 'complaint_portal:govtadmin' %}">{{user.username}}</a></li>
 				<li><a href="{% url 'complaint_portal:glogout' %}">Logout</a></li>
@@ -54,8 +61,7 @@
 	      {% endif %}	
 	      <a data-toggle="collapse" data-parent="#accordion" href="#{{forloop.counter}}">
 	      {{ f.title }}
-	      {% endif %}
-			<span style="position:absolute; left:650">{{f.type_of_complain}}</span>
+	      	<span style="position:absolute; left:650">{{f.type_of_complain}}</span>
 			<span style="position:absolute; left:900">{{f.complain_place}}</span>
 			<span style="position:absolute; left:1100">{{f.complain_date}}</span>
 	      </a>  
@@ -79,9 +85,8 @@
 		    <input type="text" class="form-control" id="num_days" placeholder="Enter days to complete" name="num_days">
 		  </div>
 		  <button type="submit" class="btn btn-primary" name="complain_id" value="{{f.id}}">Submit</button>
-		  </div>
 		  {% endif %}
-
+		  </div>	
 	      </div>
 
 	    </div>

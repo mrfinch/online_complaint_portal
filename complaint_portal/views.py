@@ -335,6 +335,18 @@ def gtype_filter(request,type_id):
 	complain = Complain.objects.filter(govt_complain_status=1).filter(type_of_complain=c.name)
 	return render(request,"complaint_portal/govtadmin.html",{"complain":complain,"places":places,"types":types})
 
+def gdays_filter(request):
+	complain = Complain.objects.filter(govt_complain_status=1).filter(days_to_solve=-1)
+	places = LocalPlaces.objects.all()
+	types = Complain_type.objects.all()
+	return render(request,"complaint_portal/govtadmin.html",{"complain":complain,"places":places,"types":types})
+
+def gcomplete_filter(request):
+	complain = Complain.objects.filter(govt_complain_status=1).filter(days_to_solve__gte=0)
+	places = LocalPlaces.objects.all()
+	types = Complain_type.objects.all()
+	return render(request,"complaint_portal/govtadmin.html",{"complain":complain,"places":places,"types":types})
+
 def glogout(request):
 	auth.logout(request)
 	return HttpResponseRedirect(reverse('complaint_portal:glogin'))
