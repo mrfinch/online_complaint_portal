@@ -340,7 +340,24 @@ def glogout(request):
 	return HttpResponseRedirect(reverse('complaint_portal:glogin'))
 
 def days_or_complete(request):
-	return render(request,"complaint_portal/govtadmin.html",{})
+	c = request.POST
+	print c
+	if "complain_id" in request.POST:
+		c_id = request.POST["complain_id"]
+		complain = Complain.objects.get(pk=c_id)
+		num_days = request.POST.getlist("num_days")
+		for i in num_days:
+			if i!='':
+				complain.days_to_solve = i
+				complain.save()
+	else:
+		c_list = request.POST.getlist("sel_complain")
+		for c in c_list:
+			c_obj = Complain.objects.get(pk=c)
+			c_obj.govt_complain_status = 3            #complete
+			c_obj.save()
+			
+	return HttpResponseRedirect(reverse("complaint_portal:govtadmin"))
 
 def adminregister(request):
 	places = LocalPlaces.objects.all()

@@ -49,12 +49,15 @@
 	<div class="panel panel-default">
 	    <div class="panel-heading">
 	      <h4 class="panel-title">
-	      <input type="checkbox" name="sel_complain" value="{{f.id}}"/>	
+	      {% if f.days_to_solve != -1 %}
+	      <input type="checkbox" name="sel_complain" value="{{f.id}}" />
+	      {% endif %}	
 	      <a data-toggle="collapse" data-parent="#accordion" href="#{{forloop.counter}}">
 	      {{ f.title }}
-			<span style="position:absolute; right:700">{{f.type_of_complain}}</span>
-			<span style="position:absolute; right:400">{{f.complain_place}}</span>
-			<span style="position:absolute; right:30">{{f.complain_date}}</span>
+	      {% endif %}
+			<span style="position:absolute; left:650">{{f.type_of_complain}}</span>
+			<span style="position:absolute; left:900">{{f.complain_place}}</span>
+			<span style="position:absolute; left:1100">{{f.complain_date}}</span>
 	      </a>  
 	      </h4>
 	    </div>
@@ -64,14 +67,21 @@
 	    	<div id="{{forloop.counter}}" class="panel-collapse collapse in">
 	    {% endif %}	
 	      <div class="panel-body">	
-	      {{ f.description }}<br />
-	      Address:{{ f.complain_address }} <br />
-	      By : {{ f.c_user.username }} <br />
-	      <a href="{{f.complain_image}}" >Image</a>
+	      <b>Description:</b>{{ f.description }}<br />
+	      <b>Address:</b>{{ f.complain_address }} <br />
+	      <b>Username: </b>{{ f.c_user.username }} 
+	      <a href="{{f.complain_image}}" >&nbsp;&nbsp;&nbsp;&nbsp;Link to Image</a>
 	      <br />
-	      Days to solve
-	      <input type="text" name="days">
-	      <input type="submit" name="days_solve" value="submit">
+	      <div class="form-inline" role="form">
+	      {% if f.days_to_solve == -1 %}
+		  <div class="form-group">
+		    <label class="sr-only" >No. of days</label>
+		    <input type="text" class="form-control" id="num_days" placeholder="Enter days to complete" name="num_days">
+		  </div>
+		  <button type="submit" class="btn btn-primary" name="complain_id" value="{{f.id}}">Submit</button>
+		  </div>
+		  {% endif %}
+
 	      </div>
 
 	    </div>
