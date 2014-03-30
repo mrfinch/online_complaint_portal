@@ -36,6 +36,31 @@ $.post("http://localhost:8000/complaint_portal/upvote/2",{complain_id:"c_id"})
 }
 </script>
 {% endblock %}
+
+{% block filters %}
+<li>
+	<a href="#" class="dropdown-toggle" data-toggle="dropdown">Filter By Place <b class="caret"></b></a>
+	<ul class="dropdown-menu">
+	<li><a href="{% url 'complaint_portal:all_complains' %}">All</a></li>
+	{% for place in places %}
+		<li><a href="{% url 'complaint_portal:hloc_filter' place.id %}">{{ place.local_name }}</a></li>
+	{% endfor %}	
+	</ul>
+</li>	
+<li>
+	<a href="#" class="dropdown-toggle" data-toggle="dropdown">Filter By Type <b class="caret"></b></a>
+	<ul class="dropdown-menu">
+	<li><a href="{% url 'complaint_portal:all_complains' %}">All</a></li>
+	{% for type in types %}
+		<li><a href="{% url 'complaint_portal:htype_filter' type.id %}">{{ type.name }}</a></li>
+	{% endfor %}	
+	</ul>
+{% if user.is_authenticated %}
+<li id="myusername"><a href="{% url 'complaint_portal:userprofile' %}">Welcome, {{ user.username }}</a></li>
+{% endif %}
+
+</li>
+{% endblock %}
 {% block content %}
 <div class="container">
 <section class="col-xs-12 col-sm-6 col-md-12">

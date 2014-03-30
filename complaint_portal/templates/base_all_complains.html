@@ -13,7 +13,7 @@
 </head>
 
 <body>
-<div class="container">
+
 	<nav class="navbar navbar-inverse navbar-embossed " role="navigation">
 		<div class="collapse navbar-collapse" id="navbar-collapse-01">
 		    <ul class="nav navbar-nav">
@@ -21,9 +21,6 @@
 				<li id="all_complains"><a href="{% url 'complaint_portal:all_complains' %}">All Complaints</a></li>
 				<li id="leader_board"><a href="{% url 'complaint_portal:ranking' %}">Leader Board</a></li>
 				<li id="complain"><a href="{% url 'complaint_portal:complainform' %}">Complain</a></li>
-				{% if user.is_authenticated %}
-				<li id="myusername"><a href="{% url 'complaint_portal:userprofile' %}">{{ user.username }}</a></li>
-				{% endif %}
 				<li>
 		          <a href="#" class="dropdown-toggle" data-toggle="dropdown">Sort By <b class="caret"></b></a>
 		          <ul class="dropdown-menu">
@@ -34,13 +31,14 @@
 		            <li><a href="{% url 'complaint_portal:sorted_complains' 4 %}">Alphabetical by Complain Type(Z-A)</a></li>
 		          </ul>
 		        </li>
+		        {% block filters %}
+		        {% endblock %}
 				{% if user.is_authenticated %}
 				<li style="position:absolute; right:0"><a href="{% url 'complaint_portal:logout' %}">Logout</a></li>
 				{% endif %}
 			</ul>
 		</div>
 	</nav>
-</div>
 	<div>
 		{% block content %}
 		{% endblock %}

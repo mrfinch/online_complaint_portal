@@ -90,8 +90,26 @@ def complainform(request):
 		return render(request,"complaint_portal/complainform.html",{"places":places,"types":types})
 
 def all_complains(request):
+	places = LocalPlaces.objects.all()
+	types = Complain_type.objects.all()
 	complain_list = Complain.objects.order_by('id')
-	return render(request,"complaint_portal/all_complain.html",{"complain_list":complain_list})
+	return render(request,"complaint_portal/all_complain.html",{"complain_list":complain_list,"places":places,"types":types})
+
+def hloc_filter(request,place_id):
+	print "nh"
+	places = LocalPlaces.objects.all()
+	types = Complain_type.objects.all()
+	p = LocalPlaces.objects.get(pk=place_id)
+	print p.local_name
+	complain_list = Complain.objects.filter(complain_place=p.local_name).order_by('id')
+	return render(request,"complaint_portal/all_complain.html",{"complain_list":complain_list,"places":places,"types":types})
+
+def htype_filter(request,type_id):
+	places = LocalPlaces.objects.all()
+	types = Complain_type.objects.all()
+	t = Complain_type.objects.get(pk=type_id)
+	complain_list = Complain.objects.filter(type_of_complain=t.name).order_by('id')
+	return render(request,"complaint_portal/all_complain.html",{"complain_list":complain_list,"places":places,"types":types})
 
 def sorted_complains(request,sorted_id):
 	print "hp"
