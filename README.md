@@ -4,7 +4,9 @@ online_complaint_portal
 Website for reporting various complaints like road,sewage as a part of my software enginnering project
 
 
+
 Installation instruction:
+
 1. Install python-pip 
 
 2. Install django by foll: sudo pip install Django==1.6.2
