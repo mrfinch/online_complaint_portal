@@ -22,8 +22,6 @@
 				<li id="complain"><a href="{% url 'complaint_portal:complainform' %}">Complain</a></li>
 				{% if user.is_authenticated %}
 				<li id="myusername"><a href="{% url 'complaint_portal:userprofile' %}">{{ user.username }}</a></li>
-				{% else %}
-				<li id="myusername"><a href="{% url 'complaint_portal:login' %}">Login</a></li>
 				{% endif %}
 				{% if user.is_authenticated %}
 				<li style="position:absolute; right:0"><a href="{% url 'complaint_portal:logout' %}">Logout</a></li>

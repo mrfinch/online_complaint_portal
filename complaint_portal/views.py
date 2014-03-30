@@ -48,9 +48,9 @@ def login(request):
 			auth.login(request,user)
 			return HttpResponseRedirect(reverse('complaint_portal:index'))
 		else:
-			return render(request,"complaint_portal/login.html",{"msg":"Username and Password combination incorrect OR Account not activated by email"})
+			return render(request,"complaint_portal/index.html",{"msg":"Username and Password combination incorrect OR Account not activated by email"})
 	else:
-		return render(request,"complaint_portal/login.html")			
+		return render(request,"complaint_portal/index.html")			
 
 def activate(request,u_id):
 	u = User.objects.get(pk=u_id)
@@ -67,7 +67,7 @@ def complainform(request):
 	places = LocalPlaces.objects.all()
 	types = Complain_type.objects.all()
 	if not request.user.is_authenticated or not request.user.is_active:
-		return HttpResponseRedirect(reverse("complaint_portal:login"))
+		return HttpResponseRedirect(reverse("complaint_portal:index"))
 	if request.method == "POST" and request.user.is_authenticated():
 		u = User.objects.get(pk=request.user.id)
 		form = ComplainForm(request.POST,request.FILES,instance=u)
