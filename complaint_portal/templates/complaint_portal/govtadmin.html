@@ -84,8 +84,8 @@
 	      <div class="panel-body">	
 	      <b>Description:</b>{{ f.description }}<br />
 	      <b>Address:</b>{{ f.complain_address }} <br />
-	      <b>Username: </b>{{ f.c_user.username }} 
-	      <a href="{{f.complain_image}}" >&nbsp;&nbsp;&nbsp;&nbsp;Link to Image</a>
+	      <b>Username: </b>{{ f.c_user.username }} &nbsp;&nbsp;&nbsp;&nbsp;
+	      <a href="{% static f.complain_image %}" target="_blank">Link to Image</a>
 	      <br />
 	      <div class="form-inline" role="form">
 	      {% if f.days_to_solve == -1 %}

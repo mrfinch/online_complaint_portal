@@ -71,10 +71,11 @@
 	    	<div id="{{forloop.counter}}" class="panel-collapse collapse in">
 	    {% endif %}	
 	      <div class="panel-body">	
-	      {{ f.description }}<br />
-	      Address:{{ f.complain_address }} <br />
-	      By : {{ f.c_user.username }} <br />
-	      <a href="{{f.complain_image}}" >Image</a>
+	      <b>Description:</b>{{ f.description }}<br />
+	      <b>Address:</b>{{ f.complain_address }} <br />
+	      <b>Username: </b>{{ f.c_user.username }} 
+	       &nbsp;&nbsp;&nbsp;
+	      <a href="{% static f.complain_image %}" target="_blank">Link to Image</a>
 	      </div>
 	    </div>
 	  </div>
