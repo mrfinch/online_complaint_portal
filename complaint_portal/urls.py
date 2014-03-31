@@ -38,6 +38,7 @@ urlpatterns = patterns('',
 	url(r'^gcomplete_filter',views.gcomplete_filter,name="gcomplete_filter"),
 	url(r'^days_or_complete/',views.days_or_complete,name="days_or_complete"),
 	url(r'^userprofile_admin/(?P<u_id>\d+)/',views.userprofile_admin,name="userprofile_admin"),
+	url(r'^send_mail_user/(?P<u_id>\d+)',views.send_mail_user,name="send_mail_user"),
 	url(r'^adminregister/',views.adminregister,name="adminregister"),
 	) 
 

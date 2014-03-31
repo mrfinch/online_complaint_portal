@@ -431,5 +431,16 @@ def adminregister(request):
 		return render(request,"complaint_portal/adminregister.html",{"places":places})			
 
 def userprofile_admin(request,u_id):
+	print u_id
 	userinfo = UserInfos.objects.get(pk=u_id)
-	return render(request,"complaint_portal/userprofile_admin.html")
+	print userinfo.firstname
+	return render(request,"complaint_portal/userprofile_admin.html",{"userinfo":userinfo})
+
+def send_mail_user(request,u_id):
+	userinfo = UserInfos.objects.get(pk=u_id)
+	if request.method == "POST":
+		content = request.POST.get("content","")
+		send_mail("Some questions",content,"saurabh.finch@gmail.com",[userinfo.email])
+		return render(request,"complaint_portal/userprofile_admin.html",{"userinfo":userinfo})
+	else:
+		return HttpResponseRedirect(reverse("complaint_portal:userprofile_admin"))		

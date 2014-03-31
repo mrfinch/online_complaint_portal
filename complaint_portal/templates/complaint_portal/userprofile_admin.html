@@ -1,7 +1,7 @@
 {% load staticfiles %}
 <html>
 <head>
-	<title></title>
+	<title>User Profile</title>
 	<script type="text/javascript" src="http://code.jquery.com/jquery-latest.min.js"></script>
 	<script type="text/javascript" src="{% static 'complaint_portal/js/bootstrap.min.js' %}"></script>
 	<script type="text/javascript" src="{% static 'complaint_portal/js/complain.js' %}"></script>
@@ -9,4 +9,53 @@
 	<link rel="stylesheet" href="{% static 'complaint_portal/css/flat-ui.css' %}">
 	
 </head>
-htr
+
+
+<div class="container">
+<div class="">
+  <h2 style="color:#428bca;">{{userinfo.username }}<small>'s Profile</small></h2>
+</div>
+
+<table class="table">
+		<tr>
+			<th>Fields</th>
+			<th>Values</th>
+		</tr>
+		<tr>
+			<th>First Name</th>
+			<td>{{userinfo.firstname}}</td>
+		</tr>
+			<th>Last Name</th>
+			<td>{{userinfo.lastname}}</td>
+		<tr>
+			<th>Email</th>
+			<td>{{userinfo.email}}</td>
+		</tr>
+			<th>Phone number</th>
+			<td>{{userinfo.phone}} </td>
+		<tr>
+			<th>Address</th>
+			<td>{{userinfo.address}} </td>
+		</tr>
+		<tr>
+			<th>Locality</th>
+			<td>{{userinfo.locality}} </td>
+		</tr>
+</table>
+</div>
+<form action="{% url 'complaint_portal:send_mail_user' userinfo.id %}" method="post">
+{% csrf_token %}
+<div class="container">
+<div class="row">
+    <div class="col-md-6">
+        <div class="form-group">     
+		<textarea class="form-control" rows="3" name="content" id="content" placeholder="Enter content for mailing user"></textarea>
+		</div>	
+		<div class="col-md-12">
+            <button type="submit" class="btn btn-primary pull-left" value="Send Mail">
+                Send Mail</button>
+        </div>
+    </div>
+</div>        
+</div>
+</form>
