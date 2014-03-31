@@ -430,5 +430,6 @@ def adminregister(request):
 	else:
 		return render(request,"complaint_portal/adminregister.html",{"places":places})			
 
-def userprofile_admin(request):
-	
+def userprofile_admin(request,u_id):
+	userinfo = UserInfos.objects.get(pk=u_id)
+	return render(request,"complaint_portal/userprofile_admin.html")

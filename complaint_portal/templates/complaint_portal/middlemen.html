@@ -73,7 +73,7 @@
 	      <div class="panel-body">	
 	      <b>Description:</b>{{ f.description }}<br />
 	      <b>Address:</b>{{ f.complain_address }} <br />
-	      <b>Username: </b>{{ f.c_user.username }} 
+	      <b>Username: </b><a href="{% url 'complaint_portal:userprofile_admin' f.c_user.id %}" target="_blank">{{ f.c_user.username }}</a> 
 	       &nbsp;&nbsp;&nbsp;
 	      <a href="{% static f.complain_image %}" target="_blank">Link to Image</a>
 	      </div>
