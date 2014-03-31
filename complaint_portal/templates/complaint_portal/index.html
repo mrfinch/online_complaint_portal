@@ -16,7 +16,7 @@ How method works
 		<form action="{% url 'complaint_portal:login' %}" method="post" role="form">
 		{% csrf_token %}
 			<fieldset>
-				<h2> Sign In</h2>
+				<h4>Sign In to complain</h4>
 				<hr class="colorgraph">
 				<div class="form-group">
                     <input type="text" name="username" id="username" class="form-control input-lg" placeholder="Username">
@@ -27,7 +27,7 @@ How method works
 				<span class="button-checkbox">
 					<button type="button" class="btn" data-color="info">Remember Me</button>
                     <input type="checkbox" name="remember_me" id="remember_me" checked="checked" class="hidden">
-					<a href="" class="btn btn-link pull-right">Forgot Password?</a>
+					<a href="{% url 'complaint_portal:forgot_password' %}" class="btn btn-link pull-right">Forgot Password?</a>
 				</span>
 				<hr class="colorgraph">
 				<div class="row">

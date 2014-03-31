@@ -44,14 +44,14 @@ hgroup h2.lead { font: normal normal 1.125em "Roboto",Arial,Verdana,sans-serif; 
 				</ul>
 			</div>
 			<div class="col-xs-12 col-sm-12 col-md-6 excerpet">
-				<h3><a href="#" title="">{{complain.title}}</a></h3>
-				<p>{{complain.description}} </p>						
-                <p>Status:{{ complain.govt_complain_status }}</p>
+				<h3><a href="#" title="" style="font-family:'Times New Roman', Times, serif;">{{complain.title}}</a></h3>
+				<p style="font-family:'Times New Roman', Times, serif;">{{complain.description}} </p>				
+                <p style="font-family:'Times New Roman', Times, serif;">Status:{{ complain.govt_complain_status }}</p>
 				{% ifequal complain.govt_complain_status 0 %}
-				<a href="{% url 'complaint_portal:complain_update' complain.id %}">Update Complaint</a></p>
+				<a href="{% url 'complaint_portal:complain_update' complain.id %}" style="font-family:'Times New Roman', Times, serif;">Update Complaint</a></p>
 				{% endifequal %}
 				{% 	if complain.govt_complain_status > 0 and complain.user_complain_update == 0 %}
-				<p>Complete or Not Complete,<a href="{% url 'complaint_portal:complain_complete' complain.id %}">Update</a></p>
+				<p style="font-family:'Times New Roman', Times, serif;">Complete or Not Complete,<a href="{% url 'complaint_portal:complain_complete' complain.id %}">Update</a></p>
 				{% endif %}
                 <!--<span class="plus"><a href="#" title="Lorem ipsum"><i class="glyphicon glyphicon-plus"></i></a></span> Link for details -->
 			</div>

@@ -32,8 +32,8 @@ hgroup h2.lead { font: normal normal 1.125em "Roboto",Arial,Verdana,sans-serif; 
 <section class="col-xs-12 col-sm-6 col-md-12">
 	{% for complain in complain_feeds %}
 		<article class="search-result row">
-			<div class="col-xs-12 col-sm-12 col-md-3">
-				<a href="#" title="Lorem ipsum" class="thumbnail"><img src="{% static complain.complain_image %}" alt="Lorem ipsum" /></a>
+			<div class="col-xs-8 col-sm-8 col-md-3">
+				<a href="{% static complain.complain_image %}" title="{{complain.title}}" class="thumbnail" target="_blank"><img src="{% static complain.complain_image %}" alt="{{complain.title}}" style="max-width:100%;max-height:100%;" /></a>
 			</div>
 			<div class="col-xs-12 col-sm-12 col-md-3">
 				<ul class="meta-search">
@@ -43,10 +43,24 @@ hgroup h2.lead { font: normal normal 1.125em "Roboto",Arial,Verdana,sans-serif; 
 					<li><i class="glyphicon glyphicon-tags"></i> <span>Upvotes:{{complain.upvotes}}</span></li>
 				</ul>
 			</div>
-			<div class="col-xs-12 col-sm-12 col-md-6 excerpet">
-				<h3><a href="#" title="">{{complain.title}}</a></h3>
-				<p>{{complain.description}} </p>						
-                <!--<span class="plus"><a href="#" title="Lorem ipsum"><i class="glyphicon glyphicon-plus"></i></a></span> Link for details -->
+			<div class="col-xs-4 col-sm-4 col-md-6 excerpet">
+				<h3><a href="#" title="" style="font-family:'Times New Roman', Times, serif;">{{complain.title}}</a></h3>
+				<p style="font-family:'Times New Roman', Times, serif;">{{complain.description}} </p>				
+                {% if complain.govt_complain_status == 1 %}
+                	<p style="font-family:'Times New Roman', Times, serif;"><b>Status</b>:Accepted and forwarded to government employee for solving.</p>
+                {% elif complain.govt_complain_status == 2 %}
+                	<p style="font-family:'Times New Roman', Times, serif;"><b>Status</b>:Rejected</p>
+                {% elif complain.days_to_solve != -1 %}
+                   	<p style="font-family:'Times New Roman', Times, serif;"><b>Days for completion</b>: {{complain.days_to_solve}}</p>
+                {% elif complain.govt_complain_status == 3 %}
+                	<p style="font-family:'Times New Roman', Times, serif;"><b>Status</b>:Completed</p>
+                {% else %}
+                	<p style="font-family:'Times New Roman', Times, serif;"><b>Status</b>:Submitted but not reviewed</p>
+                {% endif %}	   		
+				{% if user.is_authenticated %}
+					<a href="#" onclick="upvoting({{complain.id}})" style="font-family:'Times New Roman', Times, serif;">Upvote</a>
+				{% endif %}
+				<br />
 			</div>
 			<span class="clearfix borda"></span>
 		</article>
@@ -54,3 +68,5 @@ hgroup h2.lead { font: normal normal 1.125em "Roboto",Arial,Verdana,sans-serif; 
 </section>
 </div>
 {% endblock %}
+<br />
+<br />

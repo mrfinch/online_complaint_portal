@@ -22,7 +22,7 @@ class Complain(models.Model):
 	user_complain_status = models.IntegerField(default=0) #0-not complete,1-complete
 	days_to_solve = models.IntegerField(default=-1)
 	upvotes = models.IntegerField(default=0)
-	rejection_reason = models.IntegerField(default=-1)
+	rejection_reason = models.IntegerField(default=-1)    #1-this reason 2-this reason
 	user_complain_update = models.BooleanField(default=False)
 	user_complain_reason = models.TextField(blank=True,null=True)
 

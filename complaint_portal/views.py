@@ -5,7 +5,8 @@ from django.contrib import auth
 from django.core.mail import send_mail
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse,HttpResponseRedirect
-from django.core.urlresolvers import reverse 
+from django.core.urlresolvers import reverse
+import random,string 
 # Create your views here.
 
 def index(request):
@@ -62,6 +63,16 @@ def activate(request,u_id):
 def logout(request):
 	auth.logout(request)
 	return HttpResponseRedirect(reverse('complaint_portal:login')) 
+
+def forgot_password(request):
+	if request.method == "POST":
+		uname = request.POST.get("username","")
+		user = User.objects.get(username=uname)
+		r_password = ''.join(random.choice(string.lowercase+string.digits) for i in range(8))
+		send_mail("Change Password","Password:"+r_password,"saurabh.finch@gmail.com",[user.email])
+		return render(request,"complaint_portal/forgot_password.html",{"msg":"Display instructions"})
+	else:
+		return render(request,"complaint_portal/forgot_password.html")	
 
 def complainform(request):
 	places = LocalPlaces.objects.all()
