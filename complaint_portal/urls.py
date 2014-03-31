@@ -37,6 +37,7 @@ urlpatterns = patterns('',
 	url(r'^gdays_filter/',views.gdays_filter,name="gdays_filter"),
 	url(r'^gcomplete_filter',views.gcomplete_filter,name="gcomplete_filter"),
 	url(r'^days_or_complete/',views.days_or_complete,name="days_or_complete"),
+	url(r'^userprofile_admin/',views.userprofile_admin,name="userprofile_admin"),
 	url(r'^adminregister/',views.adminregister,name="adminregister"),
 	) 
 

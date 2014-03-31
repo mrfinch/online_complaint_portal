@@ -413,9 +413,13 @@ def adminregister(request):
 			address	= form.cleaned_data["address"]
 			phone = form.cleaned_data["phone"]
 			locality = form.cleaned_data["locality"]
+			position = form.cleaned_data["position"]
 			user = User.objects.create_user(username=username,first_name=firstname,last_name=lastname,email=email,password=password)
-			user.is_active = True
-			user.save()
+			if int(position)==1:
+				user.is_staff=True
+			else:
+				user.is_superuser=True
+			user.save()		
 			userinfo = UserInfos.objects.create(id=user.id,username=username,firstname=firstname,lastname=lastname,email=email,password=password,
 				address=address,phone=phone,locality=locality)
 			#url = "http://localhost:8000/complaint_portal/" + "activate/" + str(user.id)
@@ -426,3 +430,5 @@ def adminregister(request):
 	else:
 		return render(request,"complaint_portal/adminregister.html",{"places":places})			
 
+def userprofile_admin(request):
+	
