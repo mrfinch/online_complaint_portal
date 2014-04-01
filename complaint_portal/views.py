@@ -197,7 +197,7 @@ def complain_update(request,complain_id):
 		form = ComplainForm(request.POST,request.FILES)
 		if form.is_valid() and request.user.is_authenticated():
 			complain_info.title = form.cleaned_data["title"]
-			complain_info.type_of_complain = form.cleaned_data["complain_type"]
+			complain_info.type_of_complain = form.cleaned_data["type_of_complain"]
 			complain_info.description = form.cleaned_data["description"]
 			complain_info.complain_address = form.cleaned_data["complain_address"]
 			complain_info.complain_image = form.cleaned_data["complain_image"]
@@ -410,6 +410,7 @@ def days_or_complete(request):
 			if i!='':
 				complain.days_to_solve = i
 				complain.end_date = (datetime.now()+timedelta(days=int(i)))
+				complain.govt_complain_status = 4
 				complain.save()
 	else:
 		c_list = request.POST.getlist("sel_complain")

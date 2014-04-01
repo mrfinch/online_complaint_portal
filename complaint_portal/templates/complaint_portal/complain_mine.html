@@ -46,14 +46,54 @@ hgroup h2.lead { font: normal normal 1.125em "Roboto",Arial,Verdana,sans-serif; 
 			<div class="col-xs-12 col-sm-12 col-md-6 excerpet">
 				<h3><a href="#" title="" style="font-family:'Times New Roman', Times, serif;">{{complain.title}}</a></h3>
 				<p style="font-family:'Times New Roman', Times, serif;">{{complain.description}} </p>				
-                <p style="font-family:'Times New Roman', Times, serif;">Status:{{ complain.govt_complain_status }}</p>
-				{% ifequal complain.govt_complain_status 0 %}
-				<a href="{% url 'complaint_portal:complain_update' complain.id %}" style="font-family:'Times New Roman', Times, serif;">Update Complaint</a></p>
+                {% if complain.govt_complain_status == 1 %}
+					  <div class="span4">
+						  Complain Validated<span class="pull-right">Sent to govt. employee</span>
+						  <div class="progress progress-striped active">
+						      <div class="progress-bar progress-bar-info" style="width:50%;"></div>
+						  </div>
+					  </div>
+                {% elif complain.govt_complain_status == 2 %}
+                	 <div class="span4">
+						  Rejected Complain<span class="pull-right">Show Reason</span>
+						  <div class="progress progress-striped active">
+						      <div class="progress-bar progress-bar-danger" style="width:100%;"></div>
+						  </div>
+					  </div>
+                {% elif complain.govt_complain_status == 4 %}
+                	<div class="span4">
+						  Work in progress<span class="pull-right">Deadline:{{complain.end_date}}</span>
+						  <div class="progress progress-striped active">
+						      <div class="progress-bar progress-bar-warning" style="width:75%;"></div>
+						  </div>
+					  </div> 
+                {% elif complain.govt_complain_status == 3 %}
+                	<div class="span4">
+						  Completed<span class="pull-right">Update user status</span>
+						  <div class="progress progress-striped active">
+						      <div class="progress-bar progress-bar-success" style="width:100%;"></div>
+						  </div>
+					  </div> 
+                {% else %}
+                	<div class="span4">
+						  Submitted not reviewed<span class="pull-right"></span>
+						  <div class="progress progress-striped active">
+						      <div class="progress-bar progress-bar-info" style="width:25%;"></div>
+						  </div>
+					  </div> 
+                {% endif %}{% ifequal complain.govt_complain_status 0 %}
+				<form action="{% url 'complaint_portal:complain_update' complain.id %}" method="get">
+					{% csrf_token %}
+					<input type="submit" name="upvote" class="btn btn-success" value="Update Complain Info">
+				</form>
 				{% endifequal %}
-				{% 	if complain.govt_complain_status > 0 and complain.user_complain_update == 0 %}
-				<p style="font-family:'Times New Roman', Times, serif;">Complete or Not Complete,<a href="{% url 'complaint_portal:complain_complete' complain.id %}">Update</a></p>
+				{% 	if complain.govt_complain_status == 3 %}
+				<form action="" method="" class="form-inline" role="form">
+				<input type="submit" name="upvote" class="btn btn-info" value="Complete">
+        		<input type="submit" name="upvote" class="btn btn-danger" value="Not Complete">
+        		</form>
 				{% endif %}
-                <!--<span class="plus"><a href="#" title="Lorem ipsum"><i class="glyphicon glyphicon-plus"></i></a></span> Link for details -->
+                <hr />
 			</div>
 			<span class="clearfix borda"></span>
 		</article>

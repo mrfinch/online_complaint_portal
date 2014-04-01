@@ -80,17 +80,41 @@ $.post("http://localhost:8000/complaint_portal/upvote/2",{complain_id:"c_id"})
 			<div class="col-xs-4 col-sm-4 col-md-6 excerpet">
 				<h3><a href="#" title="" style="font-family:'Times New Roman', Times, serif;">{{complain.title}}</a></h3>
 				<p style="font-family:'Times New Roman', Times, serif;">{{complain.description}} </p>						
-                <!--<span class="plus"><a href="#" title="Lorem ipsum"><i class="glyphicon glyphicon-plus"></i></a></span> Link for details -->
                 {% if complain.govt_complain_status == 1 %}
-                	<p style="font-family:'Times New Roman', Times, serif;"><b>Status</b>:Accepted and forwarded to government employee for solving.</p>
+					  <div class="span4">
+						  Complain Validated<span class="pull-right">Sent to govt. employee</span>
+						  <div class="progress progress-striped active">
+						      <div class="progress-bar progress-bar-info" style="width:50%;"></div>
+						  </div>
+					  </div>
                 {% elif complain.govt_complain_status == 2 %}
-                	<p style="font-family:'Times New Roman', Times, serif;"><b>Status</b>:Rejected</p>
-                {% elif complain.days_to_solve != -1 %}
-                   	<p style="font-family:'Times New Roman', Times, serif;"><b>Days for completion</b>: {{complain.days_to_solve}}</p>
+                	 <div class="span4">
+						  Rejected Complain<span class="pull-right">Show Reason</span>
+						  <div class="progress progress-striped active">
+						      <div class="progress-bar progress-bar-danger" style="width:100%;"></div>
+						  </div>
+					  </div>
+                {% elif complain.govt_complain_status == 4 %}
+                	<div class="span4">
+						  Work in progress<span class="pull-right">Deadline:{{complain.end_date}}</span>
+						  <div class="progress progress-striped active">
+						      <div class="progress-bar progress-bar-warning" style="width:75%;"></div>
+						  </div>
+					  </div> 
                 {% elif complain.govt_complain_status == 3 %}
-                	<p style="font-family:'Times New Roman', Times, serif;"><b>Status</b>:Completed</p>
+                	<div class="span4">
+						  Completed<span class="pull-right">Update user status</span>
+						  <div class="progress progress-striped active">
+						      <div class="progress-bar progress-bar-success" style="width:100%;"></div>
+						  </div>
+					  </div> 
                 {% else %}
-                	<p style="font-family:'Times New Roman', Times, serif;"><b>Status</b>:Submitted but not reviewed</p>
+                	<div class="span4">
+						  Submitted not reviewed<span class="pull-right"></span>
+						  <div class="progress progress-striped active">
+						      <div class="progress-bar progress-bar-info" style="width:25%;"></div>
+						  </div>
+					  </div> 
                 {% endif %}	   		
 	            <form action="{% url 'complaint_portal:upvote' complain.id %}" method="post">
 	            {% csrf_token %}
@@ -98,6 +122,7 @@ $.post("http://localhost:8000/complaint_portal/upvote/2",{complain_id:"c_id"})
 					<input type="submit" name="upvote" class="btn btn-success" value="Upvote">
 				{% endif %}
 				</form>
+				<hr />
 			</div>
 			<span class="clearfix borda"></span>
 		</article>
