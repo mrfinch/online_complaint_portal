@@ -81,16 +81,18 @@ hgroup h2.lead { font: normal normal 1.125em "Roboto",Arial,Verdana,sans-serif; 
 						      <div class="progress-bar progress-bar-info" style="width:25%;"></div>
 						  </div>
 					  </div> 
-                {% endif %}{% ifequal complain.govt_complain_status 0 %}
+                {% endif %}
+                {% ifequal complain.govt_complain_status 0 %}
 				<form action="{% url 'complaint_portal:complain_update' complain.id %}" method="get">
 					{% csrf_token %}
 					<input type="submit" name="upvote" class="btn btn-success" value="Update Complain Info">
 				</form>
 				{% endifequal %}
 				{% 	if complain.govt_complain_status == 3 %}
-				<form action="" method="" class="form-inline" role="form">
-				<input type="submit" name="upvote" class="btn btn-info" value="Complete">
-        		<input type="submit" name="upvote" class="btn btn-danger" value="Not Complete">
+				<form action="{% url 'complaint_portal:user_completeornot' complain.id %}" method="post" class="form-inline" role="form">
+				{% csrf_token %}
+				<input type="submit" name="complete" class="btn btn-info" value="Complete">
+        		<input type="submit" name="notcomplete" class="btn btn-danger" value="Not Complete">
         		</form>
 				{% endif %}
                 <hr />

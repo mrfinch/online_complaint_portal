@@ -8,6 +8,7 @@ from django.http import HttpResponse,HttpResponseRedirect
 from django.core.urlresolvers import reverse
 import random,string
 from datetime import datetime,timedelta 
+from django.db.models import Q
 # Create your views here.
 
 def index(request):
@@ -161,6 +162,17 @@ def mycomplains(request):
 	my_complain_feeds = request.user.complain_set.all()
 	print len(my_complain_feeds),"here"
 	return render(request,"complaint_portal/complain_mine.html",{"my_complain_feeds":my_complain_feeds})
+
+def user_completeornot(request,complain_id):
+	complain = Complain.objects.get(pk=complain_id)
+	if "complete" in request.POST:
+		complain.user_complaint_status = 1
+		complain.save()
+	else:
+		complain.user_complain_status = 0
+		complain.govt_complain_status = 5
+		complain.save()
+	return HttpResponseRedirect(reverse('complaint_portal:mycomplains'))			
 
 def profile_update(request):
 	print "h"
@@ -349,7 +361,7 @@ def forward_reject(request):
 	return HttpResponseRedirect(reverse('complaint_portal:middlemen'))
 	
 def govtadmin(request):
-	complain=Complain.objects.filter(govt_complain_status=1)
+	complain=Complain.objects.filter(Q(govt_complain_status=1) | Q(govt_complain_status=5))
 	print len(complain)
 	types = Complain_type.objects.all()
 	places=LocalPlaces.objects.all()
@@ -410,8 +422,10 @@ def days_or_complete(request):
 			if i!='':
 				complain.days_to_solve = i
 				complain.end_date = (datetime.now()+timedelta(days=int(i)))
+				print complain.end_date,i
 				complain.govt_complain_status = 4
 				complain.save()
+				print complain
 	else:
 		c_list = request.POST.getlist("sel_complain")
 		for c in c_list:
