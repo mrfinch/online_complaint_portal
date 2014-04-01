@@ -40,7 +40,7 @@ font-size: 24px;
     <div class="row">
         <div class="col-md-8">
             <div class="well well-sm">
-                <form action="{% url 'complaint_portal:register' %}" method="post">
+                <form action="{% url 'complaint_portal:adminregister' %}" method="post">
                 {% csrf_token %}
                 <div class="row">
                     <div class="col-md-6">

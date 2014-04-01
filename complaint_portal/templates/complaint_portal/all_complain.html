@@ -92,10 +92,12 @@ $.post("http://localhost:8000/complaint_portal/upvote/2",{complain_id:"c_id"})
                 {% else %}
                 	<p style="font-family:'Times New Roman', Times, serif;"><b>Status</b>:Submitted but not reviewed</p>
                 {% endif %}	   		
+	            <form action="{% url 'complaint_portal:upvote' complain.id %}" method="post">
+	            {% csrf_token %}
 				{% if user.is_authenticated %}
-					<a href="#" onclick="upvoting({{complain.id}})" style="font-family:'Times New Roman', Times, serif;">Upvote</a>
+					<input type="submit" name="upvote" class="btn btn-success" value="Upvote">
 				{% endif %}
-				
+				</form>
 			</div>
 			<span class="clearfix borda"></span>
 		</article>

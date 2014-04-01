@@ -257,6 +257,24 @@ def upvote(request,complain_id):
 		return HttpResponse("already upvoted")
 		'''
 
+def feed_upvote(request,complain_id):
+	complain_info = Complain.objects.get(pk=complain_id)
+	if not request.user.userupvotestatus_set.values('upvote').filter(upvote=complain_info.id).exists():
+		print request.user.userupvotestatus_set.values('upvote').filter(upvote=complain_info.id)
+		complain_info.upvotes += 1
+		complain_info.save()
+		user_id = complain_info.c_user.id
+		user_obj = UserInfos.objects.get(pk=user_id)
+		user_obj.total_upvotes += 1
+		user_obj.save()
+		user_up_status = UserUpvoteStatus(user_upvote=request.user,upvote=complain_info.id)
+		user_up_status.save()
+		complain_list = Complain.objects.order_by('id')
+		my_data = [complain_info.id,complain_info.upvotes]
+		return HttpResponseRedirect(reverse('complaint_portal:userprofile'))
+	else:
+		return HttpResponseRedirect(reverse('complaint_portal:userprofile'))
+	
 def middlemen(request):
 	if not request.user.is_authenticated or not request.user.is_staff:
 		return HttpResponseRedirect(reverse('complaint_portal:mlogin'))
