@@ -6,7 +6,8 @@ from django.core.mail import send_mail
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse,HttpResponseRedirect
 from django.core.urlresolvers import reverse
-import random,string 
+import random,string
+from datetime import datetime,timedelta 
 # Create your views here.
 
 def index(request):
@@ -408,6 +409,7 @@ def days_or_complete(request):
 		for i in num_days:
 			if i!='':
 				complain.days_to_solve = i
+				complain.end_date = (datetime.now()+timedelta(days=int(i)))
 				complain.save()
 	else:
 		c_list = request.POST.getlist("sel_complain")

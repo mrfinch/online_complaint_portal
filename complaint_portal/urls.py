@@ -48,4 +48,6 @@ urlpatterns = patterns('',
 #a url and view when user clicks upvote button
 #change password url and views
 #see complainform_update.html give option of complete if it is accepted adn give option of update if it is not reviewed
-#0-submitted,1-accept,2-reject,3-complete
+
+#0-submitted,1-accept by middlemen,2-rejected by middlemen,3-completed,4-reviewed by govt employee and added days,
+#5-review again
