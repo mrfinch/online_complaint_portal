@@ -17,7 +17,7 @@ Installation instruction:
 
 5. Install pgadmin3: sudo apt-get install pgadmin3
 
-6. Create database named sen_project using pgadmin
+6. Create database named sen_final using pgadmin
 
 7. Change settings.py: Edit db connections entries by changing username and password for postgres database in sen/settings.py file
 
