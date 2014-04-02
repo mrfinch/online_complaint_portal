@@ -66,13 +66,13 @@
 	<div class="panel panel-default">
 	    <div class="panel-heading">
 	      <h4 class="panel-title">
-	      {% if f.days_to_solve != -1 %}
+	      {% if f.end_date != null %}
 	      <input type="checkbox" name="sel_complain" value="{{f.id}}" />
 	      {% endif %}	
 	      <a data-toggle="collapse" data-parent="#accordion" href="#{{forloop.counter}}">
 	      {{ f.title }}
 	      	<span style="position:absolute; left:550">
-	      		{% if f.govt_complaint_status == 1 %}
+	      		{% if f.govt_complain_status == 1 %}
 	      		Add days to solve
 	      		{% elif f.govt_complain_status == 5 %}
 	      		User not satisfied
@@ -98,7 +98,7 @@
 	      <a href="{% static f.complain_image %}" target="_blank">Link to Image</a>
 	      <br />
 	      <div class="form-inline" role="form">
-	      {% if f.days_to_solve == -1 %}
+	      {% if f.end_date == null %}
 		  <div class="form-group">
 		    <label class="sr-only" >No. of days</label>
 		    <input type="text" class="form-control" id="num_days" placeholder="Enter days to complete" name="num_days">
@@ -116,5 +116,5 @@
 <br />
 <br />
 
-<input type="submit" name="complete" class="btn btn-success" value="Complete" style="position:relative; top:80%; left:40%;">
+<input type="submit" name="complete" class="btn btn-success" value="Complete" onclick="return confirm('Are you sure you want to mark complains as complete?')" style="position:relative; top:80%; left:40%;">
 </form>

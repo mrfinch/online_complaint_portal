@@ -52,7 +52,7 @@
 							{% for users in users_rank %}
 							<tr>
 								<td>{{ forloop.counter }} </td>
-								<td>{{ users.username }} </td>
+								<td>{{ users.user.username }} </td>
 								<td>{{ users.total_upvotes }} </td>
 							</tr>
 							{% endfor %}

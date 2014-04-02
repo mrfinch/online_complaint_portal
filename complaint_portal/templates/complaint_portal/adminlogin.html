@@ -1,5 +1,5 @@
 {% load staticfiles %}
-<title>Goverment Employee Login</title>
+<title>Admin Login</title>
 
 <head>
 
@@ -31,7 +31,7 @@ font-size: 24px;
         <div class="row">
             <div class="col-sm-8 col-lg-8">
                 <h2 class="h2">
-                    Govt. Employee Login</h2>
+                    Admin Login</h2>
             </div>
         </div>
     </div>
@@ -40,17 +40,10 @@ font-size: 24px;
 
 
 <div class="container">
-{% if msg %}
-    {{ msg }}
-{% endif %}
-
-{% if user.is_authenticated %}
-    You are logged in as <a href="{% url 'complaint_portal:govtadmin' %}"> {{user.username}} </a>
-{% endif %}
     <div class="row">
         <div class="col-md-8">
             <div class="well well-sm">
-                <form action="{% url 'complaint_portal:glogin' %}" method="post">
+                <form action="{% url 'complaint_portal:super_login' %}" method="post">
                 {% csrf_token %}
                 <div class="row">
                     <div class="col-md-6">
@@ -80,3 +73,4 @@ font-size: 24px;
 
 </body>
 </html> 
+ 

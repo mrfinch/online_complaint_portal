@@ -72,7 +72,7 @@ DATABASES = {
 DATABASES = {
     'default': {
         'ENGINE':'django.db.backends.postgresql_psycopg2',
-        'NAME': 'sen_project',
+        'NAME': 'sen_final',
         'USER': 'postgres',
         'PASSWORD': 'qwe',
         'HOST': '127.0.0.1',
@@ -99,4 +99,4 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
-MEDIA_ROOT = '/home/finch/sen_project/sen/complaint_portal/static/'
+MEDIA_ROOT = '/home/finch/online_complaint_portal/complaint_portal/static/'

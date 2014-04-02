@@ -3,6 +3,7 @@
 {% block title %}Register{% endblock %}
 {% block css_js %}
 <style>
+
 .jumbotron {
 background: #358CCE;
 color: #FFF;
@@ -17,6 +18,26 @@ color: #FFF;
 font-size: 24px;
 }
 </style>
+<script type="text/javascript">
+function validateForm(){
+    var isnum = /^\d+$/.test($('#phone').val());
+    if(isnum){
+        if($('#password')!=$('#confirm_password')){
+            $('#confirm_password').focus()
+            $('#confirm_result').html('Password does not match')
+            return false;
+        }
+        return true;
+    }
+    else{
+       // alert('fsdf');
+       $('#complainsubmit').html("Password should be numeric")
+       $('#phone').focus() 
+        return false;
+
+    }
+}
+</script>
 {% endblock %}
 
 
@@ -37,12 +58,14 @@ font-size: 24px;
 		{{ msg }}
 	{% endif %}
 </div>	
+
 <div class="container">
     <div class="row">
         <div class="col-md-8">
             <div class="well well-sm">
-                <form action="{% url 'complaint_portal:register' %}" method="post">
+                <form action="{% url 'complaint_portal:register' %}" method="post" onsubmit="return(validateForm());">
                 {% csrf_token %}
+                
                 <div class="row">
                     <div class="col-md-6">
                         <div class="form-group">
@@ -54,26 +77,29 @@ font-size: 24px;
                             <label for="password">
                                 Password</label>
                             <input type="password" name="password" class="form-control" id="password" placeholder="Enter password" required="required" />
+                            <span id="result"></span>
                         </div>
                         <div class="form-group">
                             <label for="confirm_password">
                                 Confirm Password</label>
-                            <input type="password" name="confirm_password"class="form-control" id="confirm_password" placeholder="Confirm Password" required="required" />
+                            <input type="password" name="confirm_password" class="form-control" id="confirm_password" placeholder="Confirm Password" required="required" />
+                            <span id="confirm_result"></span>
                         </div>
                         <div class="form-group">
                             <label for="firstname">
                                 Firstname</label>
-                            <input type="text" name="firstname" class="form-control" id="firstname" placeholder="Enter firstname" required="required" />
+                            <input type="text" name="first_name" class="form-control" id="firstname" placeholder="Enter firstname" required="required" />
                         </div>
                         <div class="form-group">
                             <label for="lastname">
                                 Lastname</label>
-                            <input type="text" name="lastname" class="form-control" id="lastname" placeholder="Enter lastname" required="required" />
+                            <input type="text" name="last_name" class="form-control" id="lastname" placeholder="Enter lastname" required="required" />
                         </div>
                         <div class="form-group">
                             <label for="phone">
                                 Phone</label>
                             <input type="text" name="phone" class="form-control" id="phone" placeholder="Enter phone no." required="required" />
+                            <span id="phonecheck"></span>
                         </div>
                         <div class="form-group">
                             <label for="email">
@@ -99,7 +125,7 @@ font-size: 24px;
                                 placeholder="Address"></textarea>
                         </div>
                         <div class="col-md-12">
-                        <button type="submit" class="btn btn-primary pull-left" id="complainbtn" value="Register">
+                        <button type="submit" class="btn btn-primary pull-left" id="complainbtn" class="complainbtn"value="Register">
                             Register</button>
                     	</div>	
                     </div>

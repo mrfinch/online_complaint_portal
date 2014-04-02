@@ -3,6 +3,7 @@ from django import forms
 from django.contrib.auth.models import User
 from django.forms import ModelForm
 from datetime import datetime
+from django.contrib.auth.models import User
 # Create your models here.
 
 def content_file_name(instance,filename):
@@ -20,54 +21,26 @@ class Complain(models.Model):
 	complain_date = models.DateTimeField(default=datetime.now)
 	govt_complain_status = models.IntegerField(default=0) 
 	user_complain_status = models.IntegerField(default=0) #0-not complete,1-complete
-	days_to_solve = models.IntegerField(default=-1)
 	upvotes = models.IntegerField(default=0)
 	rejection_reason = models.IntegerField(default=-1)    #1-this reason 2-this reason
-	user_complain_update = models.BooleanField(default=False)
-	user_complain_reason = models.TextField(blank=True,null=True)
+	end_date = models.DateTimeField(null=True)
 
 class ComplainForm(ModelForm):
 	class Meta:
 		model = Complain
 		fields = ['title','description','complain_image','complain_address','type_of_complain',"complain_place"]
-		#widgets = {'complain_date':HiddenInput(),}
-'''
-class UpdateComplainStatus(models.Model):
-	c_id = models.OneToOneField(Complain)
-	user_update = models.BooleanField()
-	user_reason = models.TextField()
-'''
-class UpdateForm(ModelForm):
-	class Meta:
-		model = Complain
-		fields = ['user_complain_update','user_complain_reason']
-	
-class UserInfo(models.Model):
-	username = models.CharField(max_length=30)
-	firstname = models.CharField(max_length=30)
-	lastname = models.CharField(max_length=30)
-	email = models.CharField(max_length=75)
-	password = models.CharField(max_length=30)			
-	phone = models.CharField(max_length=20)
-	address = models.TextField()
-	locality = models.CharField(max_length=50)  #locality table will have name of area corresponding value of locality selected
-	total_upvotes = models.IntegerField(default=0)
 
 class UserInfos(models.Model):
-	username = models.CharField(max_length=30)
-	firstname = models.CharField(max_length=30)
-	lastname = models.CharField(max_length=30)
-	email = models.CharField(max_length=75)
-	password = models.CharField(max_length=30)			
+	user = models.OneToOneField(User)
 	phone = models.CharField(max_length=20)
 	address = models.TextField()
-	locality = models.CharField(max_length=50)  #locality table will have name of area corresponding value of locality selected
+	locality = models.CharField(max_length=50)
 	total_upvotes = models.IntegerField(default=0)
 
 class UserInfoForm(ModelForm):
 	class Meta:
-		model = UserInfos
-		fields = ['username','firstname','lastname','email','password','phone','address','locality']
+		model = User
+		fields = ['username','first_name','last_name','email','password']
 
 class LocalPlaces(models.Model):
 	local_name = models.CharField(max_length=50)

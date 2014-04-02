@@ -37,6 +37,10 @@ function initAll(){
 		$("ul li").removeClass("active");
 		$("#home").addClass("active");
 	}
+	else if(urlname.search("faq")!=-1){
+		$("ul li").removeClass("active");
+		$("#faq").addClass("active");	
+	}
 	else{
 		$("ul li").removeClass("active");
 		$("#all_complains").addClass("active");

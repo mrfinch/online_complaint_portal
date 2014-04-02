@@ -29,6 +29,7 @@
 				<li id="all_complains"><a href="{% url 'complaint_portal:all_complains' %}">All Complaints</a></li>
 				<li id="leader_board"><a href="{% url 'complaint_portal:ranking' %}">Leader Board</a></li>
 				<li id="complain"><a href="{% url 'complaint_portal:complainform' %}">Complain</a></li>
+				<li id="faq"><a href="{% url 'complaint_portal:faq' %}">FAQ</a></li>
 				{% if user.is_authenticated %}
 				<li id="myusername"><a href="{% url 'complaint_portal:userprofile' %}">Welcome,{{ user.username }}</a></li>
 				{% endif %}

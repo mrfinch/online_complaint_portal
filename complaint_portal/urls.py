@@ -42,6 +42,8 @@ urlpatterns = patterns('',
 	url(r'^userprofile_admin/(?P<u_id>\d+)/',views.userprofile_admin,name="userprofile_admin"),
 	url(r'^send_mail_user/(?P<u_id>\d+)',views.send_mail_user,name="send_mail_user"),
 	url(r'^adminregister/',views.adminregister,name="adminregister"),
+	url(r'^super_login/',views.super_login,name="super_login"),
+	url(r'^faq/',views.faq,name="faq"),
 	) 
 
 #updateform for each complain
