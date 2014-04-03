@@ -7,6 +7,44 @@
         $('.carousel').carousel()
             });
 </script> 
+<style>
+.btn-circle {
+  width: 180px;
+  height: 160px;
+  text-align: center;
+  padding: 6px 0;
+  font-size: 12px;
+  line-height: 1.42;
+  border-radius: 15px;
+  position:absolute;
+  left:65%;
+  top:74%;
+  font-size:20px;
+  background-color:#428bca;
+}
+.btn-circle2 {
+  width: 180px;
+  height: 160px;
+  text-align: center;
+  padding: 6px 0;
+  font-size: 12px;
+  line-height: 1.42;
+  border-radius: 15px;
+  position:absolute;
+  left:80%;
+  top:74%;
+  font-size:20px;
+  background-color:#428bca;
+}
+
+.total_comp{
+	font-size:60px;
+}
+.solved_comp{
+	font-size:60px;
+}
+
+</style>
 {% endblock %}
 {% block content %}
 
@@ -86,5 +124,8 @@ position:absolute;top:16%;left:12%;">
 
 </div>
 </div>
+
+<a href="#" class="btn btn-default btn-circle">Complains<br /> Submitted<br /><span class="total_comp">{{total_comp}}</span></a>
+<a href="#" class="btn btn-default btn-circle2">Complains<br /> Solved<br /><span class="solved_comp">{{solved_comp}}</span></a>
 {% endblock %}
 

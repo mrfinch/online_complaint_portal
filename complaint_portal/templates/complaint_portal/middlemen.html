@@ -81,9 +81,19 @@
 	  </div>
 	{% endfor %}
 	</div>
+
 </div>
 <br />
 <br />
-<input type="submit" name="reject" class="btn btn-danger" value="Reject" onclick="return confirm('Are you sure you want to reject complains?')" style="position:relative; top:80%; left:40%;">
-<input type="submit" name="forward" class="btn btn-success" value="Forward" onclick="return confirm('Are you sure you want to forward complains?')" style="position:relative; top:80%; left:50%;">
+<div class="form-group" style="position:relative;left:30%;">
+    <label>Rejection Reason</label>
+    <input type="radio" name="reason" value="1" id="reason1" checked="checked">
+    <label for="reason1">Not relevant</label>&nbsp;&nbsp;&nbsp;&nbsp;
+    <input type="radio" name="reason" value="2"  id="reason2">
+    <label for="reason2">Similar complain exists</label>
+<input type="submit" name="reject" class="btn btn-danger" value="Reject" onclick="return confirm('Are you sure you want to reject complains?')">
+<input type="submit" name="forward" class="btn btn-success" value="Forward" onclick="return confirm('Are you sure you want to forward complains?')">
+
+</div>
+
 </form>

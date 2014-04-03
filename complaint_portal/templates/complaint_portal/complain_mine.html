@@ -60,7 +60,13 @@ hgroup h2.lead { font: normal normal 1.125em "Roboto",Arial,Verdana,sans-serif; 
 					  </div>
                 {% elif complain.govt_complain_status == 2 %}
                 	 <div class="span4">
-						  Rejected Complain<span class="pull-right">Show Reason</span>
+						  Rejected Complain<span class="pull-right">
+						  	{% if complain.rejection_reason == 2 %}
+						  	Similar Complain Exists
+						  	{% else %}
+						  	Not relevant
+						  	{% endif %}
+						  </span>
 						  <div class="progress progress-striped active">
 						      <div class="progress-bar progress-bar-danger" style="width:100%;"></div>
 						  </div>

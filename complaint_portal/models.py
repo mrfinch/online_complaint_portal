@@ -36,7 +36,7 @@ class UserInfos(models.Model):
 	address = models.TextField()
 	locality = models.CharField(max_length=50)
 	total_upvotes = models.IntegerField(default=0)
-
+ 
 class UserInfoForm(ModelForm):
 	class Meta:
 		model = User

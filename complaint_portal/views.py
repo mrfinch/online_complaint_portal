@@ -59,9 +59,18 @@ def login(request):
 			auth.login(request,user)
 			return HttpResponseRedirect(reverse('complaint_portal:mycomplains'))
 		else:
-			return render(request,"complaint_portal/index.html",{"msg":"Username and Password combination incorrect OR Account not activated by email"})
+			current_complains = Complain.objects.order_by('complain_date')[:3]
+			total_comp = Complain.objects.count()
+			solved_comp = Complain.objects.filter(Q(govt_complain_status=2) | Q(govt_complain_status=3)).count()
+			return render(request,"complaint_portal/index.html",{"current_complains":current_complains,"total_comp":total_comp,
+		"solved_comp":solved_comp,"msg":"Username and Password combination incorrect OR Account not activated by email"})
 	else:
-		return render(request,"complaint_portal/index.html")			
+		current_complains = Complain.objects.order_by('complain_date')[:3]
+		total_comp = Complain.objects.count()
+		solved_comp = Complain.objects.filter(Q(govt_complain_status=2) | Q(govt_complain_status=3)).count()
+			
+		return render(request,"complaint_portal/index.html",{"current_complains":current_complains,"total_comp":total_comp,
+		"solved_comp":solved_comp})			
 
 def activate(request,u_id):
 	u = User.objects.get(pk=u_id)
@@ -113,7 +122,7 @@ def complainform(request):
 def all_complains(request):
 	places = LocalPlaces.objects.all()
 	types = Complain_type.objects.all()
-	complain_list = Complain.objects.order_by('id')
+	complain_list = Complain.objects.exclude(govt_complain_status=2).order_by('-id')
 	print complain_list
 	return render(request,"complaint_portal/all_complain.html",{"complain_list":complain_list,"places":places,"types":types})
 
@@ -135,6 +144,8 @@ def htype_filter(request,type_id):
 
 def sorted_complains(request,sorted_id):
 	print "hp"
+	places = LocalPlaces.objects.all()
+	types = Complain_type.objects.all()
 	if sorted_id == "1":
 		complain_list = Complain.objects.order_by('complain_date')
 	elif sorted_id == "2":
@@ -144,11 +155,13 @@ def sorted_complains(request,sorted_id):
 		complain_list = Complain.objects.order_by('type_of_complain')
 	else:	
 		complain_list = Complain.objects.order_by('-type_of_complain')
-	return render(request,"complaint_portal/all_complain.html",{"complain_list":complain_list})
+	return render(request,"complaint_portal/all_complain.html",{"complain_list":complain_list,"places":places,"types":types})
 		
 def all_complains_location(request,loc_id):
+	places = LocalPlaces.objects.all()
+	types = Complain_type.objects.all()
 	complain_list = Complain.objects.filter(complain_place=loc_id)
-	return render(request,"complaint_portal/all_complain.html",{"complain_list":complain_list}) 
+	return render(request,"complaint_portal/all_complain.html",{"complain_list":complain_list,"places":places,"types":types}) 
 
 def details(request,complain_id):
 	complain_detail = Complain.objects.get(pk=complain_id)
@@ -160,7 +173,7 @@ def userprofile(request):
 	if not request.user.is_authenticated or not request.user.is_active:
 		return HttpResponseRedirect(reverse('complaint_portal:index'))
 	u = UserInfos.objects.get(pk=request.user.id)   
-	complain_feeds = Complain.objects.filter(complain_place=u.locality)
+	complain_feeds = Complain.objects.filter(complain_place=u.locality).exclude(govt_complain_status=2)
 	print len(complain_feeds),"u"
 	return render(request,"complaint_portal/complain_feeds.html",{"complain_feeds":complain_feeds})	
 
@@ -368,6 +381,8 @@ def forward_reject(request):
 		for c in c_list:
 			c_obj = Complain.objects.get(pk=c)
 			c_obj.govt_complain_status=2
+			reason = request.POST.get("reason","")
+			c_obj.rejection_reason=int(reason)
 			c_obj.save()
 			#send_mail("Complain rejected"+c.title,"Your complain got rejected.See FAQ for reasons why complain can be rejected","saurabh.finch@gmail.com",[c.c_user.email])
 	complain = Complain.objects.filter(govt_complain_status=0)

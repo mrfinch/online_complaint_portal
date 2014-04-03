@@ -71,6 +71,7 @@ $.post("http://localhost:8000/complaint_portal/upvote/2",{complain_id:"c_id"})
 
 {% endblock %}
 {% block content %}
+<br />
 <div class="container">
 <section class="col-xs-12 col-sm-6 col-md-12">
 	{% for complain in complain_list %}
@@ -84,6 +85,7 @@ $.post("http://localhost:8000/complaint_portal/upvote/2",{complain_id:"c_id"})
 					<li><i class="glyphicon glyphicon-time"></i> <span>{{complain.complain_date}}</span></li>
 					<li><i class="glyphicon glyphicon-tags"></i> <span>{{complain.complain_place}}</span></li>
 					<li><i class="glyphicon glyphicon-tags"></i> <span>Upvotes:{{complain.upvotes}}</span></li>
+					<li><i class="glyphicon glyphicon-time"></i> <span>By:{{complain.c_user.username}}-{{complain.c_user.userinfos.total_upvotes}}</span></li>
 				</ul>
 			</div>
 			<div class="col-xs-4 col-sm-4 col-md-6 excerpet">
