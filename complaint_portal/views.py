@@ -121,11 +121,10 @@ def complainform(request):
 		return render(request,"complaint_portal/complainform.html",{"places":places,"types":types})
 
 
-"""
-all_complains function shows all the complaints excluding the complaints that were rejected by the middlemen.
-
-"""
 def all_complains(request):
+	"""
+	This function shows all the complaints excluding the complaints that were rejected by the middlemen.
+	"""
 	places = LocalPlaces.objects.all()
 	types = Complain_type.objects.all()
 	complain_list = Complain.objects.exclude(govt_complain_status=2).order_by('-id')
@@ -133,12 +132,11 @@ def all_complains(request):
 	return render(request,"complaint_portal/all_complain.html",{"complain_list":complain_list,"places":places,"types":types})
 
 
-"""
-hloc_filter function filters the complaints on the basis of place. Every place is assigned a place_id and the complaints are 
-filtered on the basis of place_id passed by the user.
-
-"""
 def hloc_filter(request,place_id):
+	"""
+	This function filters the complaints on the basis of place. Every place is assigned a 
+	place_id and the complaints are filtered on the basis of place_id passed by the user.
+	"""
 	places = LocalPlaces.objects.all()
 	types = Complain_type.objects.all()
 	p = LocalPlaces.objects.get(pk=place_id)
@@ -147,27 +145,25 @@ def hloc_filter(request,place_id):
 	return render(request,"complaint_portal/all_complain.html",{"complain_list":complain_list,"places":places,"types":types})
 
 
-"""
-htype_filter function filters the complaints on the basis of complaint type (Health , Sewage ,Water Problems). Every place 
-is assigned a type_id and the complaints are filtered on the basis of type_id passed by the user.
-
-"""
 def htype_filter(request,type_id):
+	"""
+	This function filters the complaints on the basis of complaint type (Health , Sewage ,Water Problems).
+	Every place is assigned a type_id and the complaints are filtered on the basis of type_id passed by the user.
+	"""
 	places = LocalPlaces.objects.all()
 	types = Complain_type.objects.all()
 	t = Complain_type.objects.get(pk=type_id)
 	complain_list = Complain.objects.filter(type_of_complain=t.name).order_by('id')
 	return render(request,"complaint_portal/all_complain.html",{"complain_list":complain_list,"places":places,"types":types})
 
-
-"""
-sorted_complains function sorts the complaints on basis of complaint type and time of complaint. 
-sorted_id=1 is for sorting the complaints by the complaint date in ascending order.
-sorted_id=2 is for sorting the complaints by the complaint date in descending order.
-sorted_id=3 is for sorting the complaints by the complaint type in alphabetical order (A-Z).
-sorted_id=4 is for sorting the complaints by the complaint type in alphabetical order (Z-A).
-"""
 def sorted_complains(request,sorted_id):
+	"""
+	This function sorts the complaints on basis of complaint type and time of complaint. 
+	sorted_id=1 is for sorting the complaints by the complaint date in ascending order.
+	sorted_id=2 is for sorting the complaints by the complaint date in descending order.
+	sorted_id=3 is for sorting the complaints by the complaint type in alphabetical order (A-Z).
+	sorted_id=4 is for sorting the complaints by the complaint type in alphabetical order (Z-A).
+	"""
 	places = LocalPlaces.objects.all()
 	types = Complain_type.objects.all()
 	if sorted_id == "1":
@@ -181,12 +177,11 @@ def sorted_complains(request,sorted_id):
 		complain_list = Complain.objects.order_by('-type_of_complain')
 	return render(request,"complaint_portal/all_complain.html",{"complain_list":complain_list,"places":places,"types":types})
 
-
-
-"""
-all_complains_location filters the complaints on the basis of location.
-"""		
+	
 def all_complains_location(request,loc_id):
+	"""
+	This function filters the complaints on the basis of location.
+	"""	
 	places = LocalPlaces.objects.all()
 	types = Complain_type.objects.all()
 	complain_list = Complain.objects.filter(complain_place=loc_id)
