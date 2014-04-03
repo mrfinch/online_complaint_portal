@@ -396,8 +396,10 @@ def forward_reject(request):
 
 #GOVT EMPLOYEE	
 def govtadmin(request):
+	'''
+	@Amit Masani'''
 	if not request.user.is_authenticated or not request.user.is_superuser:
-		return HttpResponseRedirect(reverse('complaint_portal:glogin'))
+		return HttpResponseRedirect(reverse('complaint_portal:glogin'))		
 	print request.user
 	c = GovtUserInfo.objects.get(pk=request.user.id)
 	c_type = c.department
@@ -408,7 +410,10 @@ def govtadmin(request):
 	return render(request,"complaint_portal/govtadmin.html",{"complain":complain,"types":types,"places":places})
 
 def glogin(request):
-	print "dfh"
+	'''This function login the government admin.
+	It checks usrname & password combination.
+	If it fails then it redirects it to login page again. 	
+	@Amit Masani'''
 	if request.method == "POST":
 		username = request.POST.get("username","")
 		password = request.POST.get("password","")
@@ -422,6 +427,13 @@ def glogin(request):
 		return render(request,"complaint_portal/glogin.html")				
 
 def gloc_filter(request,loc_id):
+	'''This filter is used to filter Complain Location wise. 
+	We check if Government user is logged in & he is super user.
+	If he is not then Redirect it to Government Login Page Again.
+	We select our desired Loaction object & Complain type object.
+	We select complain with that perticular Location from Complain status 1,4,5.
+	It renders the request to govtadmin.html with complain places & types object.
+	@Amit Masani'''
 	if not request.user.is_authenticated or not request.user.is_superuser:
 		return HttpResponseRedirect(reverse('complaint_portal:glogin'))
 	l = LocalPlaces.objects.get(pk=loc_id)
@@ -431,6 +443,10 @@ def gloc_filter(request,loc_id):
 	return render(request,"complaint_portal/govtadmin.html",{"complain":complain,"places":places,"types":types})
 
 def gtype_filter(request,type_id):
+	'''This filter is used to filter Complain type wise.	
+	We select our desired Complaint type object & Location object.
+	We select complain with that perticular Complain Type from Complain status 1,4,5.
+	@Amit Masani'''
 	if not request.user.is_authenticated or not request.user.is_superuser:
 		return HttpResponseRedirect(reverse('complaint_portal:glogin'))
 	c = Complain_type.objects.get(pk=type_id)
@@ -440,6 +456,9 @@ def gtype_filter(request,type_id):
 	return render(request,"complaint_portal/govtadmin.html",{"complain":complain,"places":places,"types":types})
 
 def gdays_filter(request):
+	'''This filter is used to filter Complain in which days to add.
+	We filter the complains whose day to add is yet to add.	
+	@Amit Masani'''
 	if not request.user.is_authenticated or not request.user.is_superuser:
 		return HttpResponseRedirect(reverse('complaint_portal:glogin'))
 	complain = Complain.objects.filter(govt_complain_status=1).filter(end_date=null)
@@ -448,6 +467,9 @@ def gdays_filter(request):
 	return render(request,"complaint_portal/govtadmin.html",{"complain":complain,"places":places,"types":types})
 
 def gcomplete_filter(request):
+	'''This filter is used to filter Complain which are completed.
+	We filter the complains whose end date is not NONE.	
+	@Amit Masani'''
 	if not request.user.is_authenticated or not request.user.is_superuser:
 		return HttpResponseRedirect(reverse('complaint_portal:glogin'))
 	complain = Complain.objects.filter(govt_complain_status=1).exclude(end_date='None')
@@ -456,7 +478,8 @@ def gcomplete_filter(request):
 	return render(request,"complaint_portal/govtadmin.html",{"complain":complain,"places":places,"types":types})
 
 def glogout(request):
-	print "ty"
+	'''This function logout the government admin.	
+	@Amit Masani'''
 	auth.logout(request)
 	return HttpResponseRedirect(reverse('complaint_portal:glogin'))
 
