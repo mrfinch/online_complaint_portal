@@ -31,12 +31,18 @@
 				<li id="leader_board"><a href="{% url 'complaint_portal:ranking' %}">Leader Board</a></li>
 				<li id="complain"><a href="{% url 'complaint_portal:complainform' %}">Complain</a></li>
 				<li id="faq"><a href="{% url 'complaint_portal:faq' %}">FAQ</a></li>
+				<li style="position:absolute;right:0;">
 				{% if user.is_authenticated %}
-				<li id="myusername"><a href="{% url 'complaint_portal:userprofile' %}">Welcome,{{ user.username }}</a></li>
+				<a href="#" class="dropdown-toggle" data-toggle="dropdown">{{ user.username }}<b class="caret"></b></a>
+					<ul class="dropdown-menu">
+						<li id="localfeeds"><a href="{% url 'complaint_portal:userprofile' %}">Local Feeds</a></li>
+						<li id="complains_my"><a href="{% url 'complaint_portal:mycomplains' %}">My Complaints</a></li>
+						<li><a href="{% url 'complaint_portal:profile_update' %}">Profile Update</a></li>
+						<li><a href="{% url 'complaint_portal:logout' %}">Logout</a></li>
+					</ul>
 				{% endif %}
-				{% if user.is_authenticated %}
-				<li style="position:absolute; right:0"><a href="{% url 'complaint_portal:logout' %}">Logout</a></li>
-				{% endif %}
+				</li>
+				
 			</ul>
 		</div>
 	</nav>

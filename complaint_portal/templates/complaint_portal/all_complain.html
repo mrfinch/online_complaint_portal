@@ -69,12 +69,6 @@ $.post("http://localhost:8000/complaint_portal/upvote/2",{complain_id:"c_id"})
 </div>
 
 
-
-{% if user.is_authenticated %}
-	<li id="myusername"><a href="{% url 'complaint_portal:userprofile' %}">Welcome, {{ user.username }}</a></li>
-{% endif %}
-
-
 {% endblock %}
 {% block content %}
 <div class="container">
