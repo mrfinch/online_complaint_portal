@@ -396,7 +396,9 @@ def forward_reject(request):
 
 #GOVT EMPLOYEE	
 def govtadmin(request):
-	'''
+	'''If government admin is logged in Successfully,
+	Load GovernmentInfo(His respective department), department, complain objects.
+	Render these object to govtadmin.html 
 	@Amit Masani'''
 	if not request.user.is_authenticated or not request.user.is_superuser:
 		return HttpResponseRedirect(reverse('complaint_portal:glogin'))		
@@ -484,6 +486,10 @@ def glogout(request):
 	return HttpResponseRedirect(reverse('complaint_portal:glogin'))
 
 def days_or_complete(request):
+	'''If Complain is reviewed by government admin,
+	Set its status to 4 & update end date. If it is completed then set it to 3.
+	save it to database.
+	@Amit Masani'''
 	if not request.user.is_authenticated or not request.user.is_superuser:
 		return HttpResponseRedirect(reverse('complaint_portal:glogin'))
 	c = request.POST
