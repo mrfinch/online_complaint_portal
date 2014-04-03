@@ -196,9 +196,6 @@ def user_complete(request,complain_id):
 		complain.save()
 		return HttpResponseRedirect(reverse('complaint_portal:mycomplains'))
 	else:
-		complain.user_complain_status = 0
-		complain.govt_complain_status = 5
-		complain.save()
 		return HttpResponseRedirect(reverse('complaint_portal:user_notcomplete_status',args=(complain.id,)))			
 
 def user_notcomplete_status(request,complain_id):
