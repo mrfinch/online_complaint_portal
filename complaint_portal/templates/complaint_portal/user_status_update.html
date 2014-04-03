@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+
+<div class="container">
+{% if msg %}
+	{{ msg }}
+{% endif %}
+    <div class="row">
+        <div class="col-md-8">
+            <div class="well well-sm">
+                <form action="{% url 'complaint_portal:user_notcomplete_status' complain.id %}" method="post">
+                {% csrf_token %}
+                <div class="row">
+                    <div class="col-md-6">
+                		<div class="form-group">
+                            <label for="description">
+                                Description of problem</label>
+                            <textarea name="description" id="description" class="form-control" rows="9" cols="25" required="required"></textarea>
+                        </div>
+                        <div class="col-md-12">
+                        <input type="submit" name="notcomplete" class="btn btn-danger" value="Not Complete" onclick="return confirm('Are you sure you want to mark complain as Not Complete?')" >
+        				</div>	
+                    </div>
+                </div>
+            	</form>
+            </div>
+        </div>
+    </div>
+</div>            	        	

@@ -187,18 +187,32 @@ def mycomplains(request):
 	print len(my_complain_feeds)
 	return render(request,"complaint_portal/complain_mine.html",{"my_complain_feeds":my_complain_feeds})
 
-def user_completeornot(request,complain_id):
+def user_complete(request,complain_id):
 	if not request.user.is_authenticated or not request.user.is_active:
 		return HttpResponseRedirect(reverse('complaint_portal:index'))
 	complain = Complain.objects.get(pk=complain_id)
 	if "complete" in request.POST:
 		complain.user_complaint_status = 1
 		complain.save()
+		return HttpResponseRedirect(reverse('complaint_portal:mycomplains'))
 	else:
 		complain.user_complain_status = 0
 		complain.govt_complain_status = 5
 		complain.save()
-	return HttpResponseRedirect(reverse('complaint_portal:mycomplains'))			
+		return HttpResponseRedirect(reverse('complaint_portal:user_notcomplete_status',args=(complain.id,)))			
+
+def user_notcomplete_status(request,complain_id):
+	complain = Complain.objects.get(pk=complain_id)
+	if request.method == "POST":
+		description = request.POST.get("description","")
+		complain.user_complain_status = 0
+		complain.govt_complain_status = 5
+		complain.user_complain_reason = description
+		complain.save()
+		return render(request,"complaint_portal/user_status_update.html",{"complain":complain,"msg":"Status conveyed to govt."})
+	else:
+		return render(request,"complaint_portal/user_status_update.html",{"complain":complain})	
+
 
 def profile_update(request):
 	print "h"
