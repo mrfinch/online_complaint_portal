@@ -80,6 +80,7 @@ def activate(request,u_id):
 	return render(request,"complaint_portal/login.html",{"msg":"Account Activated"})
 
 def logout(request):
+	print "yt"
 	auth.logout(request)
 	return HttpResponseRedirect(reverse('complaint_portal:index')) 
 
@@ -110,7 +111,7 @@ def complainform(request):
 			complain_place = form.cleaned_data["complain_place"] #locality
 			print type_of_complain,title
 			c = Complain(title=title,type_of_complain=type_of_complain,description=description,complain_address=complain_address,
-				complain_image=complain_image,complain_place=complain_place)
+				complain_image=complain_image,complain_place=complain_place,end_date=None)
 			c.c_user = request.user
 			c.save()
 			return render(request,"complaint_portal/complainform.html",{"places":places,"types":types,"msg":"Complain Successfully Registered"})
@@ -342,6 +343,7 @@ def mlogin(request):
 		return render(request,"complaint_portal/mlogin.html")			
 
 def mlogout(request):
+	print "yy"
 	auth.logout(request)
 	return HttpResponseRedirect(reverse('complaint_portal:mlogin'))
 
@@ -396,13 +398,17 @@ def forward_reject(request):
 def govtadmin(request):
 	if not request.user.is_authenticated or not request.user.is_superuser:
 		return HttpResponseRedirect(reverse('complaint_portal:glogin'))
-	complain=Complain.objects.filter(Q(govt_complain_status=1) | Q(govt_complain_status=5) | Q(govt_complain_status=4))
+	print request.user
+	c = GovtUserInfo.objects.get(pk=request.user.id)
+	c_type = c.department
+	complain=Complain.objects.filter(Q(govt_complain_status=1) | Q(govt_complain_status=5) | Q(govt_complain_status=4)).filter(type_of_complain=c_type)
 	print len(complain)
 	types = Complain_type.objects.all()
 	places=LocalPlaces.objects.all()
 	return render(request,"complaint_portal/govtadmin.html",{"complain":complain,"types":types,"places":places})
 
 def glogin(request):
+	print "dfh"
 	if request.method == "POST":
 		username = request.POST.get("username","")
 		password = request.POST.get("password","")
@@ -444,12 +450,13 @@ def gdays_filter(request):
 def gcomplete_filter(request):
 	if not request.user.is_authenticated or not request.user.is_superuser:
 		return HttpResponseRedirect(reverse('complaint_portal:glogin'))
-	complain = Complain.objects.filter(govt_complain_status=1).exclude(end_date=null)
+	complain = Complain.objects.filter(govt_complain_status=1).exclude(end_date='None')
 	places = LocalPlaces.objects.all()
 	types = Complain_type.objects.all()
 	return render(request,"complaint_portal/govtadmin.html",{"complain":complain,"places":places,"types":types})
 
 def glogout(request):
+	print "ty"
 	auth.logout(request)
 	return HttpResponseRedirect(reverse('complaint_portal:glogin'))
 
@@ -497,7 +504,7 @@ def adminregister(request):
 	if not request.user.is_authenticated or not request.user.is_superuser or not request.user.is_staff or not request.user.is_active:
 		return HttpResponseRedirect(reverse("complaint_portal:super_login"))
 	
-	places = LocalPlaces.objects.all()
+	types = Complain_type.objects.all()
 	if request.method == "POST":
 		form = UserInfoForm(request.POST)
 		print request.POST
@@ -509,7 +516,7 @@ def adminregister(request):
 			password = form.cleaned_data["password"] #confirm_password check on frontend
 			address	= request.POST.get("address","")
 			phone = request.POST.get("phone","")
-			locality = request.POST.get("locality","")
+			department = request.POST.get("department","")
 			user = User.objects.create_user(username=username,first_name=firstname,last_name=lastname,email=email,password=password)
 			position = request.POST.get("position","")
 			print firstname,lastname,position
@@ -519,15 +526,15 @@ def adminregister(request):
 			else:
 				user.is_superuser=True
 			user.save()
-			userinfo = UserInfos.objects.create(id=user.id,user_id=user.id,address=address,phone=phone,locality=locality)
+			userinfo = GovtUserInfo.objects.create(id=user.id,user_id=user.id,address=address,phone=phone,department=department)
 			userinfo.save()		
 			#url = "http://localhost:8000/complaint_portal/" + "activate/" + str(user.id)
 			#send_mail("Activate your account",url,"saurabh.finch@gmail.com",[user.email])
-			return render(request,"complaint_portal/adminregister.html",{"places":places,"msg":"Account Registered."})
+			return render(request,"complaint_portal/adminregister.html",{"types":types,"msg":"Account Registered."})
 		else:
-			return render(request,"complaint_portal/adminregister.html",{"msg":form.errors,"places":places})
+			return render(request,"complaint_portal/adminregister.html",{"msg":form.errors,"types":types})
 	else:
-		return render(request,"complaint_portal/adminregister.html",{"places":places})			
+		return render(request,"complaint_portal/adminregister.html",{"types":types})			
 
 		
 #MIDDLEMEN and GOVT EMPLOYEE			
