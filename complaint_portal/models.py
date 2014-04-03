@@ -21,9 +21,10 @@ class Complain(models.Model):
 	complain_date = models.DateTimeField(default=datetime.now)
 	govt_complain_status = models.IntegerField(default=0) 
 	user_complain_status = models.IntegerField(default=0) #0-not complete,1-complete
+	user_complain_reason = models.TextField(blank=True)
 	upvotes = models.IntegerField(default=0)
 	rejection_reason = models.IntegerField(default=-1)    #1-this reason 2-this reason
-	end_date = models.DateTimeField(null=True)
+	end_date = models.DateTimeField(null=True,blank=True)
 
 class ComplainForm(ModelForm):
 	class Meta:
