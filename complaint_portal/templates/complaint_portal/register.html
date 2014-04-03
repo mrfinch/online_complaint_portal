@@ -22,7 +22,7 @@ font-size: 24px;
 function validateForm(){
     var isnum = /^\d+$/.test($('#phone').val());
     if(isnum){
-        if($('#password')!=$('#confirm_password')){
+        if($('#password').val() != $('#confirm_password').val()){
             $('#confirm_password').focus()
             $('#confirm_result').html('Password does not match')
             return false;
