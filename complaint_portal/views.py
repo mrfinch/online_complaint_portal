@@ -9,6 +9,7 @@ from django.core.urlresolvers import reverse
 import random,string
 from datetime import datetime,timedelta 
 from django.db.models import Q
+import django.core.exceptions
 # Create your views here.
 
 def index(request):
@@ -85,12 +86,25 @@ def logout(request):
 	return HttpResponseRedirect(reverse('complaint_portal:index')) 
 
 def forgot_password(request):
+	"""
+	This method is called whenever the user clicks on the forget continue button. This method checks if any such username is found in the database
+	and if found then a reset password link is sent to user's mail id.
+	"""
 	if request.method == "POST":
 		uname = request.POST.get("username","")
-		user = User.objects.get(username=uname)
-		r_password = ''.join(random.choice(string.lowercase+string.digits) for i in range(8))
-		send_mail("Change Password","Password:"+r_password,"saurabh.finch@gmail.com",[user.email])
-		return render(request,"complaint_portal/forgot_password.html",{"msg":"Display instructions"})
+		if uname == "":
+			return render(request,"complaint_portal/forgot_password.html",{"msg":False})
+		else:	
+			try:
+				user = User.objects.get(username=uname)
+				if len(user) != 1:
+					#r_password = ''.join(random.choice(string.lowercase+string.digits) for i in range(8))
+					#send_mail("Change Password","Password:"+r_password,"saurabh.finch@gmail.com",[user.email])
+					return render(request,"complaint_portal/forgot_password.html",{"msg":False})
+				
+				return render(request,"complaint_portal/forgot_password.html",{"msg":True})
+			except django.core.exceptions.ObjectDoesNotExist:
+				return render(request,"complaint_portal/forgot_password.html",{"msg":False})
 	else:
 		return render(request,"complaint_portal/forgot_password.html")	
 
