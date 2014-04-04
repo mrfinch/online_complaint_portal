@@ -29,8 +29,8 @@
 				</ul>
 				</li>
 				{% if user.is_authenticated and user.is_superuser %}
-				<li><a href="{% url 'complaint_portal:govtadmin' %}">{{user.username}}</a></li>
-				<li><a href="{% url 'complaint_portal:glogout' %}">Logout</a></li>
+				<li style="position:absolute;right:10%;"><a href="{% url 'complaint_portal:govtadmin' %}">{{user.username}}</a></li>
+				<li style="position:absolute;right:0%;"><a href="{% url 'complaint_portal:glogout' %}">Logout</a></li>
 				{% endif %}
 			</ul>
 		</div>
@@ -86,7 +86,8 @@
 	      <b>Description:</b>{{ f.description }}<br />
 	      <b>Address:</b>{{ f.complain_address }} <br />
 	      <b>Username: </b><a href="{% url 'complaint_portal:userprofile_admin' f.c_user.id %}" target="_blank">{{ f.c_user.username }}</a>  &nbsp;&nbsp;&nbsp;&nbsp;
-	      <a href="{% static f.complain_image %}" target="_blank">Link to Image</a><br />
+	      <a href="{% static f.complain_image %}" target="_blank">Link to Image</a>
+	      &nbsp;&nbsp;&nbsp;&nbsp;Upvotes:{{ f.upvotes }}<br />
 	      {% if f.user_complain_reason %}
 	      <b>Problem still faced:</b>{{ f.user_complain_reason }}<br />
 	      {% endif %}

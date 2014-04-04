@@ -364,7 +364,7 @@ def feed_upvote(request,complain_id):
 def middlemen(request):
 	if not request.user.is_authenticated or not request.user.is_staff:
 		return HttpResponseRedirect(reverse('complaint_portal:mlogin'))
-	complain=Complain.objects.filter(govt_complain_status=0)
+	complain=Complain.objects.filter(govt_complain_status=0).order_by('-upvotes')
 	types = Complain_type.objects.all()
 	places = LocalPlaces.objects.all()
 	return render(request,"complaint_portal/middlemen.html",{"complain":complain,"places":places,"types":types})
@@ -449,7 +449,7 @@ def govtadmin(request):
 	print request.user
 	c = GovtUserInfo.objects.get(pk=request.user.id)
 	c_type = c.department
-	complain=Complain.objects.filter(Q(govt_complain_status=1) | Q(govt_complain_status=5) | Q(govt_complain_status=4)).filter(type_of_complain=c_type)
+	complain=Complain.objects.filter(Q(govt_complain_status=1) | Q(govt_complain_status=5) | Q(govt_complain_status=4)).filter(type_of_complain=c_type).order_by('-upvotes')
 	print len(complain)
 	types = Complain_type.objects.all()
 	places=LocalPlaces.objects.all()
