@@ -124,6 +124,7 @@ def complainform(request):
 def all_complains(request):
 	"""
 	This function shows all the complaints excluding the complaints that were rejected by the middlemen.
+	@Nidhi
 	"""
 	places = LocalPlaces.objects.all()
 	types = Complain_type.objects.all()
@@ -136,6 +137,7 @@ def hloc_filter(request,place_id):
 	"""
 	This function filters the complaints on the basis of place. Every place is assigned a 
 	place_id and the complaints are filtered on the basis of place_id passed by the user.
+	@Nidhi
 	"""
 	places = LocalPlaces.objects.all()
 	types = Complain_type.objects.all()
@@ -149,6 +151,7 @@ def htype_filter(request,type_id):
 	"""
 	This function filters the complaints on the basis of complaint type (Health , Sewage ,Water Problems).
 	Every place is assigned a type_id and the complaints are filtered on the basis of type_id passed by the user.
+	@Nidhi
 	"""
 	places = LocalPlaces.objects.all()
 	types = Complain_type.objects.all()
@@ -163,6 +166,7 @@ def sorted_complains(request,sorted_id):
 	sorted_id=2 is for sorting the complaints by the complaint date in descending order.
 	sorted_id=3 is for sorting the complaints by the complaint type in alphabetical order (A-Z).
 	sorted_id=4 is for sorting the complaints by the complaint type in alphabetical order (Z-A).
+	@Nidhi
 	"""
 	places = LocalPlaces.objects.all()
 	types = Complain_type.objects.all()
@@ -181,6 +185,7 @@ def sorted_complains(request,sorted_id):
 def all_complains_location(request,loc_id):
 	"""
 	This function filters the complaints on the basis of location.
+	@Nidhi
 	"""	
 	places = LocalPlaces.objects.all()
 	types = Complain_type.objects.all()
@@ -196,6 +201,8 @@ def userprofile(request):
 	#get news feed of local complains of user
 	if not request.user.is_authenticated or not request.user.is_active:
 		return HttpResponseRedirect(reverse('complaint_portal:index'))
+	print request.user.id
+	print UserInfos.objects.all()
 	u = UserInfos.objects.get(pk=request.user.id)   
 	complain_feeds = Complain.objects.filter(complain_place=u.locality).exclude(govt_complain_status=2)
 	print len(complain_feeds),"u"
@@ -254,11 +261,14 @@ def profile_update(request):
 			profile_info.phone = request.POST.get("phone","")
 			profile_info.locality = request.POST.get("locality","")
 			profile_info.save()
-			return render(request,"complaint_portal/profile_update.html",{"profile_info":profile_info,"msg":"Successfully Updated Profile","places":places})
+			return render(request,"complaint_portal/profile_update.html",{"profile_info":profile_info,"msg":"Successfully Updated Profile",
+				"places":places,"p_info":p_info})
 		else:
-			return render(request,"complaint_portal/profile_update.html",{"profile_info":profile_info,"msg":form.errors,"places":places})				
+			return render(request,"complaint_portal/profile_update.html",{"profile_info":profile_info,
+				"p_info":p_info,"msg":form.errors,"places":places})				
 	else:
-		return render(request,"complaint_portal/profile_update.html",{"profile_info":profile_info,"places":places})		
+		return render(request,"complaint_portal/profile_update.html",{"profile_info":profile_info,
+			"p_info":p_info,"places":places})		
 
 def complain_update(request,complain_id):
 	#can be done only before it is reviewed by middlemen.In mycomplains provide option of update if status is 0
@@ -493,22 +503,22 @@ def gtype_filter(request,type_id):
 
 def gdays_filter(request):
 	'''This filter is used to filter Complain in which days to add.
-	We filter the complains whose day to add is yet to add.	
+	We filter the complains whose day to complete is yet to add.	
 	@Amit Masani'''
 	if not request.user.is_authenticated or not request.user.is_superuser:
 		return HttpResponseRedirect(reverse('complaint_portal:glogin'))
-	complain = Complain.objects.filter(govt_complain_status=1).filter(end_date=null)
+	complain = Complain.objects.filter(govt_complain_status=1)
 	places = LocalPlaces.objects.all()
 	types = Complain_type.objects.all()
 	return render(request,"complaint_portal/govtadmin.html",{"complain":complain,"places":places,"types":types})
 
 def gcomplete_filter(request):
 	'''This filter is used to filter Complain which are completed.
-	We filter the complains whose end date is not NONE.	
+	We filter the complains whose end date is set or are resent for review by user.	
 	@Amit Masani'''
 	if not request.user.is_authenticated or not request.user.is_superuser:
 		return HttpResponseRedirect(reverse('complaint_portal:glogin'))
-	complain = Complain.objects.filter(govt_complain_status=1).exclude(end_date='None')
+	complain = Complain.objects.filter(Q(govt_complain_status=4) | Q(govt_complain_status=5))
 	places = LocalPlaces.objects.all()
 	types = Complain_type.objects.all()
 	return render(request,"complaint_portal/govtadmin.html",{"complain":complain,"places":places,"types":types})

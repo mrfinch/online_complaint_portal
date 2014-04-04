@@ -85,6 +85,13 @@ hgroup h2.lead { font: normal normal 1.125em "Roboto",Arial,Verdana,sans-serif; 
 						      <div class="progress-bar progress-bar-success" style="width:100%;"></div>
 						  </div>
 					  </div> 
+				{% elif complain.govt_complain_status == 5 %}
+					  <div class="span4">
+						  Not Satisfied<span class="pull-right">Sent for review again</span>
+						  <div class="progress progress-striped active">
+						      <div class="progress-bar progress-bar-warning" style="width:75%;"></div>
+						  </div>
+					  </div>
                 {% else %}
                 	<div class="span4">
 						  Submitted not reviewed<span class="pull-right"></span>
@@ -100,10 +107,10 @@ hgroup h2.lead { font: normal normal 1.125em "Roboto",Arial,Verdana,sans-serif; 
 				</form>
 				{% endifequal %}
 				{% 	if complain.govt_complain_status == 3 %}
-				<form action="{% url 'complaint_portal:user_completeornot' complain.id %}" method="post" class="form-inline" role="form">
+				<form action="{% url 'complaint_portal:user_complete' complain.id %}" method="post" class="form-inline" role="form">
 				{% csrf_token %}
 				<input type="submit" name="complete" class="btn btn-info" value="Complete" onclick="return confirm('Are you sure you want to mark complain as Complete?')" >
-        		<input type="submit" name="notcomplete" class="btn btn-danger" value="Not Complete" onclick="return confirm('Are you sure you want to mark complain as Not Complete?')" >
+        		<input type="submit" name="notcomplete" class="btn btn-danger" value="Not Complete">
         		</form>
 				{% endif %}
                 <hr />

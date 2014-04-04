@@ -48,11 +48,11 @@ font-size: 24px;
                         <div class="form-group">
                             <label for="username">
                                 Username</label>
-                            <input type="text" name="username" class="form-control" id="username" value="{{ profile_info.username }}" required="required" />
+                            <input type="text" name="username" class="form-control" id="username" value="{{ p_info.username }}" required="required" />
                         </div>
                         <div class="form-group">
                             <label for="password">
-                                Password</label>
+                                New Password</label>
                             <input type="password" name="password" class="form-control" id="password" placeholder="Enter password" required="required" />
                         </div>
                         <div class="form-group">
@@ -63,12 +63,12 @@ font-size: 24px;
                         <div class="form-group">
                             <label for="firstname">
                                 Firstname</label>
-                            <input type="text" name="firstname" class="form-control" id="firstname" value="{{ profile_info.firstname }}" required="required" />
+                            <input type="text" name="firstname" class="form-control" id="firstname" value="{{ p_info.first_name }}" required="required" />
                         </div>
                         <div class="form-group">
                             <label for="lastname">
                                 Lastname</label>
-                            <input type="text" name="lastname" class="form-control" id="lastname" value="{{ profile_info.lastname }}" required="required" />
+                            <input type="text" name="lastname" class="form-control" id="lastname" value="{{ p_info.last_name }}" required="required" />
                         </div>
                         <div class="form-group">
                             <label for="phone">
@@ -81,7 +81,7 @@ font-size: 24px;
                             <div class="input-group">
                                 <span class="input-group-addon"><span class="glyphicon glyphicon-envelope"></span>
                                 </span>
-                                <input type="email" name="email" class="form-control" id="email" value="{{ profile_info.email }}" required="required" /></div>
+                                <input type="email" name="email" class="form-control" id="email" value="{{ p_info.email }}" required="required" /></div>
                         </div>
                         <div class="form-group">
                             <label for="locality">
