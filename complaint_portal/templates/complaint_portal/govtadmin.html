@@ -22,15 +22,6 @@
 				</ul>
 				</li>
 				<li>
-				<a href="#" class="dropdown-toggle" data-toggle="dropdown">Filter By Type<b class="caret"></b></a>
-				<ul class="dropdown-menu">
-				<li><a href="{% url 'complaint_portal:govtadmin' %}">All</a></li>	
-				{% for type in types %}
-					<li><a href="{% url 'complaint_portal:gtype_filter' type.id %}">{{ type.name }} </a></li>
-				{% endfor %}
-				</ul>
-				</li>
-				<li>
 				<a href="#" class="dropdown-toggle" data-toggle="dropdown">Filter By<b class="caret"></b></a>
 				<ul class="dropdown-menu">
 					<li><a href="{% url 'complaint_portal:gdays_filter' %}">Only days to add Complain</a></li>
