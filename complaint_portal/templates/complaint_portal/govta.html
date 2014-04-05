@@ -1,0 +1,19 @@
+{% load staticfiles %}
+
+<title>GOVT</title>
+<body>
+
+<a href={url 'complaint_portal:govt_admin'}>Filter By Places</a>
+{% for a in places %}
+<a href="{% url 'complaint_portal:gloc_filter' a.id %}">{{a.local_name}}</a>
+{% endfor %}
+
+
+{% for b in complain %}
+<p>{{b.title}}</p>
+<p>{{b.type_of_complain}}</p>
+{% endfor %}
+
+<input type="submit" value="submit">
+
+</body>

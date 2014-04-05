@@ -437,7 +437,7 @@ def forward_reject(request):
 	return HttpResponseRedirect(reverse('complaint_portal:middlemen'))
 
 
-
+''
 #GOVT EMPLOYEE	
 def govtadmin(request):
 	'''If government admin is logged in Successfully,
@@ -609,6 +609,11 @@ def adminregister(request):
 	else:
 		return render(request,"complaint_portal/adminregister.html",{"types":types})			
 
+def slogout(request):
+	'''This function logout the super admin.	
+	@Amit Masani'''
+	auth.logout(request)
+	return HttpResponseRedirect(reverse('complaint_portal:super_login'))
 		
 #MIDDLEMEN and GOVT EMPLOYEE			
 def userprofile_admin(request,u_id):
