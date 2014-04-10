@@ -13,6 +13,8 @@ import django.core.exceptions
 # Create your views here.
 
 def index(request):
+	'''created home page
+	@Shalin'''
 	current_complains = Complain.objects.order_by('complain_date')[:3]
 	total_comp = Complain.objects.count()
 	solved_comp = Complain.objects.filter(Q(govt_complain_status=2) | Q(govt_complain_status=3)).count()
@@ -20,9 +22,13 @@ def index(request):
 		"solved_comp":solved_comp})
 
 def faq(request):
+	'''created faq page
+	@Indra'''
 	return render(request,"complaint_portal/faq.html",{})
 	
 def register(request):
+	'''handling registration of user
+	@Atur'''
 	places = LocalPlaces.objects.all()
 	if request.method == "POST":
 		form = UserInfoForm(request.POST)
@@ -51,6 +57,8 @@ def register(request):
 		return render(request,"complaint_portal/register.html",{"places":places})			
 
 def login(request):
+	'''handling login profile_update
+	@Shalin'''
 	print "daf"
 	if request.method == "POST":
 		username = request.POST.get("username","")
@@ -74,6 +82,8 @@ def login(request):
 		"solved_comp":solved_comp})			
 
 def activate(request,u_id):
+	'''activating account
+	@Atur'''
 	u = User.objects.get(pk=u_id)
 	u.is_active = True
 	print u.username
@@ -81,15 +91,17 @@ def activate(request,u_id):
 	return render(request,"complaint_portal/login.html",{"msg":"Account Activated"})
 
 def logout(request):
+	'''logout function
+	@Shalin'''
 	print "yt"
 	auth.logout(request)
 	return HttpResponseRedirect(reverse('complaint_portal:index')) 
 
 def forgot_password(request):
-	"""
+	'''
 	This method is called whenever the user clicks on the forget continue button. This method checks if any such username is found in the database
 	and if found then a reset password link is sent to user's mail id.
-	"""
+	'''
 	if request.method == "POST":
 		uname = request.POST.get("username","")
 		if uname == "":
@@ -109,6 +121,8 @@ def forgot_password(request):
 		return render(request,"complaint_portal/forgot_password.html")	
 
 def complainform(request):
+	'''handling complain request
+	@Atur'''
 	places = LocalPlaces.objects.all()
 	types = Complain_type.objects.all()
 	if not request.user.is_authenticated or not request.user.is_active:
@@ -207,12 +221,15 @@ def all_complains_location(request,loc_id):
 	return render(request,"complaint_portal/all_complain.html",{"complain_list":complain_list,"places":places,"types":types}) 
 
 def details(request,complain_id):
+	'''deprecated'''
 	complain_detail = Complain.objects.get(pk=complain_id)
 	return render(request,"complaint_portal/complain_detail.html",{"complain_detail":complain_detail})
 
 
 def userprofile(request):
-	#get news feed of local complains of user
+	'''get news feed of local complains of user
+	@Saurabh
+	'''
 	if not request.user.is_authenticated or not request.user.is_active:
 		return HttpResponseRedirect(reverse('complaint_portal:index'))
 	print request.user.id
@@ -223,7 +240,8 @@ def userprofile(request):
 	return render(request,"complaint_portal/complain_feeds.html",{"complain_feeds":complain_feeds})	
 
 def mycomplains(request):
-	#in rendering html check if status is accepted or not and provide update button
+	'''display users all complains
+	@Saurabh'''
 	if not request.user.is_authenticated or not request.user.is_active:
 		return HttpResponseRedirect(reverse('complaint_portal:index'))
 	my_complain_feeds = request.user.complain_set.all()
@@ -232,6 +250,8 @@ def mycomplains(request):
 	return render(request,"complaint_portal/complain_mine.html",{"my_complain_feeds":my_complain_feeds})
 
 def user_complete(request,complain_id):
+	'''mark complete by user
+	@Saurabh'''
 	if not request.user.is_authenticated or not request.user.is_active:
 		return HttpResponseRedirect(reverse('complaint_portal:index'))
 	complain = Complain.objects.get(pk=complain_id)
@@ -243,6 +263,8 @@ def user_complete(request,complain_id):
 		return HttpResponseRedirect(reverse('complaint_portal:user_notcomplete_status',args=(complain.id,)))			
 
 def user_notcomplete_status(request,complain_id):
+	'''mark not complete
+	@Saurabh'''
 	complain = Complain.objects.get(pk=complain_id)
 	if request.method == "POST":
 		description = request.POST.get("description","")
@@ -256,7 +278,8 @@ def user_notcomplete_status(request,complain_id):
 
 
 def profile_update(request):
-	print "h"
+	'''update profile
+	@Saurabh'''
 	if not request.user.is_authenticated or not request.user.is_active:
 		return HttpResponseRedirect(reverse('complaint_portal:index'))
 	places = LocalPlaces.objects.all()
@@ -285,7 +308,8 @@ def profile_update(request):
 			"p_info":p_info,"places":places})		
 
 def complain_update(request,complain_id):
-	#can be done only before it is reviewed by middlemen.In mycomplains provide option of update if status is 0
+	'''update complain info
+	@Saurabh'''
 	if not request.user.is_authenticated or not request.user.is_active:
 		return HttpResponseRedirect(reverse('complaint_portal:index'))
 	places = LocalPlaces.objects.all()
@@ -311,10 +335,13 @@ def complain_update(request,complain_id):
 				"types":types})		
 
 def ranking(request):
+	'''ranking acc' to upvotes
+	@Saurabh'''
 	users_rank = UserInfos.objects.order_by('-total_upvotes')[:10]
 	return render(request,"complaint_portal/ranking.html",{"users_rank":users_rank})
 
 def complain_complete(request,complain_id):
+	'''deprecated'''
 	if not request.user.is_authenticated or not request.user.is_active:
 		return HttpResponseRedirect(reverse('complaint_portal:index'))
 	complain_info = Complain.objects.get(pk=complain_id)
@@ -331,9 +358,14 @@ def complain_complete(request,complain_id):
 		return render(request,"complaint_portal/complain_complete.html",{"complain_info":complain_info})
 
 def upvote(request,complain_id):
+	'''upvote a complain if not upvoted
+	@Saurabh'''
 	if not request.user.is_authenticated or not request.user.is_active:
 		return HttpResponseRedirect(reverse('complaint_portal:index'))
 	complain_info = Complain.objects.get(pk=complain_id)
+	places = LocalPlaces.objects.all()
+	types = Complain_type.objects.all()
+	
 	if not request.user.userupvotestatus_set.values('upvote').filter(upvote=complain_info.id).exists():
 		print request.user.userupvotestatus_set.values('upvote').filter(upvote=complain_info.id)
 		complain_info.upvotes += 1
@@ -347,12 +379,15 @@ def upvote(request,complain_id):
 		complain_list = Complain.objects.order_by('id')
 		my_data = [complain_info.id,complain_info.upvotes]
 		return render(request,"complaint_portal/all_complain.html",{"complain_list":complain_list,"complain_id":complain_info.id,
-			"new_upvotes":complain_info.upvotes})
+			"new_upvotes":complain_info.upvotes,"places":places,"types":types})
 	else:
 		complain_list = Complain.objects.order_by('id')
-		return render(request,"complaint_portal/all_complain.html",{"complain_list":complain_list,"complain_id":complain_info.id})
+		return render(request,"complaint_portal/all_complain.html",{"complain_list":complain_list,"complain_id":complain_info.id,"places":places,
+				"types":types})
 	
 def feed_upvote(request,complain_id):
+	'''upvote from local feeds
+	@Saurabh'''
 	if not request.user.is_authenticated or not request.user.is_active:
 		return HttpResponseRedirect(reverse('complaint_portal:index'))
 	complain_info = Complain.objects.get(pk=complain_id)
@@ -376,6 +411,12 @@ def feed_upvote(request,complain_id):
 
 #MIDDLEMEN	
 def middlemen(request):
+	'''
+ 		@ Shikha 
+ 		If the username and password doesnt match(i.e if the middlemen is not authenticated)middlemen
+ 		is redirected to login page.If login successful,it renders given middle men template with a given
+ 		context dictionary and returns an HttpResponse object with that rendered text. 
+	''' 
 	if not request.user.is_authenticated or not request.user.is_staff:
 		return HttpResponseRedirect(reverse('complaint_portal:mlogin'))
 	complain=Complain.objects.filter(govt_complain_status=0).order_by('-upvotes')
@@ -384,8 +425,13 @@ def middlemen(request):
 	return render(request,"complaint_portal/middlemen.html",{"complain":complain,"places":places,"types":types})
 
 def mlogin(request):
-	print "dkjhkjh"
-	complain=Complain.objects.filter(govt_complain_status=0)
+	"""
+ 		@ Shikha
+ 		If the username and password doesnt match(i.e if the middlemen is not authenticated)middlemen
+ 		is redirected to login page.If login successful,it renders given middlemen template with a given
+ 		context dictionary and returns an HttpResponse object with that rendered text. 
+ 	"""
+ 	complain=Complain.objects.filter(govt_complain_status=0)
 	places = LocalPlaces.objects.all()
 	if request.method == "POST":
 		username = request.POST.get("username","")
@@ -401,13 +447,21 @@ def mlogin(request):
 		return render(request,"complaint_portal/mlogin.html")			
 
 def mlogout(request):
-	print "yy"
-	auth.logout(request)
+	"""
+ 		@Shikha 
+ 		When the logout is successful,the user is redirected to mlogin page.
+ 	"""
+ 	auth.logout(request)
 	return HttpResponseRedirect(reverse('complaint_portal:mlogin'))
 
 def mloc_filter(request,loc_id):
-	print "ht"
-	if not request.user.is_authenticated or not request.user.is_staff:
+	"""
+ 		@Shikha
+ 		If the username and password doesnt match(i.e if the middlemen is not authenticated)middlemen
+ 		is redirected to login page.If login is successful,based on the loc_id of the place selected,the 
+ 		complains are filtered and renders the middlemen.html template with passed data.
+ 	"""
+ 	if not request.user.is_authenticated or not request.user.is_staff:
 		return HttpResponseRedirect(reverse('complaint_portal:mlogin'))
 	p = LocalPlaces.objects.get(pk=loc_id)
 	places = LocalPlaces.objects.all()
@@ -417,8 +471,13 @@ def mloc_filter(request,loc_id):
 
 
 def mtype_filter(request,type_id):
-	print "hy"
-	if not request.user.is_authenticated or not request.user.is_staff:
+	"""
+ 	@Shikha
+ 		If the username and password doesnt match(i.e if the middlemen is not authenticated)middlemen
+ 		is redirected to login page.If login is successful,based on the type_id of the complain,the 
+ 		complains are filtered and renders the middlemen.html template with passed data.
+ 	"""
+ 	if not request.user.is_authenticated or not request.user.is_staff:
 		return HttpResponseRedirect(reverse('complaint_portal:mlogin'))
 	places = LocalPlaces.objects.all()
 	types = Complain_type.objects.all()
@@ -427,8 +486,13 @@ def mtype_filter(request,type_id):
 	return render(request,"complaint_portal/middlemen.html",{"complain":complain,"places":places,"types":types})
 
 def forward_reject(request):
-	print "vd"#for middlemen
-	if not request.user.is_authenticated or not request.user.is_staff:
+	"""
+ 		@Shikha
+ 		If the middlemen is not authenticated or if the user is not staff member user is redirected to login page.
+ 		The function gets the list of selected complains.If the complains are forwarded ,set govt_complain_status
+ 		to 1.If complains are rejected set govt_complain_status 2. 
+ 	"""
+ 	if not request.user.is_authenticated or not request.user.is_staff:
 		return HttpResponseRedirect(reverse('complaint_portal:mlogin'))
 	c_list = request.POST.getlist("sel_complain")
 	if "forward" in request.POST:
@@ -451,7 +515,7 @@ def forward_reject(request):
 	return HttpResponseRedirect(reverse('complaint_portal:middlemen'))
 
 
-''
+
 #GOVT EMPLOYEE	
 def govtadmin(request):
 	'''If government admin is logged in Successfully,
