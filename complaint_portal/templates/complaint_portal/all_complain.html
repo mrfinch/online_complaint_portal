@@ -35,12 +35,19 @@ $.post("http://localhost:8000/complaint_portal/upvote/2",{complain_id:"c_id"})
 	});
 }
 </script>
+<script>
+$(document).ready(function(){
+            $("#morebtn").click(function(){
+                $(this).html($(this).html() == "Show more" ? "Show less" : "Show more");
+            });
+        });
+</script>
 {% endblock %}
 
 {% block filters %}
 <div class="col-md-4 " >
 		<div class="btn-group">
-			<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+			<button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
      		Filter By Place
       		<span class="caret"></span>
     		</button>
@@ -55,7 +62,7 @@ $.post("http://localhost:8000/complaint_portal/upvote/2",{complain_id:"c_id"})
 
 <div class="col-md-4 ">
 		<div class="btn-group">
-			<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+			<button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
      		Filter By Type
       		<span class="caret"></span>
     		</button>
@@ -75,10 +82,11 @@ $.post("http://localhost:8000/complaint_portal/upvote/2",{complain_id:"c_id"})
 <div class="container">
 <section class="col-xs-12 col-sm-6 col-md-12">
 	{% for complain in complain_list %}
+	<div class="well" style="background-color:#D1EEEE ">
 		<article class="search-result row">
 			<div class="col-xs-8 col-sm-8 col-md-3">
 				<a href="{% static complain.complain_image %}" title="{{complain.title}}" class="thumbnail" target="_blank"><img src="{% static complain.complain_image %}" alt="{{complain.title}}" style="max-width:100%;max-height:100%;" /></a>
-			</div>
+			</div> 
 			<div class="col-xs-12 col-sm-12 col-md-3">
 				<ul class="meta-search">
 					<li><i class="glyphicon glyphicon-tags"></i> <span>{{complain.type_of_complain}}</span></li>
@@ -90,7 +98,9 @@ $.post("http://localhost:8000/complaint_portal/upvote/2",{complain_id:"c_id"})
 			</div>
 			<div class="col-xs-4 col-sm-4 col-md-6 excerpet">
 				<h3><a href="#" title="" style="font-family:'Times New Roman', Times, serif;">{{complain.title}}</a></h3>
-				<p style="font-family:'Times New Roman', Times, serif;">{{complain.description}} </p>						
+				<p style="font-family:'Times New Roman', Times, serif;">{{complain.description}} </p>
+ 					<a id="morebtn" data-toggle="collapse" data-target="#more" href="javascript:void(0)">Show more</a>
+						<div id="more" class="collapse">Hidden info</div>						
                 {% if complain.govt_complain_status == 1 %}
 					  <div class="span4">
 						  Complain Validated<span class="pull-right">Sent to govt. employee</span>
@@ -130,13 +140,21 @@ $.post("http://localhost:8000/complaint_portal/upvote/2",{complain_id:"c_id"})
 	            <form action="{% url 'complaint_portal:upvote' complain.id %}" method="post">
 	            {% csrf_token %}
 				{% if user.is_authenticated %}
-					<input type="submit" name="upvote" class="btn btn-success" value="Upvote">
+ 					<div class="col-xs-12 col-sm-12 col-md-3">
+					<ul class="meta-search">
+						<button type="submit" class="btn btn-primary btn-lg">
+  							<span class="glyphicon glyphicon-thumbs-up"></span> 
+						</button>
+
+					</ul>
+					</div> 
 				{% endif %}
 				</form>
-				<hr />
+<!-- 				<hr /> -->
 			</div>
 			<span class="clearfix borda"></span>
 		</article>
+	</div>
 	{% endfor %}	
 </section>
 </div>
