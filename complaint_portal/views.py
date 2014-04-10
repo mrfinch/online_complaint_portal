@@ -527,7 +527,7 @@ def govtadmin(request):
 	print request.user
 	c = GovtUserInfo.objects.get(pk=request.user.id)
 	c_type = c.department
-	complain=Complain.objects.filter(Q(govt_complain_status=1) | Q(govt_complain_status=5) | Q(govt_complain_status=4)).filter(type_of_complain=c_type).order_by('-upvotes')
+	complain=Complain.objects.filter(Q(govt_complain_status=6) |Q(govt_complain_status=1) | Q(govt_complain_status=5) | Q(govt_complain_status=4)).filter(type_of_complain=c_type).order_by('-upvotes')
 	print len(complain)
 	types = Complain_type.objects.all()
 	places=LocalPlaces.objects.all()
@@ -563,7 +563,7 @@ def gloc_filter(request,loc_id):
 	l = LocalPlaces.objects.get(pk=loc_id)
 	places = LocalPlaces.objects.all()
 	types = Complain_type.objects.all()
-	complain = Complain.objects.filter(Q(govt_complain_status=1) | Q(govt_complain_status=5) | Q(govt_complain_status=4)).filter(complain_place=l.local_name)
+	complain = Complain.objects.filter(Q(govt_complain_status=6) |Q(govt_complain_status=1) | Q(govt_complain_status=5) | Q(govt_complain_status=4)).filter(complain_place=l.local_name)
 	return render(request,"complaint_portal/govtadmin.html",{"complain":complain,"places":places,"types":types})
 
 def gtype_filter(request,type_id):
@@ -576,7 +576,7 @@ def gtype_filter(request,type_id):
 	c = Complain_type.objects.get(pk=type_id)
 	places = LocalPlaces.objects.all()
 	types = Complain_type.objects.all()
-	complain = Complain.objects.filter(Q(govt_complain_status=1) | Q(govt_complain_status=5) | Q(govt_complain_status=4)).filter(type_of_complain=c.name)
+	complain = Complain.objects.filter(Q(govt_complain_status=6) |Q(govt_complain_status=1) | Q(govt_complain_status=5) | Q(govt_complain_status=4)).filter(type_of_complain=c.name)
 	return render(request,"complaint_portal/govtadmin.html",{"complain":complain,"places":places,"types":types})
 
 def gdays_filter(request):
@@ -596,7 +596,7 @@ def gcomplete_filter(request):
 	@Amit Masani'''
 	if not request.user.is_authenticated or not request.user.is_superuser:
 		return HttpResponseRedirect(reverse('complaint_portal:glogin'))
-	complain = Complain.objects.filter(Q(govt_complain_status=4) | Q(govt_complain_status=5))
+	complain = Complain.objects.filter(Q(govt_complain_status=6) |Q(govt_complain_status=4) | Q(govt_complain_status=5))
 	places = LocalPlaces.objects.all()
 	types = Complain_type.objects.all()
 	return render(request,"complaint_portal/govtadmin.html",{"complain":complain,"places":places,"types":types})
@@ -623,9 +623,14 @@ def days_or_complete(request):
 		for i in num_days:
 			if i!='':
 				#complain.days_to_solve = i
-				complain.end_date = (datetime.now()+timedelta(days=int(i)))
+				complain.end_date = i
 				print complain.end_date,i
-				complain.govt_complain_status = 4
+				if complain.govt_complain_status == 4:
+					complain.govt_complain_status = 6
+				elif complain.govt_complain_status == 6:
+					complain.govt_complain_status = 6
+				else:
+					complain.govt_complain_status = 4		
 				complain.save()
 				print complain
 	else:

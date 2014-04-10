@@ -92,16 +92,16 @@
 	      <b>Problem still faced:</b>{{ f.user_complain_reason }}<br />
 	      {% endif %}
 	      <div class="form-inline" role="form">
-	      {% if f.end_date == null %}
+	      {% if f.end_date == null or f.govt_complain_status == 4 or f.govt_complain_status == 6 %}
 		  <div class="form-group">
 		    <label class="sr-only" >No. of days</label>
-		    <input type="text" class="form-control" id="num_days" placeholder="Enter days to complete" name="num_days">
+		    <input type="date" class="form-control" id="num_days" placeholder="Enter days to complete" name="num_days">
 		  </div>
 		  <button type="submit" class="btn btn-primary" name="complain_id" value="{{f.id}}">Submit</button>
 		  {% endif %}
 		  </div>	
 	      </div>
-
+	      
 	    </div>
 	  </div>
 	{% endfor %}
