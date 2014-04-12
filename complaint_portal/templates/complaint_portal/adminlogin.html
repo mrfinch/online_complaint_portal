@@ -36,13 +36,8 @@ font-size: 24px;
         </div>
     </div>
 </div>		
-{% if msg %}
-    {{msg}}
-{% endif %}
 
-{% if user.is_authenticated %}
-<a href="{% url 'complaint_portal:slogout' %}">Logout</a>
-{% endif %}
+
 
 <div class="container">
     <div class="row">

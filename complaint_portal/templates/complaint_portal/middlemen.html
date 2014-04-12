@@ -66,10 +66,10 @@
 	      </h4>
 	    </div>
 	    {% if forloop.counter != -1 %}
-	    	<div id="{{forloop.counter}}" class="panel-collapse collapse">
+	    	<div id="{{forloop.counter}}" class="panel-collapse collapse"> 
 	    {% else %}	
 	    	<div id="{{forloop.counter}}" class="panel-collapse collapse in">
-	    {% endif %}	
+	     {% endif %}
 	      <div class="panel-body">	
 	      <b>Description:</b>{{ f.description }}<br />
 	      <b>Address:</b>{{ f.complain_address }} <br />

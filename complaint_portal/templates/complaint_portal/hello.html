@@ -1,0 +1,44 @@
+
+<!DOCTYPE html> 
+{% load staticfiles %}
+
+<head>
+
+    <script type="text/javascript" src="http://code.jquery.com/jquery-latest.min.js"></script>
+	<script type="text/javascript" src="{% static 'complaint_portal/js/bootstrap.min.js' %}"></script>
+	<script type="text/javascript" src="{% static 'complaint_portal/js/complain.js' %}"></script>
+	<script type="text/javascript" src="{% static 'complaint_portal/js/check_password.js' %}"></script>
+	<link rel="stylesheet" href="{% static 'complaint_portal/css/bootstrap.min.css' %}">
+	<link rel="stylesheet" href="{% static 'complaint_portal/css/flat-ui.css' %}">
+
+
+
+
+
+</head>
+
+<body style="background-image:url("index.jpeg");">
+<nav class="navbar navbar-inverse navbar-embossed" role="navigation">
+	<div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="{% url 'complaint_portal:index' %}">Anand Complaint Portal</a>
+    </div>
+		<div class="collapse navbar-collapse" id="navbar-collapse-01">
+		    <ul class="nav navbar-nav">
+				<!--<li id="home"><a href="{% url 'complaint_portal:index' %}">Complaint portal</a></li>--><!-- change active property with help of js -->
+				<li id="all_complains"><a href="">All Complaints</a></li>
+				<li id="leader_board"><a href="">Leader Board</a></li>
+				<li id="complain"><a href="">Complain</a></li>
+				<li id="faq"><a href="">FAQ</a></li>
+				
+				
+				
+			</ul>
+		</div>
+	</nav>
+</body>

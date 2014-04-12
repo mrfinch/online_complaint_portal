@@ -1,138 +1,88 @@
-{% extends 'base.html' %}
+{% extends 'base_index.html' %}
 {% load staticfiles %}
 {% block title %}Home{% endblock %}
-{% block css_js %}
-<script type="text/javascript" >
-            $(document).ready(function() {        
-        $('.carousel').carousel()
-            });
-</script> 
-<style>
-.btn-circle {
-  width: 170px;
-  height: 140px;
-  text-align: center;
-  padding: 6px 0;
-  font-size: 12px;
-  line-height: 1.42;
-  border-radius: 15px;
-  position:absolute;
-  left:65%;
-  top:74%;
-  font-size:20px;
-  background-color:#428bca;
-}
-.btn-circle2 {
-  width: 170px;
-  height: 140px;
-  text-align: center;
-  padding: 6px 0;
-  font-size: 12px;
-  line-height: 1.42;
-  border-radius: 15px;
-  position:absolute;
-  left:80%;
-  top:74%;
-  font-size:20px;
-  background-color:#428bca;
-}
 
-.total_comp{
-	font-size:60px;
-}
-.solved_comp{
-	font-size:60px;
-}
+	
 
-</style>
-{% endblock %}
+
 {% block content %}
 
-{% if not user.is_authenticated %}
-<div class="container" >
-<div class="row">
-    <div class="col-md-4 pull-right">
-		<form action="{% url 'complaint_portal:login' %}" method="post" role="form">
-		{% csrf_token %}
-			<fieldset>
-				<h4>Sign In to complain</h4>
-				<hr class="colorgraph">
-				<div class="form-group">
-                    <input type="text" name="username" id="username" class="form-control input-lg" placeholder="Username">
-				</div>
-				<div class="form-group">
-                    <input type="password" name="password" id="password" class="form-control input-lg" placeholder="Password">
-				</div>
-				<span class="button-checkbox">
-					<input type="checkbox" name="remember_me" id="remember_me" checked="checked">
-          <button type="button" class="btn" data-color="info">Remember Me</button>
-                    
-					<a href="{% url 'complaint_portal:forgot_password' %}" class="btn btn-link pull-right">Forgot Password?</a>
-				</span>
-				<hr class="colorgraph">
-				<div class="row">
-					<div class="col-xs-6 col-sm-6 col-md-6">
-                        <input type="submit" class="btn btn-lg btn-success btn-block" value="Sign In">
-					</div>
-					<div class="col-xs-6 col-sm-6 col-md-6">
-						<a href="{% url 'complaint_portal:register' %}" class="btn btn-lg btn-primary btn-block">Register</a>
-					</div>
-				</div>
-				<div class="row">
-					{% if msg %}
-						{{ msg }}
-					{% endif %}
-				</div>
-			</fieldset>
-		</form>
-	</div>
-</div>
-</div>
-{% endif %}
-<div id="carousel-example-generic" class="carousel slide" style="width: 0px;height:100px; margin: 0 auto;
-position:absolute;top:16%;left:12%;">
-<!-- Indicators -->
-<ol class="carousel-indicators">
-<li data-target="#carousel-example-generic" data-slide-to="2" style="position:absolute;top:300px;left:185px;"></li>
-<li data-target="#carousel-example-generic" data-slide-to="0" class="active" style="position:absolute;top:300px;left:215px;"></li>
-<li data-target="#carousel-example-generic" data-slide-to="1" style="position:absolute;top:300px;left:245px;"></li>
-<li data-target="#carousel-example-generic" data-slide-to="2" style="position:absolute;top:300px;left:275px;"></li>
-<li data-target="#carousel-example-generic" data-slide-to="2" style="position:absolute;top:300px;left:305px;"></li>
 
-</ol>
-<div class="carousel-inner" style="width:500px;height:400px">
-{% for complain in current_complains %}
-{% if forloop.counter == 1 %}
-	<div class="item active">
-{% else %}
-	<div class="item">
-{% endif %}
+     <div class="container" >
+      <div class="row" style="align:center;">
+      
+        <div class="col-md-4">
+          <h6 style="color:rgb(52,73,94);margin-left:100px;font-weight:bold;">Complaints<br> Submitted</h6>
+          <p style="color:rgb(52,73,94);text-align:center;font-size:50px;font-weight:bold;">{{ total_comp }} </p>
+          
+        </div>
+        <div class="col-md-4">
+        <img src="{% static 'complaint_portal/images/hello.jpg' %}" width="100" height="150" style="margin-left:100px;">
+        </div>
+        <div class="rgb(52,73,94)">
+          <h6 style="color:rgb(52,73,94);margin-right:100px;font-weight:bold;">Complaints<br> Solved</h6>
+          <p style="color:rgb(52,73,94);text-align:center;font-size:50px;margin-right:200px;font-weight:bold;">{{ solved_comp }}</p>
+        </div>
+      
+              
+      </div>
 
-  <img src="{% static complain.complain_image %}" style="width:500px;height:400px" alt="{{complain.title}}">
-  <div class="carousel-caption">
-    {{complain.title}}
-  </div>
-</div>
-{% endfor %}
-</div>
+       <div class="container" >
+       <br />
+       <h6 style="color:rgb(52,73,94);margin-left:28%;font-weight:bold;">ANAND MUNICIPAL CORPORATION</h6>
+      
+       </div>
 
-<a class="left carousel-control" href="#carousel-example-generic" data-slide="prev">
-    <span class="glyphicon glyphicon-arrow-right" style="position:absolute;top:200px;left:400px;"></span>
-</a>
-<a class="right carousel-control" href="#carousel-example-generic" data-slide="next">
-    <span class="glyphicon glyphicon-arrow-left" style="position:absolute;top:200px;left:50px;"></span>
-</a>
+    </div>
+    <br />
+    <div class="container">
+    
+      <div class="row">
+        <div class="col-md-4">
+           
+          <h7 style="color:rgb(52,73,94);font-weight:bold;">ABOUT US</h7>
+            
+          <p style="font-size:10px;font-weight:bold;" >Anand is the administrative centre of Anand District in the state of Gujarat, India. It is administered by Anand Municipality. It is part of the region known as Charotar, consisting of Anand and Kheda Districts.</p>
+        </div>
+        <div class="col-md-4">
+          <h7 style="color:rgb(52,73,94);font-weight:bold;">RECENT COMPLAINS</h7>
+          <p style="font-size:10px;font-weight:bold;">Get the most recently reported complains here. For details click below :</p>
+          
+          
+       </div>
+        <div class="col-md-4">
+          <h7 style="color:rgb(52,73,94);font-weight:bold;">HELP AND FAQ</h7>
+          <p style="font-size:10px;font-weight:bold;">See this section on how to complain using our website.Get your other doubts cleared and have a look at the frequently answered questions.Click below </p>
+          
+        </div>
+      </div>
+
+      <div class="container" >
+      <div class="row">
+        <div class="col-md-4">
+          <p><a class="btn btn-default" style="margin-bottom:50px;" href="#" role="button">View details &raquo;</a></p>
+        </div>
+        <div class="col-md-4">
+          
+        <p><a class="btn btn-default" style="margin-bottom:50px;" href="{% url 'complaint_portal:all_complains' %}" role="button">View details &raquo;</a></p>
+       </div>
+        <div class="col-md-4">
+          
+          <p><a class="btn btn-default" style="margin-bottom:50px;" href="{% url 'complaint_portal:faq' %}" role="button">View details &raquo;</a></p>
+        </div>
+      </div>
+      </div>
+
+     
+
+      
+      </div> <!-- /container -->
 
 
-</div>
-</div>
-{% if not user.is_authenticated %}
-<a href="#" class="btn btn-default btn-circle">Complains<br /> Submitted<br /><span class="total_comp">{{total_comp}}</span></a>
-<a href="#" class="btn btn-default btn-circle2">Complains<br /> Solved<br /><span class="solved_comp">{{solved_comp}}</span></a>
-{% else %}
-<a href="#" class="btn btn-default btn-circle" style="top:35%;">Complains<br /> Submitted<br /><span class="total_comp">{{total_comp}}</span></a>
-<a href="#" class="btn btn-default btn-circle2" style="top:35%">Complains<br /> Solved<br /><span class="solved_comp">{{solved_comp}}</span></a>
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    
 
-{% endif %}
+
 {% endblock %}
-

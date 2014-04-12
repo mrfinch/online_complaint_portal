@@ -1,0 +1,129 @@
+<!DOCTYPE html> 
+{% load staticfiles %}
+<html>
+<head>
+	<title>{% block title %} {% endblock %}</title>
+	<script type="text/javascript" src="http://code.jquery.com/jquery-latest.min.js"></script>
+	<script type="text/javascript" src="{% static 'complaint_portal/js/bootstrap.min.js' %}"></script>
+	<script type="text/javascript" src="{% static 'complaint_portal/js/complain.js' %}"></script>
+	<script type="text/javascript" src="{% static 'complaint_portal/js/check_password.js' %}"></script>
+	<link rel="stylesheet" href="{% static 'complaint_portal/css/bootstrap.min.css' %}">
+	<link rel="stylesheet" href="{% static 'complaint_portal/css/flat-ui.css' %}">
+	{% block css_js %}{% endblock %}
+</head>
+
+<body style="background-image:url('{% static "complaint_portal/images/green10.jpg" %}');background-repeat:repeat-x;">
+
+	<nav class="navbar navbar-inverse navbar-embossed" role="navigation">
+	<div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" style="font-size:21px;" href="{% url 'complaint_portal:index' %}">Anand Complaint Portal</a>
+    </div>
+		<div class="collapse navbar-collapse" id="navbar-collapse-01" style="height:1px;">
+		    <ul class="nav navbar-nav">
+				<!--<li id="home"><a href="{% url 'complaint_portal:index' %}">Complaint portal</a></li>--><!-- change active property with help of js -->
+				<li id="all_complains"><a href="{% url 'complaint_portal:all_complains' %}">All Complaints</a></li>
+				<li id="leader_board"><a href="{% url 'complaint_portal:ranking' %}">Leader Board</a></li>
+				<li id="complain"><a href="{% url 'complaint_portal:complainform' %}">Complain</a></li>
+				<li id="signin"><!-- Button trigger modal -->
+                <a  data-toggle="modal" data-target="#myModal">
+                Sign In
+   				</a>
+
+				<!-- Modal -->
+				<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  				<div class="modal-dialog">
+    			<div class="modal-content">
+      			<div class="modal-header">
+        		<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        		<h6 class="modal-title" id="myModalLabel">Sign In</h6>
+      			</div>
+      			<div class="modal-body">
+                {% if not user.is_authenticated %}
+				<div class="container">
+				<div class="row">
+    			<div class="col-md-4">
+				<form action="{% url 'complaint_portal:login' %}" method="post" role="form">
+				{% csrf_token %}
+				<fieldset>
+					<h6>Sign In to complain</h6>
+					<hr class="colorgraph">
+					<div class="form-group">
+                    	<input type="text" name="username" id="username" class="form-control input-lg" placeholder="Username">
+					</div>
+					<div class="form-group">
+                    <input type="password" name="password" id="password" class="form-control input-lg" placeholder="Password">
+					</div>
+					<span class="button-checkbox">
+					<input type="checkbox" name="remember_me" id="remember_me" checked="checked">
+          			<button type="button" class="btn" data-color="info">Remember Me</button>
+                    
+					<a href="{% url 'complaint_portal:forgot_password' %}" class="btn btn-link pull-right">Forgot Password?</a>
+					</span>
+					<hr class="colorgraph">
+					<div class="row">
+					<div class="col-xs-6 col-sm-6 col-md-6">
+                        <input type="submit" class="btn btn-lg btn-success btn-block" value="Sign In">
+					</div>
+					<div class="col-xs-6 col-sm-6 col-md-6">
+						<a href="{% url 'complaint_portal:register' %}" class="btn btn-lg btn-primary btn-block">Register</a>
+					</div>
+					</div>
+					<div class="row">
+					{% if msg %}
+						{{ msg }}
+					{% endif %}
+				</div>
+			</fieldset>
+		</form>
+
+	</div>
+	        <div class="col-md-4">
+	        <img src="{% static "complaint_portal/images/logo1.jpg" %}" width="200" height="200" style="margin-right:50px;"> </img>
+	        </div>
+</div>
+</div>
+{% endif %}
+
+      			</div>
+      			
+    		</div>
+  		</div>
+	</div>
+</li>
+				<li style="position:absolute;right:3%;">
+				{% if user.is_authenticated %}
+				<a href="#" class="dropdown-toggle" data-toggle="dropdown">{{ user.username }}<b class="caret"></b></a>
+					<ul class="dropdown-menu">
+						<li id="localfeeds"><a href="{% url 'complaint_portal:userprofile' %}">Local Feeds</a></li>
+						<li id="complains_my"><a href="{% url 'complaint_portal:mycomplains' %}">My Complaints</a></li>
+						<li><a href="{% url 'complaint_portal:profile_update' %}">Profile Update</a></li>
+						<li><a href="{% url 'complaint_portal:logout' %}">Logout</a></li>
+					</ul>
+				{% endif %}
+				</li>
+				
+			</ul>
+		</div>
+	</nav>
+
+	<div>
+		{% block content %}
+		{% endblock %}
+	</div>
+
+<!-- This is the footer of all the webpages which will be seen in all the pages which will extend base.py -->
+	<div align="right">
+		<footer>	
+			<p style="position:fixed; bottom:-10px; height:25px; width:100%; background-color:#171717; color:white;">
+				<b>&copy; 2014, SEN Group 17 &nbsp;</b>
+			</p>
+		</footer>
+	</div>
+</body>
+</html>

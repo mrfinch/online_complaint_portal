@@ -44,7 +44,7 @@
 		Title
 		<span style="position:absolute; left:750">Complain Type</span>
 		<span style="position:absolute; left:950">Complain Place</span>
-		<span style="position:absolute; left:1100">Complain Date</span>
+		<span style="position:absolute; left:1150">Complain Date</span>
 		<span style="position:absolute; left:550">Status</span>
 		</h2>
 	</div>
@@ -73,7 +73,7 @@
 	      	</span>
 	      	<span style="position:absolute; left:750">{{f.type_of_complain}}</span>
 			<span style="position:absolute; left:950">{{f.complain_place}}</span>
-			<span style="position:absolute; left:1100">{{f.complain_date}}</span>
+			<span style="position:absolute; left:1150">{{f.complain_date}}</span>
 	      </a>  
 	      </h4>
 	    </div>
@@ -92,16 +92,16 @@
 	      <b>Problem still faced:</b>{{ f.user_complain_reason }}<br />
 	      {% endif %}
 	      <div class="form-inline" role="form">
-	      {% if f.end_date == null or f.govt_complain_status == 4 or f.govt_complain_status == 6 %}
+	      {% if f.end_date == null %}
 		  <div class="form-group">
 		    <label class="sr-only" >No. of days</label>
-		    <input type="date" class="form-control" id="num_days" placeholder="Enter days to complete" name="num_days">
+		    <input type="text" class="form-control" id="num_days" placeholder="Enter days to complete" name="num_days">
 		  </div>
 		  <button type="submit" class="btn btn-primary" name="complain_id" value="{{f.id}}">Submit</button>
 		  {% endif %}
 		  </div>	
 	      </div>
-	      
+
 	    </div>
 	  </div>
 	{% endfor %}
