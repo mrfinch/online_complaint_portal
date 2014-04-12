@@ -99,4 +99,4 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
-MEDIA_ROOT = '/home/masaniamit/online_complaint_portal/complaint_portal/static/'
+MEDIA_ROOT = '/home/nidhi/online_complaint_portal/complaint_portal/static/'
