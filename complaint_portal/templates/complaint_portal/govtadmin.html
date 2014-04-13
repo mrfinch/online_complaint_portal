@@ -88,6 +88,7 @@
 	      <b>Username: </b><a href="{% url 'complaint_portal:userprofile_admin' f.c_user.id %}" target="_blank">{{ f.c_user.username }}</a>  &nbsp;&nbsp;&nbsp;&nbsp;
 	      <a href="{% static f.complain_image %}" target="_blank">Link to Image</a>
 	      &nbsp;&nbsp;&nbsp;&nbsp;Upvotes:{{ f.upvotes }}<br />
+	      <b><a href="{% url 'complaint_portal:dforum' f.id %}" target="_blank">Discuss with government employee</a></b>
 	      {% if f.user_complain_reason %}
 	      <b>Problem still faced:</b>{{ f.user_complain_reason }}<br />
 	      {% endif %}

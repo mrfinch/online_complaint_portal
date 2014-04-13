@@ -26,6 +26,12 @@ class Complain(models.Model):
 	rejection_reason = models.IntegerField(default=-1)    #1-this reason 2-this reason
 	end_date = models.DateTimeField(null=True,blank=True)
 
+class Complain_comments(models.Model):
+	complain_id = models.IntegerField()
+	comment_date = models.DateTimeField(default=datetime.now)
+	comment_user = models.CharField(max_length=50)
+	content = models.TextField()
+
 class ComplainForm(ModelForm):
 	class Meta:
 		model = Complain
