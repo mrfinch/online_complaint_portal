@@ -81,6 +81,7 @@ $.post("http://localhost:8000/complaint_portal/upvote/2",{complain_id:"c_id"})
 	      {{ complain.title }}
 			<span style="position:absolute; left:60%;"><i class="glyphicon glyphicon-time"></i> <span style="font-family:'Times New Roman', Times, serif;">{{complain.complain_date}}</span></span>
 			<span style="position:absolute; left:80%;"><i class="glyphicon glyphicon-thumbs-up"></i><span style="font-family:'Times New Roman', Times, serif;">{{complain.upvotes}}</span></span>
+	      	<span id="st{{complain.id}}"></span>
 	      <br />
 	      {{complain.description}}
 	      <a data-toggle="collapse" data-parent="#accordion" href="#{{forloop.counter}}" style="font-family:'Times New Roman', Times, serif;">
@@ -146,19 +147,16 @@ $.post("http://localhost:8000/complaint_portal/upvote/2",{complain_id:"c_id"})
 						  </div>
 					  </div> 
                 {% endif %}	   		
-	            <form action="{% url 'complaint_portal:upvote' complain.id %}" method="post">
-	            {% csrf_token %}
-				{% if user.is_authenticated %}
+	            {% if user.is_authenticated %}
 					<div class="col-xs-12 col-sm-12 col-md-3">
  					<ul class="meta-search">
- 						<button type="submit" class="btn btn-primary btn-lg">
-   							<span class="glyphicon glyphicon-thumbs-up"></span> 
+ 						<button type="submit" class="btn btn-primary btn-lg" value="{{complain.id}}">
+   							<span class="glyphicon glyphicon-thumbs-up" value="{{complain.id}}" ></span> 
  						</button>
  
  					</ul>
  					</div> 
 				{% endif %}
-				</form>
 			</div>
 			<span class="clearfix borda"></span>
 		</article>

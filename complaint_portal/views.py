@@ -334,10 +334,12 @@ def complain_complete(request,complain_id):
 		return render(request,"complaint_portal/complain_complete.html",{"complain_info":complain_info})
 
 def upvote(request,complain_id):
+	print 'adf'
 	if not request.user.is_authenticated or not request.user.is_active:
 		return HttpResponseRedirect(reverse('complaint_portal:index'))
 	complain_info = Complain.objects.get(pk=complain_id)
 	if not request.user.userupvotestatus_set.values('upvote').filter(upvote=complain_info.id).exists():
+		print "zxc"
 		print request.user.userupvotestatus_set.values('upvote').filter(upvote=complain_info.id)
 		complain_info.upvotes += 1
 		complain_info.save()
@@ -349,9 +351,10 @@ def upvote(request,complain_id):
 		user_up_status.save()
 		complain_list = Complain.objects.order_by('id')
 		my_data = [complain_info.id,complain_info.upvotes]
-		return render(request,"complaint_portal/all_complain.html",{"complain_list":complain_list,"complain_id":complain_info.id,
-			"new_upvotes":complain_info.upvotes})
+		return render(request,"complaint_portal/all_complain.html",{"complain_list":complain_list,"complain_id":complain_info.id})
+
 	else:
+		print "asfg"
 		complain_list = Complain.objects.order_by('id')
 		return render(request,"complaint_portal/all_complain.html",{"complain_list":complain_list,"complain_id":complain_info.id})
 	
