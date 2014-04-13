@@ -78,10 +78,13 @@ $.post("http://localhost:8000/complaint_portal/upvote/2",{complain_id:"c_id"})
 	<div class="panel panel-info">
 	    <div class="panel-heading">
 	      <h3 class="panel-title">
-	      <a data-toggle="collapse" data-parent="#accordion" href="#{{forloop.counter}}" style="font-family:'Times New Roman', Times, serif;">
 	      {{ complain.title }}
-			<i class="glyphicon glyphicon-time"></i> <span><span style="font-family:'Times New Roman', Times, serif;">{{complain.complain_date}}</span>
-			<i class="glyphicon glyphicon-thumbs-up"></i><span style="font-family:'Times New Roman', Times, serif;">{{complain.upvotes}}</span>
+			<span style="position:absolute; left:60%;"><i class="glyphicon glyphicon-time"></i> <span style="font-family:'Times New Roman', Times, serif;">{{complain.complain_date}}</span></span>
+			<span style="position:absolute; left:80%;"><i class="glyphicon glyphicon-thumbs-up"></i><span style="font-family:'Times New Roman', Times, serif;">{{complain.upvotes}}</span></span>
+	      <br />
+	      {{complain.description}}
+	      <a data-toggle="collapse" data-parent="#accordion" href="#{{forloop.counter}}" style="font-family:'Times New Roman', Times, serif;">
+	      Show more
 	      </a>  
 	      </h3>
 	    </div>
@@ -105,7 +108,8 @@ $.post("http://localhost:8000/complaint_portal/upvote/2",{complain_id:"c_id"})
 				</ul>
 			</div>
 			<div class="col-xs-4 col-sm-4 col-md-6 excerpet">
-						<p style="font-family:'Times New Roman', Times, serif;">{{complain.description}} </p>
+				<p style="font-family:'Times New Roman', Times, serif;">{{complain.title}} </p>
+				<p style="font-family:'Times New Roman', Times, serif;">{{complain.description}} </p>
                 {% if complain.govt_complain_status == 1 %}
 					  <div class="span4">
 						  Complain Validated<span class="pull-right">Sent to govt. employee</span>

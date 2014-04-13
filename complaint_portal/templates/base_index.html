@@ -31,9 +31,11 @@
 				<li id="leader_board"><a href="{% url 'complaint_portal:ranking' %}">Leader Board</a></li>
 				<li id="complain"><a href="{% url 'complaint_portal:complainform' %}">Complain</a></li>
 				<li id="signin"><!-- Button trigger modal -->
+                {% if not user.is_authenticated %}
                 <a  data-toggle="modal" data-target="#myModal">
                 Sign In
    				</a>
+   				{% endif %}
 
 				<!-- Modal -->
 				<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
