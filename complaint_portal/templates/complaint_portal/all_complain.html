@@ -80,8 +80,8 @@ $.post("http://localhost:8000/complaint_portal/upvote/2",{complain_id:"c_id"})
 	      <h3 class="panel-title">
 	      {{ complain.title }}
 			<span style="position:absolute; left:60%;"><i class="glyphicon glyphicon-time"></i> <span style="font-family:'Times New Roman', Times, serif;">{{complain.complain_date}}</span></span>
-			<span style="position:absolute; left:80%;"><i class="glyphicon glyphicon-thumbs-up"></i><span style="font-family:'Times New Roman', Times, serif;">{{complain.upvotes}}</span></span>
-	      	<span id="st{{complain.id}}"></span>
+			<span style="position:absolute; left:80%;"><i class="glyphicon glyphicon-thumbs-up"></i><span style="font-family:'Times New Roman', Times, serif;" id="st{{complain.id}}">{{complain.upvotes}}</span></span>
+	      	
 	      <br />
 	      {{complain.description}}
 	      <a data-toggle="collapse" data-parent="#accordion" href="#{{forloop.counter}}" style="font-family:'Times New Roman', Times, serif;">

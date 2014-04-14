@@ -10,6 +10,7 @@ import random,string
 from datetime import datetime,timedelta 
 from django.db.models import Q
 import django.core.exceptions
+import json
 # Create your views here.
 
 def hello(request):
@@ -351,13 +352,20 @@ def upvote(request,complain_id):
 		user_up_status.save()
 		complain_list = Complain.objects.order_by('id')
 		my_data = [complain_info.id,complain_info.upvotes]
-		return render(request,"complaint_portal/all_complain.html",{"complain_list":complain_list,"complain_id":complain_info.id})
-
+		#return render(request,"complaint_portal/all_complain.html",{"complain_list":complain_list,"complain_id":complain_info.id})
+		print complain_info.upvotes
+		response_data = {}
+		response_data['upvotes'] = complain_info.upvotes
+		return HttpResponse(json.dumps(response_data),content_type="application/json")
 	else:
 		print "asfg"
 		complain_list = Complain.objects.order_by('id')
-		return render(request,"complaint_portal/all_complain.html",{"complain_list":complain_list,"complain_id":complain_info.id})
-	
+		#return render(request,"complaint_portal/all_complain.html",{"complain_list":complain_list,"complain_id":complain_info.id})
+		print complain_info.upvotes
+		response_data = {}
+		response_data['upvotes'] = complain_info.upvotes
+		return HttpResponse(json.dumps(response_data),content_type="application/json")
+
 def feed_upvote(request,complain_id):
 	if not request.user.is_authenticated or not request.user.is_active:
 		return HttpResponseRedirect(reverse('complaint_portal:index'))

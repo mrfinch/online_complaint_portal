@@ -7,15 +7,18 @@ $(document).ready(function(){
 		$.ajax({
 			url:"http://localhost:8000/complaint_portal/upvote/"+$(this).val(),
 			type:"GET",
-			success:function(){
-				alert("success");
+			success:function(d){
+
+				//alert("dsd");
+				console.log(d["upvotes"]);
 				var x = '#st'+z;
 				console.log(x)
-				$(x).html("upvoted");
-				console.log($('#st2').html());
+				$(x).html(d["upvotes"]);
+				console.log($(x).html());
 			},
-			error:function(){
-				alert("error");
+			error:function(d){
+				//alert(d);
+				console.log(d);
 				var x = '#st'+z;
 				console.log(x)
 				$(x).html("upvoted1");
