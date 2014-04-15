@@ -66,5 +66,4 @@ class UserUpvoteStatus(models.Model):
 	user_upvote = models.ForeignKey(User)
 	upvote = models.IntegerField()
 
-
 #another table which will store complain's locality	 			 

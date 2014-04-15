@@ -22,7 +22,7 @@ font-size: 24px;
 {% block content %}
 <div>
 	<!--<h2>Complain Form</h2> -->
-<div class="jumbotron jumbotron-sm">
+<div class="jumbotron jumbotron-sm" style="background-image:url('{% static "complaint_portal/images/yellow5.jpg" %}') ;background-repeat:repeat-x;">
     <div class="container">
         <div class="row">
             <div class="col-sm-12 col-lg-12">
@@ -31,7 +31,8 @@ font-size: 24px;
             </div>
         </div>
     </div>
-</div>		
+</div>
+		
 <div class="container">
 {% if msg %}
 	{{ msg }}
@@ -45,18 +46,18 @@ font-size: 24px;
 <div class="container">
     <div class="row">
         <div class="col-md-8">
-            <div class="well well-sm">
+            <!--<div class="well well-sm">-->
                 <form action="{% url 'complaint_portal:complainform' %}" method="post" enctype="multipart/form-data">
                 {% csrf_token %}
                 <div class="row">
                     <div class="col-md-6">
                         <div class="form-group">
-                            <label for="title">
+                            <label for="title" style="color:#FFFFFF;font-weight:bold;font-size:18px;">
                                 Title</label>
                             <input type="text" name="title" class="form-control" id="title" placeholder="Enter name" required="required" />
                         </div>
                         <div class="form-group">
-                            <label for="Complain Place">
+                            <label for="Complain Place" style="color:#FFFFFF;font-weight:bold;font-size:18px;">
                                 Complain Place</label>
                             <select id="complain_place" name="complain_place" class="form-control" required="required">
                                 {% for place in places %}
@@ -65,7 +66,7 @@ font-size: 24px;
                             </select>
                         </div>
                         <div class="form-group">
-                            <label for="Complain Type">
+                            <label for="Complain Type" style="color:#FFFFFF;font-weight:bold;font-size:18px;">
                                 Complain Type</label>
                             <select id="type_of_complain" name="type_of_complain" class="form-control" required="required">
                                 {% for type in types %}
@@ -74,19 +75,19 @@ font-size: 24px;
                             </select>
                         </div>
                         <div class="form-group">
-                            <label for="description">
+                            <label for="description" style="color:#FFFFFF;font-weight:bold;font-size:18px;">
                                 Description</label>
                             <textarea name="description" id="description" class="form-control" rows="7" cols="25" required="required"
                                 placeholder="Description"></textarea>
                         </div>
                         <div class="form-group">
-                            <label for="complain_address">
+                            <label for="complain_address" style="color:#FFFFFF;font-weight:bold;font-size:18px;">
                                 Address Of Complaint</label>
                             <textarea name="complain_address" id="complain_address" class="form-control" rows="7" cols="25" required="required"
                                 placeholder="Address"></textarea>
                         </div>
                         <div class="form-group">	
-    	    	            <label for="complain_image">
+    	    	            <label for="complain_image" style="color:#FFFFFF;font-weight:bold;font-size:18px;">
 	    	    	            Image for complain(optional)</label>
 							<input type="file" name="complain_image" id="complain_image" class="form-control">
 						</div>
@@ -99,8 +100,10 @@ font-size: 24px;
                 </div>
                 </form>
             </div>
-        </div>
+        <!--</div>-->
     </div>
 </div>  
 </div>
+<br />
+<br />
 {% endblock %}              	

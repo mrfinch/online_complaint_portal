@@ -105,61 +105,6 @@
                 Sign In
    				</a>
 
-				<!-- Modal -->
-				<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-  				<div class="modal-dialog">
-    			<div class="modal-content">
-      			<div class="modal-header">
-        		<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-        		<h6 class="modal-title" id="myModalLabel">ANAND COMPLAINT PORTAL</h6>
-      			</div>
-      			<div class="modal-body">
-                
-				<div class="container">
-				<div class="row">
-    			<div class="col-md-4">
-				<form action="{% url 'complaint_portal:login' %}" method="post" role="form">
-				{% csrf_token %}
-				<fieldset>
-					<h6>Sign In to complain</h6>
-					<hr class="colorgraph">
-					<div class="form-group">
-                    	<input type="text" name="username" id="username" class="form-control input-lg" placeholder="Username">
-					</div>
-					<div class="form-group">
-                    <input type="password" name="password" id="password" class="form-control input-lg" placeholder="Password">
-					</div>
-					<span class="button-checkbox">
-					<input type="checkbox" name="remember_me" id="remember_me" checked="checked">
-          			<button type="button" class="btn" data-color="info">Remember Me</button>
-                    
-					<a href="{% url 'complaint_portal:forgot_password' %}" class="btn btn-link pull-right">Forgot Password?</a>
-					</span>
-					<hr class="colorgraph">
-					<div class="row">
-					<div class="col-xs-6 col-sm-6 col-md-6">
-                        <input type="submit" class="btn btn-lg btn-success btn-block" value="Sign In">
-					</div>
-					<div class="col-xs-6 col-sm-6 col-md-6">
-						<a href="{% url 'complaint_portal:register' %}" class="btn btn-lg btn-primary btn-block">Register</a>
-					</div>
-					</div>
-					<div class="row">
-					{% if msg %}
-						{{ msg }}
-					{% endif %}
-				</div>
-			</fieldset>
-		</form>
-
-	</div>
-	        <div class="col-md-4">
-	        <img src="{% static "complaint_portal/images/logo1.jpg" %}" width="200" height="200" style="margin-right:30%;"> </img>
-	        </div>
-</div>
-</div>
-
-
       			</div>
       			
     		</div>

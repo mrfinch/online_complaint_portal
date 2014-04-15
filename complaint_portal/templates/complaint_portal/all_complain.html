@@ -29,11 +29,11 @@ hgroup h2.lead { font: normal normal 1.125em "Roboto",Arial,Verdana,sans-serif; 
 </style>
 <script>
 $(document).ready(function(){
-	var x = $('.desc').html();
+	/*var x = $('.desc').html();
 	if(x.length > 5){
 		var y = x.substring(0,5)+"...";
 		$('.desc').html(y);
-	}
+	}*/
 });
 function changecontent(id){
 		console.log(id);
@@ -182,3 +182,18 @@ $.post("http://localhost:8000/complaint_portal/upvote/2",{complain_id:"c_id"})
 </div>
 </div>
 {% endblock %}
+
+{% ifequal complain.govt_complain_status 0 %}
+				<form action="{% url 'complaint_portal:complain_update' complain.id %}" method="get">
+					{% csrf_token %}
+					<input type="submit" name="upvote" class="btn btn-success" value="Update Complain Info">
+				</form>
+				{% endifequal %}
+				{% 	if complain.govt_complain_status == 3 %}
+				<form action="{% url 'complaint_portal:user_complete' complain.id %}" method="post" class="form-inline" role="form">
+				{% csrf_token %}
+				<input type="submit" name="complete" class="btn btn-info" value="Complete" onclick="return confirm('Are you sure you want to mark complain as Complete?')" >
+        		<input type="submit" name="notcomplete" class="btn btn-danger" value="Not Complete">
+        		</form>
+				{% endif %}
+                

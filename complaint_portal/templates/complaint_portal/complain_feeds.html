@@ -1,6 +1,7 @@
 {% extends 'base_profile.html' %}
 {% load staticfiles %}
-{% block mytitle %}Complain Feeds{% endblock %}
+{% block mytitle %}Complains{% endblock %}
+
 {% block css_js %}
 <style>
 .mb20 { margin-bottom: 20px; } 
@@ -26,31 +27,100 @@ hgroup h2.lead { font: normal normal 1.125em "Roboto",Arial,Verdana,sans-serif; 
 .search-result span.plus a i { color: #fff !important; }
 .search-result span.border { display: block; width: 97%; margin: 0 15px; border-bottom: 1px dotted #ccc; }
 </style>
-{% endblock %}
-{% block mycontent %}
-<div class="container">
-<div>
-  <h4>Local Feeds</h4>
-  <hr />
-</div>
+<style>
 
-<section class="col-xs-12 col-sm-6 col-md-12">
+.jumbotron {
+background: #358CCE;
+color: #FFF;
+border-radius: 0px;
+}
+.jumbotron-sm { padding-top: 10px;
+padding-bottom: 10px; }
+.jumbotron small {
+color: #FFF;
+}
+.h1 small {
+font-size: 24px;
+}
+</style>
+
+<script>
+$(document).ready(function(){
+	/*var x = $('.desc').html();
+	if(x.length > 5){
+		var y = x.substring(0,5)+"...";
+		$('.desc').html(y);
+	}*/
+});
+function changecontent(id){
+		console.log(id);
+		console.log($('#'+id).html());
+		if($('#'+id).html()=="Show more")
+		{	
+			$('#'+id).html("Show less");
+		}
+		else{
+			$('#'+id).html("Show more");
+		}
+}
+function upvoting(c_id){
+$.post("http://localhost:8000/complaint_portal/upvote/2",{complain_id:"c_id"})
+	.done(function(my_data){
+		alert(my_data);
+	});
+}
+</script>
+{% endblock %}
+
+{% block mycontent %}
+<div class="jumbotron jumbotron-sm" style="background-image:url('{% static "complaint_portal/images/yellow5.jpg" %}') ;background-repeat:repeat-x;">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-5 col-lg-5">
+                <h4 class="h4">
+                    Local Complains</h4>
+            </div>
+        </div>
+    </div>
+</div>		
+
+<div class="container">
+<div class="panel-group" id="accordion">
 	{% for complain in complain_feeds %}
+	<div class="panel panel-info">
+	    <div class="panel-heading">
+	      <h3 class="panel-title">
+	      {{ complain.title }}
+			<span style="position:absolute; left:60%;"><i class="glyphicon glyphicon-time"></i> <span style="font-family:'Times New Roman', Times, serif;">{{complain.complain_date}}</span></span>
+			<span style="position:absolute; left:80%;"><i class="glyphicon glyphicon-thumbs-up"></i><span style="font-family:'Times New Roman', Times, serif;" id="st{{complain.id}}">{{complain.upvotes}}</span></span>
+	      	
+	      <br />
+	      <span class="desc">{{complain.description}}.....</span>
+	      <a data-toggle="collapse" data-parent="#accordion" href="#{{forloop.counter}}" style="font-family:'Times New Roman', Times, serif;" id="show{{forloop.counter}}" onclick="changecontent('show{{forloop.counter}}')">Show more</a>  
+	      </h3>
+	    </div>
+		{% if forloop.counter != -1 %}
+	    	<div id="{{forloop.counter}}" class="panel-collapse collapse"> 
+	    {% else %}	
+	    	<div id="{{forloop.counter}}" class="panel-collapse collapse in">
+	     {% endif %}
+	<!-- <div class="well" style="background-color:#D1EEEE "> -->
+		<div class="panel-body" style="background-color:#F4F4F4">
 		<article class="search-result row">
+		</br>
 			<div class="col-xs-8 col-sm-8 col-md-3">
 				<a href="{% static complain.complain_image %}" title="{{complain.title}}" class="thumbnail" target="_blank"><img src="{% static complain.complain_image %}" alt="{{complain.title}}" style="max-width:100%;max-height:100%;" /></a>
 			</div>
 			<div class="col-xs-12 col-sm-12 col-md-3">
 				<ul class="meta-search">
 					<li><i class="glyphicon glyphicon-tags"></i> <span>{{complain.type_of_complain}}</span></li>
-					<li><i class="glyphicon glyphicon-time"></i> <span>{{complain.complain_date}}</span></li>
 					<li><i class="glyphicon glyphicon-tags"></i> <span>{{complain.complain_place}}</span></li>
-					<li><i class="glyphicon glyphicon-tags"></i> <span>Upvotes:{{complain.upvotes}}</span></li>
+					<li><i class="glyphicon glyphicon-time"></i> <span>By:{{complain.c_user.username}}-{{complain.c_user.userinfos.total_upvotes}}</span></li>
 				</ul>
 			</div>
 			<div class="col-xs-4 col-sm-4 col-md-6 excerpet">
-				<h3><a href="#" title="" style="font-family:'Times New Roman', Times, serif;">{{complain.title}}</a></h3>
-				<p style="font-family:'Times New Roman', Times, serif;">{{complain.description}} </p>				
+				<p style="font-family:'Times New Roman', Times, serif;">{{complain.title}} </p>
+				<p style="font-family:'Times New Roman', Times, serif;">{{complain.description}} </p>
                 {% if complain.govt_complain_status == 1 %}
 					  <div class="span4">
 						  Complain Validated<span class="pull-right">Sent to govt. employee</span>
@@ -62,21 +132,21 @@ hgroup h2.lead { font: normal normal 1.125em "Roboto",Arial,Verdana,sans-serif; 
                 	 <div class="span4">
 						  Rejected Complain<span class="pull-right">Show Reason</span>
 						  <div class="progress progress-striped active">
-						      <div class="progress-bar progress-bar-info" style="width:50%;"></div>
+						      <div class="progress-bar progress-bar-danger" style="width:100%;"></div>
 						  </div>
 					  </div>
                 {% elif complain.govt_complain_status == 4 %}
                 	<div class="span4">
 						  Work in progress<span class="pull-right">Deadline:{{complain.end_date}}</span>
 						  <div class="progress progress-striped active">
-						      <div class="progress-bar progress-bar-info" style="width:75%;"></div>
+						      <div class="progress-bar progress-bar-warning" style="width:75%;"></div>
 						  </div>
 					  </div> 
                 {% elif complain.govt_complain_status == 3 %}
                 	<div class="span4">
 						  Completed<span class="pull-right"></span>
 						  <div class="progress progress-striped active">
-						      <div class="progress-bar progress-bar-info" style="width:100%;"></div>
+						      <div class="progress-bar progress-bar-success" style="width:100%;"></div>
 						  </div>
 					  </div> 
                 {% else %}
@@ -87,20 +157,22 @@ hgroup h2.lead { font: normal normal 1.125em "Roboto",Arial,Verdana,sans-serif; 
 						  </div>
 					  </div> 
                 {% endif %}	   		
-				<form action="{% url 'complaint_portal:feed_upvote' complain.id %}" method="post">
-	            {% csrf_token %}
-				{% if user.is_authenticated %}
-					<input type="submit" name="upvote" class="btn btn-success" value="Upvote">
+	            {% if user.is_authenticated %}
+					<div class="col-xs-12 col-sm-12 col-md-3">
+ 					<ul class="meta-search">
+ 						<button type="submit" class="btn btn-primary btn-lg" value="{{complain.id}}">
+   							<span class="glyphicon glyphicon-thumbs-up" value="{{complain.id}}" ></span> 
+ 						</button>
+ 
+ 					</ul>
+ 					</div> 
 				{% endif %}
-				</form>
-				<br />
-				<hr />
 			</div>
 			<span class="clearfix borda"></span>
 		</article>
+		</div> 
+	</div>
 	{% endfor %}	
-</section>
+</div>
 </div>
 {% endblock %}
-<br />
-<br />

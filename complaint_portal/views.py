@@ -217,9 +217,10 @@ def details(request,complain_id):
 
 def userprofile(request):
 	#get news feed of local complains of user
+	print request.user.id
+	print "dsg"
 	if not request.user.is_authenticated or not request.user.is_active:
 		return HttpResponseRedirect(reverse('complaint_portal:index'))
-	print request.user.id
 	print UserInfos.objects.all()
 	u = UserInfos.objects.get(pk=request.user.id)   
 	complain_feeds = Complain.objects.filter(complain_place=u.locality).exclude(govt_complain_status=2)
