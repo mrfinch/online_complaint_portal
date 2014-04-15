@@ -28,6 +28,24 @@ hgroup h2.lead { font: normal normal 1.125em "Roboto",Arial,Verdana,sans-serif; 
 .search-result span.border { display: block; width: 97%; margin: 0 15px; border-bottom: 1px dotted #ccc; }
 </style>
 <script>
+$(document).ready(function(){
+	var x = $('.desc').html();
+	if(x.length > 5){
+		var y = x.substring(0,5)+"...";
+		$('.desc').html(y);
+	}
+});
+function changecontent(id){
+		console.log(id);
+		console.log($('#'+id).html());
+		if($('#'+id).html()=="Show more")
+		{	
+			$('#'+id).html("Show less");
+		}
+		else{
+			$('#'+id).html("Show more");
+		}
+}
 function upvoting(c_id){
 $.post("http://localhost:8000/complaint_portal/upvote/2",{complain_id:"c_id"})
 	.done(function(my_data){
@@ -83,10 +101,8 @@ $.post("http://localhost:8000/complaint_portal/upvote/2",{complain_id:"c_id"})
 			<span style="position:absolute; left:80%;"><i class="glyphicon glyphicon-thumbs-up"></i><span style="font-family:'Times New Roman', Times, serif;" id="st{{complain.id}}">{{complain.upvotes}}</span></span>
 	      	
 	      <br />
-	      {{complain.description}}
-	      <a data-toggle="collapse" data-parent="#accordion" href="#{{forloop.counter}}" style="font-family:'Times New Roman', Times, serif;">
-	      Show more
-	      </a>  
+	      <span class="desc">{{complain.description}}.....</span>
+	      <a data-toggle="collapse" data-parent="#accordion" href="#{{forloop.counter}}" style="font-family:'Times New Roman', Times, serif;" id="show{{forloop.counter}}" onclick="changecontent('show{{forloop.counter}}')">Show more</a>  
 	      </h3>
 	    </div>
 		{% if forloop.counter != -1 %}
