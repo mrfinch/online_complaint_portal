@@ -1,4 +1,6 @@
 {% extends 'base_profile.html' %}
+{% load staticfiles %}
+
 {% block mytitle %}Update Profile{% endblock %}
 
 {% block css_js %}
@@ -21,16 +23,16 @@ font-size: 24px;
 
 
 {% block mycontent %}
-<div class="jumbotron jumbotron-sm">
+<div class="jumbotron jumbotron-sm" style="background-image:url('{% static "complaint_portal/images/yellow5.jpg" %}') ;background-repeat:repeat-x;">
     <div class="container">
         <div class="row">
-            <div class="col-sm-12 col-lg-12">
-                <h2 class="h2">
-                    Update Profile</h2>
+            <div class="col-sm-5 col-lg-5">
+                <h4 class="h4">
+                    Profile Update</h4>
             </div>
         </div>
     </div>
-</div>		
+</div>      
 
 <div class="container">
 	{% if msg %}
@@ -40,43 +42,43 @@ font-size: 24px;
 <div class="container">
     <div class="row">
         <div class="col-md-8">
-            <div class="well well-sm">
+            <!--<div class="well well-sm">-->
                 <form action="{% url 'complaint_portal:profile_update' %}" method="post">
                 {% csrf_token %}
                 <div class="row">
                     <div class="col-md-6">
                         <div class="form-group">
-                            <label for="username">
+                            <label for="username" style="color:#FFFFFF;font-weight:bold;font-size:18px;">
                                 Username</label>
                             <input type="text" name="username" class="form-control" id="username" value="{{ p_info.username }}" required="required" />
                         </div>
                         <div class="form-group">
-                            <label for="password">
+                            <label for="password" style="color:#FFFFFF;font-weight:bold;font-size:18px;">
                                 New Password</label>
                             <input type="password" name="password" class="form-control" id="password" placeholder="Enter password" required="required" />
                         </div>
                         <div class="form-group">
-                            <label for="confirm_password">
+                            <label for="confirm_password" style="color:#FFFFFF;font-weight:bold;font-size:18px;">
                                 Confirm Password</label>
                             <input type="password" name="confirm_password"class="form-control" id="confirm_password" placeholder="Enter username" required="required" />
                         </div>
                         <div class="form-group">
-                            <label for="firstname">
+                            <label for="firstname" style="color:#FFFFFF;font-weight:bold;font-size:18px;">
                                 Firstname</label>
                             <input type="text" name="firstname" class="form-control" id="firstname" value="{{ p_info.first_name }}" required="required" />
                         </div>
                         <div class="form-group">
-                            <label for="lastname">
+                            <label for="lastname" style="color:#FFFFFF;font-weight:bold;font-size:18px;">
                                 Lastname</label>
                             <input type="text" name="lastname" class="form-control" id="lastname" value="{{ p_info.last_name }}" required="required" />
                         </div>
                         <div class="form-group">
-                            <label for="phone">
+                            <label for="phone" style="color:#FFFFFF;font-weight:bold;font-size:18px;">
                                 Phone</label>
                             <input type="text" name="phone" class="form-control" id="phone" value="{{ profile_info.phone }}" required="required" />
                         </div>
                         <div class="form-group">
-                            <label for="email">
+                            <label for="email" style="color:#FFFFFF;font-weight:bold;font-size:18px;">
                                 Email Address</label>
                             <div class="input-group">
                                 <span class="input-group-addon"><span class="glyphicon glyphicon-envelope"></span>
@@ -84,7 +86,7 @@ font-size: 24px;
                                 <input type="email" name="email" class="form-control" id="email" value="{{ p_info.email }}" required="required" /></div>
                         </div>
                         <div class="form-group">
-                            <label for="locality">
+                            <label for="locality" style="color:#FFFFFF;font-weight:bold;font-size:18px;">
                                 Locality</label>
                             <select id="locality" name="locality" class="form-control" required="required">
                                 {% for place in places %}
@@ -97,7 +99,7 @@ font-size: 24px;
                             </select>
                         </div>
                         <div class="form-group">
-                            <label for="address">
+                            <label for="address" style="color:#FFFFFF;font-weight:bold;font-size:18px;">
                                 Address</label>
                             <textarea name="address" id="address" class="form-control" rows="9" cols="25" required="required"
                                 value="{{ profile_info.address }}">{{ profile_info.address }}</textarea>
@@ -110,7 +112,7 @@ font-size: 24px;
                  	
                 </div>
                 </form>
-            </div>
+            <!--</div>-->
         </div>
     </div>
 </div>  

@@ -49,6 +49,7 @@ urlpatterns = patterns('',
 	url(r'^faq/',views.faq,name="faq"),
 	url(r'^hello/',views.hello,name="hello"),
 	url(r'^dforum/(?P<complain_id>\d+)/',views.dforum,name="dforum"),
+	url(r'^comment/(?P<complain_id>\d+)/',views.comment,name="comment"),
 	) 
 
 #updateform for each complain

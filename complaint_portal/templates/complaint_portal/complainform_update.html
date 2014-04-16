@@ -20,18 +20,17 @@ font-size: 24px;
 {% endblock %}
 
 {% block content %}
-<div>
-	<!--<h2>Complain Form</h2> -->
-<div class="jumbotron jumbotron-sm">
+<div class="jumbotron jumbotron-sm" style="background-image:url('{% static "complaint_portal/images/yellow5.jpg" %}') ;background-repeat:repeat-x;">
     <div class="container">
         <div class="row">
-            <div class="col-sm-12 col-lg-12">
-                <h1 class="h1">
-                    Update Complaint Form</h1>
+            <div class="col-sm-5 col-lg-5">
+                <h4 class="h4">
+                    Complain Update</h4>
             </div>
         </div>
     </div>
-</div>		
+</div>      
+
 <div class="container">
 {% if msg %}
 	{{ msg }}
@@ -40,19 +39,19 @@ font-size: 24px;
 <div class="container">
     <div class="row">
         <div class="col-md-8">
-            <div class="well well-sm">
+            <!--<div class="well well-sm">-->
                 <form action="{% url 'complaint_portal:complain_update' complain_info.id %}" method="post" enctype="multipart/form-data">
                 {% csrf_token %}
                 <div class="row">
                     <div class="col-md-6">
                         <div class="form-group">
-                            <label for="title">
+                            <label for="title" style="color:#FFFFFF;font-weight:bold;font-size:18px;">
                                 Title</label>
                             <input type="text" name="title" class="form-control" id="title" value="{{complain_info.title}}" 
                             required="required" />
                         </div>
                         <div class="form-group">
-                            <label for="Complain Place">
+                            <label for="Complain Place" style="color:#FFFFFF;font-weight:bold;font-size:18px;">
                                 Complain Place</label>
                             <select id="complain_place" name="complain_place" value="{{complain_info.complain_place}}" class="form-control" required="required">
                                 {% for place in places %}
@@ -61,7 +60,7 @@ font-size: 24px;
                             </select>
                         </div>
                         <div class="form-group">
-                            <label for="Complain Type">
+                            <label for="Complain Type" style="color:#FFFFFF;font-weight:bold;font-size:18px;">
                                 Complain Type</label>
                             <select id="type_of_complain" name="type_of_complain" value="{{complain_info.type_of_complain}}" 
                             class="form-control" required="required">
@@ -71,21 +70,20 @@ font-size: 24px;
                             </select>
                         </div>
                         <div class="form-group">
-                            <label for="description">
+                            <label for="description" style="color:#FFFFFF;font-weight:bold;font-size:18px;">
                                 Description</label>
                             <textarea name="description" id="description" value="{{complain_info.description}}" class="form-control" rows="9" cols="25" required="required">{{complain_info.description}}</textarea>
                         </div>
                         <div class="form-group">
-                            <label for="complain_address">
+                            <label for="complain_address" style="color:#FFFFFF;font-weight:bold;font-size:18px;">
                                 Address Of Complaint</label>
                             <textarea name="complain_address" id="complain_address" class="form-control" rows="9" cols="25" required="required"
                                 value="{{complain_info.complain_address}}">{{complain_info.complain_address}}</textarea>
                         </div>
                         <div class="form-group">	
-    	    	            <label for="complain_image">
+    	    	            <label for="complain_image" style="color:#FFFFFF;font-weight:bold;font-size:18px;">
 	    	    	            Image for complain(optional)</label>
-							<input type="file" name="complain_image" value="{{complain_info.complain_image}}" id="complain_image" 
-							class="form-control">
+							<input type="file" name="complain_image" value="{{complain_info.complain_image}}" id="complain_image" class="form-control">
 						</div>
 						<div class="col-md-12">
                         <button type="submit" class="btn btn-primary pull-left" id="complainbtn" value="Complain">
@@ -95,7 +93,7 @@ font-size: 24px;
                  	
                 </div>
                 </form>
-            </div>
+            <!--</div>-->
         </div>
     </div>
 </div>  

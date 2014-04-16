@@ -32,6 +32,12 @@ class Complain_comments(models.Model):
 	comment_user = models.CharField(max_length=50)
 	content = models.TextField()
 
+class Complain_usercomments(models.Model):
+	complain_id = models.IntegerField()
+	comment_date = models.DateTimeField(default=datetime.now)
+	comment_user = models.CharField(max_length=50)
+	content = models.TextField()
+
 class ComplainForm(ModelForm):
 	class Meta:
 		model = Complain
