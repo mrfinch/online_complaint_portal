@@ -688,7 +688,8 @@ def dforum(request,complain_id):
 	if request.method=="POST":
 		content = request.POST.get("content","")
 		c = Complain_comments.objects.create(content=content,comment_user=request.user.username,complain_id=complain_id)
-		return HttpResponseRedirect(reverse("complaint_portal:dforum"))
+		c_comments = Complain_comments.objects.filter(complain_id=complain_id) 
+		return render(request,"complaint_portal/dforum.html",{"complain":complain,"comments":c_comments})
 	else:
 		return render(request,"complaint_portal/dforum.html",{"complain":complain,"comments":c_comments})
 
