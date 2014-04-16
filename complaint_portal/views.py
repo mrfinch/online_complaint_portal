@@ -55,6 +55,24 @@ def register(request):
 		return render(request,"complaint_portal/register.html",{"places":places})			
 
 def login(request):
+	print 'hyhy'
+	print request.POST
+	username = request.POST.get("username","")
+	password = request.POST.get("password","")
+	user = auth.authenticate(username=username,password=password)
+	if user is not None and user.is_active:
+			print 'ahyhy'
+			auth.login(request,user)
+			response_data = {}
+			response_data['response'] = "Done"
+			return HttpResponseRedirect(reverse('complaint_portal:mycomplains'))			
+	else:
+			print 'ahyhyesr'
+			response_data = {}
+			response_data['response'] = "Incorrect Combination"
+			return HttpResponse(json.dumps(response_data),content_type="application/json")			
+
+def login(request):
 	print "daf"
 	if request.method == "POST":
 		username = request.POST.get("username","")
@@ -64,19 +82,8 @@ def login(request):
 			auth.login(request,user)
 			return HttpResponseRedirect(reverse('complaint_portal:mycomplains'))
 		else:
-			current_complains = Complain.objects.order_by('complain_date')[:3]
-			total_comp = Complain.objects.count()
-			solved_comp = Complain.objects.filter(Q(govt_complain_status=2) | Q(govt_complain_status=3)).count()
-			return render(request,"complaint_portal/index.html",{"current_complains":current_complains,"total_comp":total_comp,
-		"solved_comp":solved_comp,"msg":"Username and Password combination incorrect OR Account not activated by email"})
-	else:
-		current_complains = Complain.objects.order_by('complain_date')[:3]
-		total_comp = Complain.objects.count()
-		solved_comp = Complain.objects.filter(Q(govt_complain_status=2) | Q(govt_complain_status=3)).count()
-			
-		return render(request,"complaint_portal/plogin.html",{"current_complains":current_complains,"total_comp":total_comp,
-		"solved_comp":solved_comp})			
-
+			return render(request,"complaint_portal/index.html",{"msg":"Username and Password combination incorrect"})
+	
 def activate(request,u_id):
 	u = User.objects.get(pk=u_id)
 	u.is_active = True

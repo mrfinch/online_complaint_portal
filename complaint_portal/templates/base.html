@@ -28,24 +28,12 @@
 		    <ul class="nav navbar-nav">
 				<!--<li id="home"><a href="{% url 'complaint_portal:index' %}">Complaint portal</a></li>--><!-- change active property with help of js -->
 				<li id="all_complains"><a href="{% url 'complaint_portal:all_complains' %}">All Complaints</a></li>
-				
-				<li id="complain">
 				{% if user.is_authenticated %}
-				<a href="{% url 'complaint_portal:complainform' %}">Complain</a>
-				{% else %}
-				<a data-toggle="modal" data-target="#myModal">
-                Complain
-   				</a>
-   				{% endif %}
-				<li id="faq"><a href="{% url 'complaint_portal:faq' %}">FAQ</a></li>
+				<li id="complain">
+				<a href="{% url 'complaint_portal:complainform' %}">Complain</a>	
 				</li>
-				{% if not user.is_authenticated %}
-				<li id="signin"><!-- Button trigger modal -->
-                <a  data-toggle="modal" href="{% url 'complaint_portal:index' %}">
-                Sign In
-   				</a>
-   				</li>
-   				{% endif %}
+				{% endif %}
+				
 				<li style="position:absolute;right:3%;">
 				{% if user.is_authenticated %}
 				<a href="#" class="dropdown-toggle" data-toggle="dropdown">{{ user.username }}<b class="caret"></b></a>
