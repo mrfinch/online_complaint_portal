@@ -67,7 +67,7 @@ function sendcomment(id){
 	$.ajax({
 		url:"http://localhost:8000/complaint_portal/comment/"+id,
 		type:"GET",
-		data:$('#content').val(),
+		data:jQuery("#content").serialize(),
 		success:function(d){
 			console.log(d['done']);
 			$('#done').html(d['done']);

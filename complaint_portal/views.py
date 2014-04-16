@@ -689,6 +689,7 @@ def comment(request,complain_id):
 	if not request.user.is_authenticated or not request.user.is_active:
 		return HttpResponseRedirect(reverse('complaint_portal:index'))
 	print request.GET
+	print "bdf"
 	content = request.GET.get("content","")
 	c = Complain_usercomments.objects.create(content=content,comment_user=request.user.username,complain_id=complain_id)
 	response_data = {}
