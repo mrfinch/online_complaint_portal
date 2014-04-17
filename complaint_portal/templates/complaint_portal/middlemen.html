@@ -43,9 +43,10 @@
 	<div class="panel-heading">
 		<h2 class="panel-title">
 		Title
-		<span style="position:absolute; left:650">Complain Type</span>
-		<span style="position:absolute; left:900">Complain Place</span>
-		<span style="position:absolute; left:1100">Complain Date</span>
+		<span style="position:absolute; left:700">Complain Type</span>
+		<span style="position:absolute; left:950">Complain Place</span>
+		<span style="position:absolute; left:1150">Complain Date</span>
+		<span style="position:absolute; left:460">Complain Status</span>
 		</h2>
 	</div>
 </div>		
@@ -62,6 +63,13 @@
 			<span style="position:absolute; left:650">{{f.type_of_complain}}</span>
 			<span style="position:absolute; left:900">{{f.complain_place}}</span>
 			<span style="position:absolute; left:1100">{{f.complain_date}}</span>
+			<span style="position:absolute; left:550">
+      		{% if f.govt_complain_status == 7 %}
+      		Asked govt. employee
+      		{% else %}
+      		Not reviewed
+      		{% endif %}
+	      	</span>
 	      </a>  
 	      </h4>
 	    </div>

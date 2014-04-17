@@ -1,6 +1,6 @@
 {% load staticfiles %}
 <head>
-<title>Discussion Forum</title>
+<title>Comments</title>
 <script type="text/javascript" src="{% static 'complaint_portal/js/jquery.js' %}"></script>
 <script type="text/javascript" src="{% static 'complaint_portal/js/bootstrap.min.js' %}"></script>
 <script type="text/javascript" src="{% static 'complaint_portal/js/complain.js' %}"></script>
@@ -9,10 +9,7 @@
 </head>
 
 <div class="container">
-<h2>Discussion Forum </h2>
-<p><b>Title</b>:{{complain.title}}</p>
-<p><b>Description</b>:{{complain.description}}</p>
-<p><b>Date</b>:{{complain.complain_date}}</p>
+<h3>Updates </h3>
 <div class="panel panel-primary">
   <div class="panel-heading">Comments</div>
 </div>
@@ -24,16 +21,3 @@
 
 </div>	
 {% endfor %}
-<div>
-<form action="{% url 'complaint_portal:dforum' complain.id %}" method="post">	
-	{% csrf_token %}
-	<textarea class="form-control" rows="3" name="content" id="content" placeholder="Enter comment"></textarea>
-		
-		<div class="col-md-12">
-            <button type="submit" class="btn btn-primary pull-right" value="Comment">
-                Comment</button>
-        </div>
-        <br />
-</form>        
-</div>	
-</div>	

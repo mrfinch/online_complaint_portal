@@ -406,7 +406,7 @@ def feed_upvote(request,complain_id):
 def middlemen(request):
 	if not request.user.is_authenticated or not request.user.is_staff:
 		return HttpResponseRedirect(reverse('complaint_portal:mlogin'))
-	complain=Complain.objects.filter(govt_complain_status=0).order_by('-upvotes')
+	complain=Complain.objects.filter(Q(govt_complain_status=0) | Q(govt_complain_status=7)).order_by('-upvotes')
 	types = Complain_type.objects.all()
 	places = LocalPlaces.objects.all()
 	return render(request,"complaint_portal/middlemen.html",{"complain":complain,"places":places,"types":types})
@@ -440,7 +440,7 @@ def mloc_filter(request,loc_id):
 	p = LocalPlaces.objects.get(pk=loc_id)
 	places = LocalPlaces.objects.all()
 	types = Complain_type.objects.all()
-	complain = Complain.objects.filter(govt_complain_status=0).filter(complain_place=p.local_name)
+	complain = Complain.objects.filter(govt_complain_status=0 | Q(govt_complain_status=7)).filter(complain_place=p.local_name)
 	return render(request,"complaint_portal/middlemen.html",{"complain":complain,"places":places,"types":types})
 
 
@@ -451,7 +451,7 @@ def mtype_filter(request,type_id):
 	places = LocalPlaces.objects.all()
 	types = Complain_type.objects.all()
 	t = Complain_type.objects.get(pk=type_id)
-	complain = Complain.objects.filter(govt_complain_status=0).filter(type_of_complain=t.name)
+	complain = Complain.objects.filter(govt_complain_status=0 | Q(govt_complain_status=7)).filter(type_of_complain=t.name)
 	return render(request,"complaint_portal/middlemen.html",{"complain":complain,"places":places,"types":types})
 
 def forward_reject(request):
@@ -491,7 +491,7 @@ def govtadmin(request):
 	print request.user
 	c = GovtUserInfo.objects.get(pk=request.user.id)
 	c_type = c.department
-	complain=Complain.objects.filter(Q(govt_complain_status=6) |Q(govt_complain_status=1) | Q(govt_complain_status=5) | Q(govt_complain_status=4)).filter(type_of_complain=c_type).order_by('-upvotes')
+	complain=Complain.objects.filter(Q(govt_complain_status=6) |Q(govt_complain_status=1) | Q(govt_complain_status=5) | Q(govt_complain_status=4) | Q(govt_complain_status=7)).filter(type_of_complain=c_type).order_by('-upvotes')
 	print len(complain)
 	types = Complain_type.objects.all()
 	places=LocalPlaces.objects.all()
@@ -688,7 +688,9 @@ def dforum(request,complain_id):
 	if request.method=="POST":
 		content = request.POST.get("content","")
 		c = Complain_comments.objects.create(content=content,comment_user=request.user.username,complain_id=complain_id)
-		c_comments = Complain_comments.objects.filter(complain_id=complain_id) 
+		c_comments = Complain_comments.objects.filter(complain_id=complain_id)
+		if len(c_comments)==1:
+			complain.govt_complain_status = 7 
 		return render(request,"complaint_portal/dforum.html",{"complain":complain,"comments":c_comments})
 	else:
 		return render(request,"complaint_portal/dforum.html",{"complain":complain,"comments":c_comments})
@@ -704,3 +706,7 @@ def comment(request,complain_id):
 	response_data['done'] = "Update Added"
 	return HttpResponse(json.dumps(response_data),content_type="application/json")
 	
+def displaycomment(request,complain_id):
+	comments = Complain_usercomments.objects.filter(complain_id=complain_id)
+	print len(comments)
+	return render(request,"complaint_portal/displaycomment.html",{"comments":comments})	

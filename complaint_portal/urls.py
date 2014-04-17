@@ -50,6 +50,7 @@ urlpatterns = patterns('',
 	url(r'^hello/',views.hello,name="hello"),
 	url(r'^dforum/(?P<complain_id>\d+)/',views.dforum,name="dforum"),
 	url(r'^comment/(?P<complain_id>\d+)/',views.comment,name="comment"),
+	url(r'^displaycomment/(?P<complain_id>\d+)/',views.displaycomment,name="displaycomment"),
 	) 
 
 #updateform for each complain
@@ -59,4 +60,4 @@ urlpatterns = patterns('',
 #see complainform_update.html give option of complete if it is accepted adn give option of update if it is not reviewed
 
 #0-submitted,1-accept by middlemen,2-rejected by middlemen,3-completed,4-reviewed by govt employee and added days,
-#5-review again
+#5-review again,7-middlemen asks for help from govt.,6-changed end date

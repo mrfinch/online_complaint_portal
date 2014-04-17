@@ -1,4 +1,4 @@
-{% extends 'base.html' %}
+{% extends 'base_index.html' %}
 {% load staticfiles %}
 {% block title %}Ranking{% endblock %}
 {% block css_js %}
@@ -17,6 +17,7 @@
 		}
 		.panel-heading div span{
 			margin-left:5px;
+			background-color:#000000
 		}
 		.panel-body{
 			display: none;
@@ -26,11 +27,21 @@
 
 {% block content %}
 	<div class="container">
+	<div style="color:yellow">
+	{% if user.is_authenticated %}
+	    {% for users in users_rank %}
+	       {% if users.user.username == user.username %}
+	         <p> Your current rank is {{ forloop.counter }}.</p>
+	        {% endif %}
+	     {% endfor %}
+    {% endif %}
+	The users are ranked below by the total number of upvotes for all their complaints.
+	</div>
 		<div class="row">
 			<div class="col-md-6">
 				<div class="panel panel-primary">
-					<div class="panel-heading">
-						<h3 class="panel-title">Ranking</h3>
+					<div class="panel-heading" style="background-color:#000000 ">
+						<h3 class="panel-title" style="background-color:#000000">Ranking</h3>
 						<div class="pull-right">
 							
 						</div>
@@ -39,18 +50,19 @@
 						<input type="text" class="form-control" id="dev-table-filter" data-action="filter" data-filters="#dev-table" placeholder="Filter Developers" />
 					</div>
 					<table class="table table-hover" id="dev-table">
-						<thead>
+						<thead style="background-image:url('{% static "complaint_portal/images/yellow5.jpg" %}') ;background-repeat:repeat-x;">
 							<tr>
 								<td><b>Rank</b></td>
 								<td><b>Name</b></td>
 								<td><b>Upvotes</b></td>
 							</tr>
 						</thead>
-						<tbody>
+						<tbody style="background-image:url('{% static "complaint_portal/images/yellow5.jpg" %}') ;background-repeat:repeat-x;">
 							{% for users in users_rank %}
 							<tr>
 								<td>{{ forloop.counter }} </td>
-								<td>{{ users.user.username }} </td>
+								<td>{{ users.user.username }}</td>
+								
 								<td>{{ users.total_upvotes }} </td>
 							</tr>
 							{% endfor %}
@@ -61,4 +73,5 @@
 			</div>
 		</div>
 	</div>	
+	
 {% endblock %}		
