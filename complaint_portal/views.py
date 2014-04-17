@@ -364,6 +364,7 @@ def upvote(request,complain_id):
 		user_obj.save()
 		user_up_status = UserUpvoteStatus(user_upvote=request.user,upvote=complain_info.id)
 		user_up_status.save()
+		upvote_notification = Upvote_notification.objects.create(c_id=complain_id,u_id=request.user.id)
 		complain_list = Complain.objects.order_by('id')
 		my_data = [complain_info.id,complain_info.upvotes]
 		#return render(request,"complaint_portal/all_complain.html",{"complain_list":complain_list,"complain_id":complain_info.id})
@@ -702,6 +703,9 @@ def comment(request,complain_id):
 	print "bdf"
 	content = request.GET.get("content","")
 	c = Complain_usercomments.objects.create(content=content,comment_user=request.user.username,complain_id=complain_id)
+	co = Complain.objects.get(pk=complain_id)
+	if co.c_user.username != request.user.username:
+		Comment_notification.objects.create(c_id=complain_id,u_id=request.user.id)
 	response_data = {}
 	response_data['done'] = "Update Added"
 	return HttpResponse(json.dumps(response_data),content_type="application/json")
@@ -710,3 +714,14 @@ def displaycomment(request,complain_id):
 	comments = Complain_usercomments.objects.filter(complain_id=complain_id)
 	print len(comments)
 	return render(request,"complaint_portal/displaycomment.html",{"comments":comments})	
+
+def upvote_notification(request):
+	c_set = request.user.complain_set.values('id')
+	print len(c_set),"dhtsdfj"
+	for c in c_set:
+		print c['id']
+		u_not = Upvote_notification.objects.filter(c_id=c['id']).filter(read=False)
+		print u_not.values()
+	return HttpResponseRedirect(reverse('complaint_portal:mycomplains'))	
+
+

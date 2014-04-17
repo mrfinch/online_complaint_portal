@@ -51,6 +51,7 @@ urlpatterns = patterns('',
 	url(r'^dforum/(?P<complain_id>\d+)/',views.dforum,name="dforum"),
 	url(r'^comment/(?P<complain_id>\d+)/',views.comment,name="comment"),
 	url(r'^displaycomment/(?P<complain_id>\d+)/',views.displaycomment,name="displaycomment"),
+	url(r'^upvote_notification/',views.upvote_notification,name="upvote_notification"),
 	) 
 
 #updateform for each complain

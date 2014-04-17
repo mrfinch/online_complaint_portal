@@ -46,6 +46,23 @@ function changecontent(id){
 			$('#'+id).html("Show more");
 		}
 }
+function sendcomment(id){
+	console.log(id);
+	$.ajax({
+		url:"http://localhost:8000/complaint_portal/comment/"+id,
+		type:"GET",
+		data:jQuery("#content"+id).serialize(),
+		success:function(d){
+			console.log(d['done']);
+			$('#done'+id).html(d['done']);
+		},
+		error:function(d){
+			console.log(d['done']);
+			$('#done'+id).html('Error');	
+		}
+	});
+}
+
 function upvoting(c_id){
 $.post("http://localhost:8000/complaint_portal/upvote/2",{complain_id:"c_id"})
 	.done(function(my_data){
@@ -102,7 +119,33 @@ $.post("http://localhost:8000/complaint_portal/upvote/2",{complain_id:"c_id"})
 	      	
 	      <br />
 	      <span class="desc">{{complain.description}}.....</span>
-	      <a data-toggle="collapse" data-parent="#accordion" href="#{{forloop.counter}}" style="font-family:'Times New Roman', Times, serif;" id="show{{forloop.counter}}" onclick="changecontent('show{{forloop.counter}}')">Show more</a>  
+	      <a data-toggle="collapse" data-parent="#accordion" href="#{{forloop.counter}}" style="font-family:'Times New Roman', Times, serif;" id="show{{forloop.counter}}" onclick="changecontent('show{{forloop.counter}}')">Show more</a>
+	      {% if user.is_authenticated %}	
+	      <a data-target="#myModal{{complain.id}}" data-toggle="modal" style="position:absolute;left:80%;font-family:'Times New Roman', Times, serif;">Give a Update</a>	
+	  		</h3>
+	      	
+					
+					 <div class="modal fade" id="myModal{{complain.id}}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+					  <div class="modal-dialog">
+					    <div class="modal-content">
+					      <div class="modal-header">
+					        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+					        <h4 class="modal-title">Add Update</h4>
+					      </div>
+					      <div class="modal-body">
+					        		<textarea class="form-control" rows="3" name="content" id="content{{complain.id}}" placeholder="Enter comment"></textarea>
+
+					      </div>
+					      <div class="modal-footer">
+					      	<span id="done{{complain.id}}" style="float:left;"></span>
+					        <input type="submit" name="comment" class="btn btn-info" value="Comment" 
+					        onclick="sendcomment({{complain.id}})">
+					
+					      </div>
+					    </div><!-- /.modal-content -->
+					  </div><!-- /.modal-dialog -->
+					</div><!-- /.modal -->
+		  {% endif %}
 	      </h3>
 	    </div>
 		{% if forloop.counter != -1 %}
@@ -127,6 +170,8 @@ $.post("http://localhost:8000/complaint_portal/upvote/2",{complain_id:"c_id"})
 			<div class="col-xs-4 col-sm-4 col-md-6 excerpet">
 				<p style="font-family:'Times New Roman', Times, serif;">{{complain.title}} </p>
 				<p style="font-family:'Times New Roman', Times, serif;">{{complain.description}} </p>
+                <a href="{% url 'complaint_portal:displaycomment' complain.id %}"style="font-family:'Times New Roman', Times, serif;" target="blank">Comments</a>
+                
                 {% if complain.govt_complain_status == 1 %}
 					  <div class="span4">
 						  Complain Validated<span class="pull-right">Sent to govt. employee</span>

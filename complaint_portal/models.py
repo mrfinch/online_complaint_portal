@@ -72,4 +72,13 @@ class UserUpvoteStatus(models.Model):
 	user_upvote = models.ForeignKey(User)
 	upvote = models.IntegerField()
 
+class Upvote_notification(models.Model):
+	c_id = models.IntegerField()
+	u_id = models.IntegerField()
+	read = models.BooleanField(default=False)
+
+class Comment_notification(models.Model):
+	c_id = models.IntegerField()
+	u_id = models.IntegerField()
+	read = models.IntegerField(default=False)
 #another table which will store complain's locality	 			 

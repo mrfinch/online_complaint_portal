@@ -117,7 +117,7 @@ function validateForm(){
 -->
 <div class="container">
 	{% if msg %}
-		{{ msg }}
+		<span style="color:#FFFFFF;">{{ msg }}</span>
 	{% endif %}
 </div>	
 
@@ -139,13 +139,13 @@ function validateForm(){
                             <label for="password" style="color:#FFFFFF;font-weight:bold;font-size:18px;">
                                 Password( >6 char with at least 1 digit)</label>
                             <input type="password" name="password" class="form-control" id="password" placeholder="Enter password" required="required" />
-                            <span id="result"></span>
+                            <span id="result" style="color:#FFFFFF;"></span>
                         </div>
                         <div class="form-group">
                             <label for="confirm_password" style="color:#FFFFFF;font-weight:bold;font-size:18px;">
                                 Confirm Password</label>
                             <input type="password" name="confirm_password" class="form-control" id="confirm_password" placeholder="Confirm Password" required="required" />
-                            <span id="confirm_result"></span>
+                            <span id="confirm_result" style="color:#FFFFFF;"></span>
                         </div>
                         <div class="form-group">
                             <label for="firstname" style="color:#FFFFFF;font-weight:bold;font-size:18px;">
