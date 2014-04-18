@@ -21,7 +21,7 @@ $(document).ready(function(){
 				console.log(d);
 				var x = '#st'+z;
 				console.log(x)
-				$(x).html("upvoted1");
+				$(x).html(d["upvotes"]);
 			}
 		});
 	});	

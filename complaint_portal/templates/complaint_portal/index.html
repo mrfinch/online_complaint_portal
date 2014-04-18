@@ -4,21 +4,21 @@
 
 {% block content %}
 
-<div class="jumbotron" style="background-image:url('{% static "complaint_portal/images/yellow5.jpg" %}') ;background-repeat:repeat-x;" >
+<div class="jumbotron" style="background-image:url('{% static "complaint_portal/images/squared_metal.png" %}');box-shadow:3px 0px 10px #000;">
       <div class="container" >
       <div class="row" style="align:center;">
    
         <div class="col-md-4">
-          <h6 style="color:#ffffff;margin-left:31%;font-weight:bold;">Complaints<br> Submitted</h6>
-          <p style="color:#ffffff;text-align:center;font-size:50px;font-weight:bold;">{{ total_comp }} </p>
+          <h6 style="margin-left:31%;font-weight:bold;">Complaints<br> Submitted</h6>
+          <p style="text-align:center;font-size:50px;font-weight:bold;">{{ total_comp }} </p>
           
         </div>
         <div class="col-md-4">
-        <img src="{% static "complaint_portal/images/hello.jpg" %}" width="100" height="150" style="margin-left:100px;"> </img>
+        <img src="{% static "complaint_portal/images/Untitled.png" %}" width="100" height="150" style="margin-left:100px;"> </img>
         </div>
         <div class="col-md-4">
-          <h6 style="color:#ffffff;margin-left:31% ;font-weight:bold;">Complaints<br> Solved</h6>
-          <p style="color:#ffffff;text-align:center;font-size:50px;margin-right:1%;font-weight:bold;">{{ solved_comp }}</p>
+          <h6 style="margin-left:31% ;font-weight:bold;">Complaints<br> Solved</h6>
+          <p style="text-align:center;font-size:50px;margin-right:1%;font-weight:bold;">{{ solved_comp }}</p>
         </div>
 
       
@@ -26,49 +26,41 @@
       </div>
 
        <div class="container" >
-       <h6 style="color:#ffffff;margin-left:28%;font-weight:bold;">ANAND MUNICIPAL CORPORATION</h6>
+       <h6 style="margin-left:28%;font-weight:bold;">ANAND MUNICIPAL CORPORATION</h6>
       
        </div>
 
 </div>
 </div>
 
-    <div class="container">
+<div class="container">
     
       <div class="row">
-        <div class="col-md-4">
+        <div class="col-md-3" style="background-color:#bbb">
            
           <h7 style="color:#000000;font-weight:bold;">ABOUT US</h7>
             
           <p style="font-size:10px;font-weight:bold;color:#000000" >Anand is the administrative centre of Anand District in the state of Gujarat, India. It is administered by Anand Municipality. It is part of the region known as Charotar, consisting of Anand and Kheda Districts.</p>
+          <p><a class="btn btn-default" style="background-color:#000000;" href="http://ananddp.gujarat.gov.in/anand/english/" role="button" target="_blank">View details &raquo;</a></p>
         </div>
-        <div class="col-md-4">
+        <div  class="col-md-1">
+        </div>
+        <div class="col-md-3"  style="background-color:#bbb">
           <h7 style="color:#000000;font-weight:bold;">LEADER BOARD</h7>
           <p style="font-size:10px;font-weight:bold;color:#000000"> Get your rank amongst all the users using our website. As you go up the leaderboard , the priority of your complaints go up. Click below to view it :</p>
-          
+          <p><a class="btn btn-default" style="background-color:#000000;" href="{% url 'complaint_portal:ranking' %}" role="button">View details &raquo;</a></p>  
           
        </div>
-        <div class="col-md-4">
+       <div  class="col-md-1">
+        </div>
+        
+        <div class="col-md-3" style="background-color:#bbb">
           <h7 style="color:#000000;font-weight:bold;">HELP AND FAQ</h7>
           <p style="font-size:10px;font-weight:bold;color:#000000">See this section on how to complain using our website.Get your other doubts cleared and have a look at the frequently answered questions.Click below </p>
-          
+          <p><a class="btn btn-default" style="background-color:#000000;" href="{% url 'complaint_portal:faq' %}" role="button">View details &raquo;</a></p>
         </div>
       </div>
 
-      <div class="container" >
-      <div class="row">
-        <div class="col-md-4">
-          <p><a class="btn btn-default" style="margin-bottom:30%;background-color:#000000;" href="http://ananddp.gujarat.gov.in/anand/english/" role="button" target="_blank">View details &raquo;</a></p>
-        </div>
-        <div class="col-md-4">
-          
-        <p><a class="btn btn-default" style="margin-bottom:30%;background-color:#000000;" href="{% url 'complaint_portal:ranking' %}" role="button">View details &raquo;</a></p>
-       </div>
-        <div class="col-md-4">
-          
-          <p><a class="btn btn-default" style="margin-bottom:30%;background-color:#000000;" href="{% url 'complaint_portal:faq' %}" role="button">View details &raquo;</a></p>
-        </div>
-      </div>
-      </div>
+      
 </div>
 {% endblock %}

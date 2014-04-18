@@ -415,7 +415,7 @@ def feed_upvote(request,complain_id):
 def middlemen(request):
 	if not request.user.is_authenticated or not request.user.is_staff:
 		return HttpResponseRedirect(reverse('complaint_portal:mlogin'))
-	complain=Complain.objects.filter(Q(govt_complain_status=0) | Q(govt_complain_status=7)).order_by('-upvotes')
+	complain=Complain.objects.filter(Q(govt_complain_status=0) | Q(forum_visible=1)).order_by('-upvotes')
 	types = Complain_type.objects.all()
 	places = LocalPlaces.objects.all()
 	return render(request,"complaint_portal/middlemen.html",{"complain":complain,"places":places,"types":types})
@@ -449,7 +449,7 @@ def mloc_filter(request,loc_id):
 	p = LocalPlaces.objects.get(pk=loc_id)
 	places = LocalPlaces.objects.all()
 	types = Complain_type.objects.all()
-	complain = Complain.objects.filter(govt_complain_status=0 | Q(govt_complain_status=7)).filter(complain_place=p.local_name)
+	complain = Complain.objects.filter(govt_complain_status=0 | Q(forum_visible=1)).filter(complain_place=p.local_name)
 	return render(request,"complaint_portal/middlemen.html",{"complain":complain,"places":places,"types":types})
 
 
@@ -460,7 +460,7 @@ def mtype_filter(request,type_id):
 	places = LocalPlaces.objects.all()
 	types = Complain_type.objects.all()
 	t = Complain_type.objects.get(pk=type_id)
-	complain = Complain.objects.filter(govt_complain_status=0 | Q(govt_complain_status=7)).filter(type_of_complain=t.name)
+	complain = Complain.objects.filter(govt_complain_status=0 | Q(forum_visible=1)).filter(type_of_complain=t.name)
 	return render(request,"complaint_portal/middlemen.html",{"complain":complain,"places":places,"types":types})
 
 def forward_reject(request):
@@ -502,7 +502,7 @@ def govtadmin(request):
 	print request.user
 	c = GovtUserInfo.objects.get(pk=request.user.id)
 	c_type = c.department
-	complain=Complain.objects.filter(Q(govt_complain_status=6) |Q(govt_complain_status=1) | Q(govt_complain_status=5) | Q(govt_complain_status=4) | Q(govt_complain_status=7)).filter(type_of_complain=c_type).order_by('-upvotes')
+	complain=Complain.objects.filter(Q(govt_complain_status=6) |Q(govt_complain_status=1) | Q(govt_complain_status=5) | Q(govt_complain_status=4) | Q(forum_visible=1)).filter(type_of_complain=c_type).order_by('-upvotes')
 	print len(complain)
 	types = Complain_type.objects.all()
 	places=LocalPlaces.objects.all()
@@ -538,7 +538,7 @@ def gloc_filter(request,loc_id):
 	l = LocalPlaces.objects.get(pk=loc_id)
 	places = LocalPlaces.objects.all()
 	types = Complain_type.objects.all()
-	complain = Complain.objects.filter(Q(govt_complain_status=6) |Q(govt_complain_status=1) | Q(govt_complain_status=5) | Q(govt_complain_status=4)).filter(complain_place=l.local_name)
+	complain = Complain.objects.filter(Q(forum_visible=1) | Q(govt_complain_status=6) | Q(govt_complain_status=1) | Q(govt_complain_status=5) | Q(govt_complain_status=4)).filter(complain_place=l.local_name)
 	return render(request,"complaint_portal/govtadmin.html",{"complain":complain,"places":places,"types":types})
 
 def gtype_filter(request,type_id):
@@ -551,7 +551,7 @@ def gtype_filter(request,type_id):
 	c = Complain_type.objects.get(pk=type_id)
 	places = LocalPlaces.objects.all()
 	types = Complain_type.objects.all()
-	complain = Complain.objects.filter(Q(govt_complain_status=6) |Q(govt_complain_status=1) | Q(govt_complain_status=5) | Q(govt_complain_status=4)).filter(type_of_complain=c.name)
+	complain = Complain.objects.filter(Q(forum_visible=1) | Q(govt_complain_status=6) |Q(govt_complain_status=1) | Q(govt_complain_status=5) | Q(govt_complain_status=4)).filter(type_of_complain=c.name)
 	return render(request,"complaint_portal/govtadmin.html",{"complain":complain,"places":places,"types":types})
 
 def gdays_filter(request):
@@ -560,7 +560,7 @@ def gdays_filter(request):
 	@Amit Masani'''
 	if not request.user.is_authenticated or not request.user.is_superuser:
 		return HttpResponseRedirect(reverse('complaint_portal:glogin'))
-	complain = Complain.objects.filter(govt_complain_status=1)
+	complain = Complain.objects.filter(Q(forum_visible=1) | Q(govt_complain_status=1))
 	places = LocalPlaces.objects.all()
 	types = Complain_type.objects.all()
 	return render(request,"complaint_portal/govtadmin.html",{"complain":complain,"places":places,"types":types})
@@ -571,7 +571,7 @@ def gcomplete_filter(request):
 	@Amit Masani'''
 	if not request.user.is_authenticated or not request.user.is_superuser:
 		return HttpResponseRedirect(reverse('complaint_portal:glogin'))
-	complain = Complain.objects.filter(Q(govt_complain_status=6) |Q(govt_complain_status=4) | Q(govt_complain_status=5))
+	complain = Complain.objects.filter(Q(forum_visible=1) | Q(govt_complain_status=6) |Q(govt_complain_status=4) | Q(govt_complain_status=5))
 	places = LocalPlaces.objects.all()
 	types = Complain_type.objects.all()
 	return render(request,"complaint_portal/govtadmin.html",{"complain":complain,"places":places,"types":types})
@@ -617,7 +617,8 @@ def days_or_complete(request):
 		c_list = request.POST.getlist("sel_complain")
 		for c in c_list:
 			c_obj = Complain.objects.get(pk=c)
-			c_obj.govt_complain_status = 3            #complete
+			c_obj.govt_complain_status = 3
+			c_obj.forum_visible = 0            
 			status = Statusnotifications.objects.create(c_id=c,status=3,c_title=c_obj.title)
 			c_obj.save()
 			
@@ -704,8 +705,8 @@ def dforum(request,complain_id):
 		content = request.POST.get("content","")
 		c = Complain_comments.objects.create(content=content,comment_user=request.user.username,complain_id=complain_id)
 		c_comments = Complain_comments.objects.filter(complain_id=complain_id)
-		if len(c_comments)==1:
-			complain.govt_complain_status = 7 
+		complain.forum_visible = 1
+		complain.save() 
 		return render(request,"complaint_portal/dforum.html",{"complain":complain,"comments":c_comments})
 	else:
 		return render(request,"complaint_portal/dforum.html",{"complain":complain,"comments":c_comments})
@@ -759,6 +760,7 @@ def upvote_notification(request):
 	print upvote	
 	print comment
 	print status
+	num = len(upvote)+len(comment)+len(status)
 	return render(request,"complaint_portal/notification.html",{"upvote":upvote,"comment":comment,
 		"status":status})	
 

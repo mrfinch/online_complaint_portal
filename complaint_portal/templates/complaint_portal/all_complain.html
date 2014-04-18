@@ -187,7 +187,7 @@ $.post("http://localhost:8000/complaint_portal/upvote/2",{complain_id:"c_id"})
 						      <div class="progress-bar progress-bar-danger" style="width:100%;"></div>
 						  </div>
 					  </div>
-                {% elif complain.govt_complain_status == 4 %}
+                {% elif complain.govt_complain_status == 4 or complain.govt_complain_status == 6 %}
                 	<div class="span4">
 						  Work in progress<span class="pull-right">Deadline:{{complain.end_date}}</span>
 						  <div class="progress progress-striped active">

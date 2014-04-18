@@ -67,8 +67,8 @@
 	      		Add days to solve
 	      		{% elif f.govt_complain_status == 5 %}
 	      		User not satisfied
-	      		{% elif f.govt_complain_status == 7 %}
-	      		Middlemen needs help
+	      		{% elif f.forum_visible == 1 %}
+	      		Under Discussion
 	      		{% else %}
 	      		Mark as Complete
 	      		{% endif %}

@@ -22,6 +22,7 @@ class Complain(models.Model):
 	govt_complain_status = models.IntegerField(default=0) 
 	user_complain_status = models.IntegerField(default=0) #0-not complete,1-complete
 	user_complain_reason = models.TextField(blank=True)
+	forum_visible = models.IntegerField(default=0)
 	upvotes = models.IntegerField(default=0)
 	rejection_reason = models.IntegerField(default=-1)    #1-this reason 2-this reason
 	end_date = models.DateTimeField(null=True,blank=True)
@@ -72,40 +73,6 @@ class UserUpvoteStatus(models.Model):
 	user_upvote = models.ForeignKey(User)
 	upvote = models.IntegerField()
 
-class Upvote_notification(models.Model):
-	c_id = models.IntegerField()
-	u_id = models.IntegerField()
-	read = models.BooleanField(default=False)
-
-class Comment_notification(models.Model):
-	c_id = models.IntegerField()
-	u_id = models.IntegerField()
-	read = models.IntegerField(default=0)
-
-class Status_notification(models.Model):
-	c_id = models.IntegerField()
-	status = models.IntegerField()
-	read = models.IntegerField(default=0)	
-
-class Upvote_notifications(models.Model):
-	c_id = models.IntegerField()
-	c_title = models.CharField(max_length=50)
-	u_id = models.IntegerField()
-	u_name = models.CharField(max_length=50)
-	read = models.IntegerField(default=False)
-
-class Comment_notifications(models.Model):
-	c_id = models.IntegerField()
-	c_title = models.CharField(max_length=50)
-	u_id = models.IntegerField()
-	u_name = models.CharField(max_length=50)
-	read = models.IntegerField(default=0)
-
-class Status_notifications(models.Model):
-	c_id = models.IntegerField()
-	c_title = models.CharField(max_length=50)
-	status = models.IntegerField()
-	read = models.IntegerField(default=0)	
 
 class Upvotenotification(models.Model):
 	c_id = models.IntegerField()
@@ -122,6 +89,7 @@ class Commentnotifications(models.Model):
 	u_name = models.CharField(max_length=50)
 	read = models.IntegerField(default=0)
 	c_date = models.DateTimeField(default=datetime.now)
+	comment = models.TextField()
 
 class Statusnotifications(models.Model):
 	c_id = models.IntegerField()

@@ -64,8 +64,8 @@
 			<span style="position:absolute; left:900">{{f.complain_place}}</span>
 			<span style="position:absolute; left:1100">{{f.complain_date}}</span>
 			<span style="position:absolute; left:550">
-      		{% if f.govt_complain_status == 7 %}
-      		Asked govt. employee
+      		{% if f.forum_visible == 1 %}
+      		Still not completed
       		{% else %}
       		Not reviewed
       		{% endif %}
