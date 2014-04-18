@@ -1,14 +1,133 @@
-{% extends 'base.html' %}
+{% extends 'base_index.html' %}
+{% load staticfiles %}
 {% block title %}Complain Detail{% endblock %}
 
 {% block content %}
-<div>
-	<p>{{ complain_detail.title }}</p>
-	<p>{{ complain_detail.description }}</p>
-	<p>{{ complain_detail.type_of_complain }}  Locality: {{ complain_detail.complain_place }}</p>
-	<p>{{ complain_detail.complain_date }} Upvotes: {{ complain_detail.upvotes }}</p>
-	<p>Status:{{ complain_detail.govt_complain_status }}</p> <!-- change integer to appropriate status 0-submitted 1-review(if middlemen has not checked but has sent someone to check complaint) 2-accept 3-reject 4-complete  -->
-	<p>{{ complain_detail.complain_address }}</p> 
-	<p>{{ complain_detail.complain_image }}</p>
+
+<div class="container">
+<p style="color:white;font-weight:10px;margin-left:45%;font-size:25px">{{ complain_detail.title }}</p>
 </div>
+
+<div class="container">
+	<div class="col-md-6">
+   				<a href="{% static complain_detail.complain_image %}" title="{{complain.title}}" class="thumbnail" target="_blank"><img src="{% static complain_detail.complain_image %}" alt="{{complain.title}}" width="50%" height="50%" style="max-width:100%;max-height:100%;margin-left:25%" /></a>
+				<br />
+				<br />
+			<div style="color:yellow;">
+
+   			<div class="panel panel-default" style="background-image:url('{% static "complaint_portal/images/index.jpeg" %}') ;background-repeat:repeat-x;" >
+   			    <div class="panel-body" style="padding: .5px;">
+   			    <p style="color:black; margin-left:10px;font-size:15px;margin-top:5px;margin-bottom:5px;"> <a style= "font-weight:bold;color:blue;">Subject : </a>{{ complain_detail.title }}</p>
+                 </div>
+			  </div>
+	    
+	       <div class="panel panel-default" style="background-image:url('{% static "complaint_portal/images/index.jpeg" %}') ;background-repeat:repeat-x;" >
+   			    <div class="panel-body" style="padding: .5px;">
+   			    <p style="color:black; margin-left:10px;font-size:15px;margin-top:5px;margin-bottom:5px;"> <a style= "font-weight:bold;color:blue;">Description : </a>{{ complain_detail.description }}</p>
+                 </div>
+		  </div>
+		
+			  <div class="panel panel-default" style="background-image:url('{% static "complaint_portal/images/index.jpeg" %}') ;background-repeat:repeat-x;" >
+   			    <div class="panel-body" style="padding: .5px;">
+   			    <p style="color:black; margin-left:10px;font-size:15px;margin-top:5px;margin-bottom:5px;"> <a style= "font-weight:bold;color:blue;">Type : </a>{{ complain_detail.type_of_complain }}</p>
+                 </div>
+			  </div>
+		
+			  <div class="panel panel-default" style="background-image:url('{% static "complaint_portal/images/index.jpeg" %}') ;background-repeat:repeat-x;" >
+   			    <div class="panel-body" style="padding: .5px;">
+   			    <p style="color:black; margin-left:10px;font-size:15px;margin-top:5px;margin-bottom:5px;"> <a style= "font-weight:bold;color:blue;">Place : </a>{{ complain_detail.complain_place }}</p>
+                 </div>
+			  </div>
+		
+			  <div class="panel panel-default" style="background-image:url('{% static "complaint_portal/images/index.jpeg" %}') ;background-repeat:repeat-x;" >
+   			    <div class="panel-body" style="padding: .5px;">
+   			    <p style="color:black; margin-left:10px;font-size:15px;margin-top:5px;margin-bottom:5px;"> <a style= "font-weight:bold;color:blue;">Date : </a>{{ complain_detail.complain_date }}</p>
+                 </div>
+			  </div>
+		
+			  <div class="panel panel-default" style="background-image:url('{% static "complaint_portal/images/index.jpeg" %}') ;background-repeat:repeat-x;" >
+   			    <div class="panel-body" style="padding: .5px;">
+   			    <p style="color:black; margin-left:10px;font-size:15px;margin-top:5px;margin-bottom:5px;"> <a style= "font-weight:bold;color:blue;">Upvotes : </a>{{ complain_detail.upvotes }}</p>
+                 </div>
+			  </div>
+		
+			  <div class="panel panel-default" style="background-image:url('{% static "complaint_portal/images/index.jpeg" %}') ;background-repeat:repeat-x;" >
+   			    <div class="panel-body" style="padding: .5px;">
+   			    <p style="color:black; margin-left:10px;font-size:15px;margin-top:5px;margin-bottom:5px;"> <a style= "font-weight:bold;color:blue;">Status : </a>
+   			    {% if complain_detail.govt_complain_status == 1 %}
+					  <div class="span4">
+						  <a style="color:black;font-size=15px">Complain Validated</a><span class="pull-right">Sent to govt. employee</span>
+						  <div class="progress progress-striped active">
+						      <div class="progress-bar progress-bar-info" style="width:50%;"></div>
+						  </div>
+					  </div>
+                {% elif complain.govt_complain_status == 2 %}
+                	 <div class="span4">
+						  <a style="color:black;font-size=15px">Rejected Complain</a><span class="pull-right">Show Reason</span>
+						  <div class="progress progress-striped active">
+						      <div class="progress-bar progress-bar-danger" style="width:100%;"></div>
+						  </div>
+					  </div>
+                {% elif complain.govt_complain_status == 4 %}
+                	<div class="span4">
+						 <a style="color:black;font-size=15px">Work in progress</a><span class="pull-right">Deadline:{{complain.end_date}}</span>
+						  <div class="progress progress-striped active">
+						      <div class="progress-bar progress-bar-warning" style="width:75%;"></div>
+						  </div>
+					  </div> 
+                {% elif complain.govt_complain_status == 3 %}
+                	<div class="span4">
+						 <a style="color:black;font-size=15px">Completed</a><span class="pull-right"></span>
+						  <div class="progress progress-striped active">
+						      <div class="progress-bar progress-bar-success" style="width:100%;"></div>
+						  </div>
+					  </div> 
+                {% else %}
+                	<div class="span4" >
+						  <a style="color:black;font-size=10px">Submitted not reviewed</a><span class="pull-right"></span>
+						  <div class="progress progress-striped active">
+						      <div class="progress-bar progress-bar-info" style="width:25%;"></div>
+						  </div>
+					  </div> 
+                {% endif %}	   		
+            		</p>
+                 </div>
+			  </div>
+			  <div class="panel panel-default" style="background-image:url('{% static "complaint_portal/images/index.jpeg" %}') ;background-repeat:repeat-x;" >
+   			    <div class="panel-body" style="padding: .5px;">
+   			    <p style="color:black; margin-left:10px;font-size:15px;margin-top:5px;margin-bottom:5px;"> <a style= "font-weight:bold;color:blue;">Complain Address : </a>{{ complain_detail.complain_address }}</p>
+   			    </div>
+               </div>
+               <br />
+               </div>
+			</div>
+	<div class="col-md-6">
+
+		<div class="panel panel-primary">
+			<div class="panel-heading" style="background-color:black">Comments</div>
+
+			{% for comment in comments %}
+				<div class="well" style="background-image:url('{% static "complaint_portal/images/yellow5.jpg" %}') ;background-repeat:repeat-x;">
+				<b>{{comment.comment_user}}</b> : {{comment.content}}<br />
+					{{comment.comment_date}}
+
+				</div>	
+			{% endfor %}
+			{% if user.is_authenticated %}	
+				<form action="{% url 'complaint_portal:details' complain_detail.id %}" method="post">
+				{% csrf_token %}	
+				<textarea class="form-control" rows="3" name="content" id="content{{complain_detail.id}}" placeholder="Enter comment"></textarea>
+				<input type="submit" name="comment" value="Comment" class="btn btn-info pull-right">				
+				<br />
+				<br />
+				</form>
+			{% else %}
+				
+			{% endif %}
+		</div>	
+	
+	</div>		
+</div>
+
 {% endblock %} 
+

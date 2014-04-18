@@ -53,7 +53,7 @@ def register(request):
 			return render(request,"complaint_portal/register.html",{"msg":form.errors,"places":places})
 	else:
 		return render(request,"complaint_portal/register.html",{"places":places})			
-
+'''
 def login(request):
 	print 'hyhy'
 	print request.POST
@@ -71,7 +71,7 @@ def login(request):
 			response_data = {}
 			response_data['response'] = "Incorrect Combination"
 			return HttpResponse(json.dumps(response_data),content_type="application/json")			
-
+'''
 def login(request):
 	print "daf"
 	if request.method == "POST":
@@ -218,8 +218,15 @@ def all_complains_location(request,loc_id):
 	return render(request,"complaint_portal/all_complain.html",{"complain_list":complain_list,"places":places,"types":types}) 
 
 def details(request,complain_id):
+	print "gstd"
+	if request.method == "POST":
+		content = request.POST.get("content","")
+		c = Complain_usercomments.objects.create(content=content,comment_user=request.user.username,complain_id=complain_id)
+	else:
+		pass
+	c_comments = Complain_usercomments.objects.filter(complain_id=complain_id)
 	complain_detail = Complain.objects.get(pk=complain_id)
-	return render(request,"complaint_portal/complain_detail.html",{"complain_detail":complain_detail})
+	return render(request,"complaint_portal/complain_detail.html",{"complain_detail":complain_detail,"comments":c_comments})
 
 
 def userprofile(request):
@@ -364,7 +371,8 @@ def upvote(request,complain_id):
 		user_obj.save()
 		user_up_status = UserUpvoteStatus(user_upvote=request.user,upvote=complain_info.id)
 		user_up_status.save()
-		upvote_notification = Upvote_notification.objects.create(c_id=complain_id,u_id=request.user.id)
+		upvote_notification = Upvotenotification.objects.create(c_id=complain_id,u_id=request.user.id,
+			c_title=complain_info.title,u_name=request.user.username)
 		complain_list = Complain.objects.order_by('id')
 		my_data = [complain_info.id,complain_info.upvotes]
 		#return render(request,"complaint_portal/all_complain.html",{"complain_list":complain_list,"complain_id":complain_info.id})
@@ -464,12 +472,14 @@ def forward_reject(request):
 		for c in c_list:
 			c_obj = Complain.objects.get(pk=c)
 			c_obj.govt_complain_status=1
+			status = Statusnotifications.objects.create(c_id=c,status=1,c_title=c_obj.title)
 			c_obj.save()
 			#send_mail("Complain Accepted"+c.title,"You will be notified about further actions","saurabh.finch@gmail.com",[c.c_user.email])
 	else:
 		for c in c_list:
 			c_obj = Complain.objects.get(pk=c)
 			c_obj.govt_complain_status=2
+			status = Statusnotifications.objects.create(c_id=c,status=2,c_title=c_obj.title)
 			reason = request.POST.get("reason","")
 			c_obj.rejection_reason=int(reason)
 			c_obj.save()
@@ -594,10 +604,13 @@ def days_or_complete(request):
 				#complain.govt_complain_status = 4
 				if complain.govt_complain_status == 4:
 					complain.govt_complain_status = 6
+					status = Statusnotifications.objects.create(c_id=c_id,status=6,c_title=complain.title)
 				elif complain.govt_complain_status == 6:
 					complain.govt_complain_status = 6
+					status = Statusnotifications.objects.create(c_id=c_id,status=6,c_title=complain.title)
 				else:
 					complain.govt_complain_status = 4		
+					status = Statusnotifications.objects.create(c_id=c_id,status=4,c_title=complain.title)
 				complain.save()
 				print complain
 	else:
@@ -605,6 +618,7 @@ def days_or_complete(request):
 		for c in c_list:
 			c_obj = Complain.objects.get(pk=c)
 			c_obj.govt_complain_status = 3            #complete
+			status = Statusnotifications.objects.create(c_id=c,status=3,c_title=c_obj.title)
 			c_obj.save()
 			
 	return HttpResponseRedirect(reverse("complaint_portal:govtadmin"))
@@ -704,8 +718,11 @@ def comment(request,complain_id):
 	content = request.GET.get("content","")
 	c = Complain_usercomments.objects.create(content=content,comment_user=request.user.username,complain_id=complain_id)
 	co = Complain.objects.get(pk=complain_id)
+	print "bdff"
 	if co.c_user.username != request.user.username:
-		Comment_notification.objects.create(c_id=complain_id,u_id=request.user.id)
+		comm = Commentnotifications.objects.create(c_id=complain_id,u_id=request.user.id,c_title=co.title,
+			u_name=request.user.username)
+	
 	response_data = {}
 	response_data['done'] = "Update Added"
 	return HttpResponse(json.dumps(response_data),content_type="application/json")
@@ -718,10 +735,77 @@ def displaycomment(request,complain_id):
 def upvote_notification(request):
 	c_set = request.user.complain_set.values('id')
 	print len(c_set),"dhtsdfj"
+	upvote = []
+	comment = []
+	status = []
 	for c in c_set:
 		print c['id']
-		u_not = Upvote_notification.objects.filter(c_id=c['id']).filter(read=False)
+		u_not = Upvotenotification.objects.filter(c_id=c['id']).filter(Q(read=0) | Q(read=1))
 		print u_not.values()
-	return HttpResponseRedirect(reverse('complaint_portal:mycomplains'))	
+		if u_not.values():
+			upvote.append(u_not)
 
+	for c in c_set:
+		c_not = Commentnotifications.objects.filter(c_id=c['id']).filter(Q(read=0) | Q(read=1))
+		print c_not.values()
+		if c_not.values():
+			comment.append(c_not)
 
+	for c in c_set:
+		s_not = Statusnotifications.objects.filter(c_id=c['id']).filter(Q(read=0) | Q(read=1))
+		print s_not.values()
+		if s_not.values():
+			status.append(s_not)		
+	print upvote	
+	print comment
+	print status
+	return render(request,"complaint_portal/notification.html",{"upvote":upvote,"comment":comment,
+		"status":status})	
+
+def readupvote(request,id):
+	obj = Upvotenotification.objects.get(id=id)
+	obj.read = 1
+	obj.save()
+	response_data = {}
+	response_data['done'] = True
+	return HttpResponse(json.dumps(response_data),content_type="application/json")
+
+def delupvote(request,id):
+	print "bx"
+	obj = Upvotenotification.objects.get(id=id)
+	obj.delete()
+	response_data = {}
+	response_data['done'] = True
+	return HttpResponse(json.dumps(response_data),content_type="application/json")
+	
+def readcomment(request,id):
+	obj = Commentnotifications.objects.get(id=id)
+	obj.read = 1;
+	obj.save()
+	response_data = {}
+	response_data['done'] = True
+	return HttpResponse(json.dumps(response_data),content_type="application/json")
+	
+def delcomment(request,id):
+	print "gfhfy"
+	c = Commentnotifications.objects.get(id=id)
+	c.delete()
+	response_data = {}
+	response_data['done'] = True
+	return HttpResponse(json.dumps(response_data),content_type="application/json")
+	
+def readstatus(request,id):
+	obj = Statusnotifications.objects.get(id=id)
+	obj.read = 1;
+	obj.save()
+	response_data = {}
+	response_data['done'] = True
+	return HttpResponse(json.dumps(response_data),content_type="application/json")
+	
+def delstatus(request,id):
+	print "hfy"
+	c = Statusnotifications.objects.get(id=id)
+	c.delete()
+	response_data = {}
+	response_data['done'] = True
+	return HttpResponse(json.dumps(response_data),content_type="application/json")

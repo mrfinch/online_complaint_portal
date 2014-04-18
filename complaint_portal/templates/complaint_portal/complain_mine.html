@@ -113,8 +113,8 @@ $.post("http://localhost:8000/complaint_portal/upvote/2",{complain_id:"c_id"})
 	      <br />
 
 	      <span class="desc">{{complain.description}}.....</span>
-	      <a data-toggle="collapse" data-parent="#accordion" href="#{{forloop.counter}}" style="font-family:'Times New Roman', Times, serif;" id="show{{forloop.counter}}" onclick="changecontent('show{{forloop.counter}}')">Show more</a>
-	      <a data-target="#myModal{{complain.id}}" data-toggle="modal" style="position:absolute;left:80%;font-family:'Times New Roman', Times, serif;">Give a Update</a>	
+	      <a data-toggle="collapse" data-parent="#accordion" href="#{{forloop.counter}}" style="font-family:'Times New Roman', Times, serif;color:#00CC66;" id="show{{forloop.counter}}" onclick="changecontent('show{{forloop.counter}}')">Show more</a>
+	      <a data-target="#myModal{{complain.id}}" data-toggle="modal" style="position:absolute;left:80%;font-family:'Times New Roman', Times, serif;color:#00CC66;">Give a Update</a>	
 	  		</h3>
 	      	
 					
@@ -163,7 +163,7 @@ $.post("http://localhost:8000/complaint_portal/upvote/2",{complain_id:"c_id"})
 				
 				<p style="font-family:'Times New Roman', Times, serif;">{{complain.title}} </p>
 				<p style="font-family:'Times New Roman', Times, serif;">{{complain.description}} </p>
-                <a href="{% url 'complaint_portal:displaycomment' complain.id %}"style="font-family:'Times New Roman', Times, serif;" target="blank">Comments</a>
+                <a href="{% url 'complaint_portal:details' complain.id %}"style="font-family:'Times New Roman', Times, serif;" target="blank">Details</a>
                 {% if complain.govt_complain_status == 1 %}
 					  <div class="span4">
 						  Complain Validated<span class="pull-right">Sent to govt. employee</span>

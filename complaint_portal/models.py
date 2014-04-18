@@ -80,5 +80,52 @@ class Upvote_notification(models.Model):
 class Comment_notification(models.Model):
 	c_id = models.IntegerField()
 	u_id = models.IntegerField()
+	read = models.IntegerField(default=0)
+
+class Status_notification(models.Model):
+	c_id = models.IntegerField()
+	status = models.IntegerField()
+	read = models.IntegerField(default=0)	
+
+class Upvote_notifications(models.Model):
+	c_id = models.IntegerField()
+	c_title = models.CharField(max_length=50)
+	u_id = models.IntegerField()
+	u_name = models.CharField(max_length=50)
 	read = models.IntegerField(default=False)
-#another table which will store complain's locality	 			 
+
+class Comment_notifications(models.Model):
+	c_id = models.IntegerField()
+	c_title = models.CharField(max_length=50)
+	u_id = models.IntegerField()
+	u_name = models.CharField(max_length=50)
+	read = models.IntegerField(default=0)
+
+class Status_notifications(models.Model):
+	c_id = models.IntegerField()
+	c_title = models.CharField(max_length=50)
+	status = models.IntegerField()
+	read = models.IntegerField(default=0)	
+
+class Upvotenotification(models.Model):
+	c_id = models.IntegerField()
+	c_title = models.CharField(max_length=50)
+	u_id = models.IntegerField()
+	u_name = models.CharField(max_length=50)
+	read = models.IntegerField(default=0)
+	u_date = models.DateTimeField(default=datetime.now)
+
+class Commentnotifications(models.Model):
+	c_id = models.IntegerField()
+	c_title = models.CharField(max_length=50)
+	u_id = models.IntegerField()
+	u_name = models.CharField(max_length=50)
+	read = models.IntegerField(default=0)
+	c_date = models.DateTimeField(default=datetime.now)
+
+class Statusnotifications(models.Model):
+	c_id = models.IntegerField()
+	c_title = models.CharField(max_length=50)
+	status = models.IntegerField()
+	read = models.IntegerField(default=0)	
+	s_date = models.DateTimeField(default=datetime.now)

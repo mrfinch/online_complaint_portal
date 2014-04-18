@@ -1,0 +1,195 @@
+{% extends 'base_profile.html' %}
+{% block mytitle %}Notifications {% endblock %}
+{% load staticfiles %}
+{% block css_js %}
+<style>
+
+.jumbotron {
+background: #358CCE;
+color: #FFF;
+border-radius: 0px;
+}
+.jumbotron-sm { padding-top: 10px;
+padding-bottom: 10px; }
+.jumbotron small {
+color: #FFF;
+}
+.h1 small {
+font-size: 24px;
+}
+</style>
+<script>
+function readcomment(id){
+	console.log("fg");
+	console.log(id);
+	$.ajax({
+		url:"http://localhost:8000/complaint_portal/readcomment/"+id,
+		type:"GET",
+		success:function(d){
+			$('#comment'+id).removeClass('glyphicon glyphicon-ok');
+			$('#comment'+id).addClass('glyphicon glyphicon-remove');
+			$('#cmm'+id).attr("onclick","delcomment('"+id+"')");
+			$('#comm'+id).removeClass('panel panel-warning');
+			$('#comm'+id).addClass('panel panel-info');
+		},
+		error:function(d){
+			console.log("error");
+		}
+	});
+}
+
+function readstatus(id){
+	console.log("sg");
+	console.log(id);
+	$.ajax({
+		url:"http://localhost:8000/complaint_portal/readstatus/"+id,
+		type:"GET",
+		success:function(d){
+			$('#status'+id).removeClass('glyphicon glyphicon-ok');
+			$('#status'+id).addClass('glyphicon glyphicon-remove');
+			$('#stt'+id).attr("onclick","delstatus('"+id+"')");
+			$('#stat'+id).removeClass('panel panel-warning');
+			$('#stat'+id).addClass('panel panel-info');
+		},
+		error:function(d){
+			console.log("error");
+		}
+	});
+}
+
+function readupvote(id){
+	console.log("qw");
+	$.ajax({
+		url:"http://localhost:8000/complaint_portal/readupvote/"+id,
+		type:"GET",
+		success:function(d){
+			$('#upv'+id).removeClass('glyphicon glyphicon-ok');
+			$('#upv'+id).addClass('glyphicon glyphicon-remove');
+			$('#upvote'+id).attr("onclick","delupvote('"+id+"')");
+			$('#up'+id).removeClass('panel panel-warning');
+			$('#up'+id).addClass('panel panel-info');	
+		},
+		error:function(d){
+			console.log("error");
+		}
+	});
+}
+
+function delcomment(id){
+	console.log("g");
+	console.log(id);
+	$.ajax({
+		url:"http://localhost:8000/complaint_portal/delcomment/"+id,
+		type:"GET",
+		success:function(d){
+			$('#comm'+id).remove();
+		},
+		error:function(d){
+			console.log("error");
+		}
+	});
+}
+
+function delstatus(id){
+	console.log("sg");
+	console.log(id);
+	$.ajax({
+		url:"http://localhost:8000/complaint_portal/delstatus/"+id,
+		type:"GET",
+		success:function(d){
+			$('#stat'+id).remove();
+		},
+		error:function(d){
+			console.log("error");
+		}
+	});
+}
+function delupvote(id){
+	console.log("qg");
+	console.log(id);
+	$.ajax({
+		url:"http://localhost:8000/complaint_portal/delupvote/"+id,
+		type:"GET",
+		success:function(d){
+			$('#up'+id).remove();
+		},
+		error:function(d){
+			console.log("error");
+		}
+	});
+}
+
+</script>
+{% endblock %}
+{% block mycontent %}
+<div class="jumbotron jumbotron-sm" style="background-image:url('{% static "complaint_portal/images/yellow5.jpg" %}') ;background-repeat:repeat-x;">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-5 col-lg-5">
+                <h4 class="h4">
+                    Notifications</h4>
+            </div>
+        </div>
+    </div>
+</div>		
+
+<div class="container">	
+	{% for outer in upvote %}
+		{% for inner in outer %}
+		{% if inner.read = 0 %}
+		<div class="panel panel-warning" id="up{{inner.id}}">
+			<div class="panel-heading">	
+			<a href="#" onclick="readupvote({{inner.id}})" id="upvote{{inner.id}}"><span class="glyphicon glyphicon-ok" id="upv{{inner.id}}"></span></a>
+		{% elif inner.read = 1 %}
+		<div class="panel panel-info" id="up{{inner.id}}">
+			<div class="panel-heading">	
+			<a href="#" onclick="delupvote({{inner.id}})" id="upvote{{inner.id}}"><span class="glyphicon glyphicon-remove" id="upv{{inner.id}}"></span></a>
+		{% endif %}	
+			&nbsp;&nbsp;&nbsp;&nbsp;	
+			{{inner.u_name}}&nbsp;&nbsp;&nbsp;&nbsp; <span class="glyphicon glyphicon-thumbs-up"></span></a> <a href="{% url 'complaint_portal:details' inner.c_id %}">&nbsp;&nbsp;&nbsp;&nbsp;{{inner.c_title}}</a> &nbsp;&nbsp;&nbsp;&nbsp;at {{inner.u_date}}
+			</div>
+		</div>
+		{% endfor %}
+	{% endfor %}
+
+<div>	
+	{% for outer in comment %}
+		{% for inner in outer %}
+		{% if inner.read = 0 %}
+		<div class="panel panel-warning" id="comm{{inner.id}}">
+			<div class="panel-heading">	
+			<a href="#" onclick="readcomment({{inner.id}})" id="cmm{{inner.id}}"><span id="comment{{inner.id}}" class="glyphicon glyphicon-ok"></span></a>
+		{% elif inner.read = 1 %}
+		<div class="panel panel-info" id="comm{{inner.id}}">
+			<div class="panel-heading">	
+			<a href="#" onclick="delcomment({{inner.id}})" id="cmm{{inner.id}}"><span id="comment{{inner.id}}" class="glyphicon glyphicon-remove"></span></a>
+		{% endif %}
+			&nbsp;&nbsp;&nbsp;&nbsp;
+			{{inner.u_name}} &nbsp;&nbsp;&nbsp;&nbsp;<a href="#"><span class="glyphicon glyphicon-comment"></span></a>&nbsp;&nbsp;&nbsp;&nbsp; on &nbsp;&nbsp;&nbsp;&nbsp;<span><a href="{% url 'complaint_portal:details' inner.c_id %}">{{inner.c_title}}</a></span>&nbsp;&nbsp;&nbsp;&nbsp; at {{inner.c_date}}
+			</div>
+		</div>
+		{% endfor %}
+	{% endfor %}
+</div>
+<div>	
+	{% for outer in status %}
+		{% for inner in outer %}
+		{% if inner.read = 0 %}
+		<div class="panel panel-warning" id="stat{{inner.id}}">
+			<div class="panel-heading">	
+			<a href="#" onclick="readstatus({{inner.id}})" id="stt{{inner.id}}"><span id="status{{inner.id}}" class="glyphicon glyphicon-ok"></span></a>
+		{% elif inner.read = 1 %}
+		<div class="panel panel-info" id="stat{{inner.id}}">
+			<div class="panel-heading">	
+			<a href="#" onclick="delstatus({{inner.id}})" id="stt{{inner.id}}"><span id="status{{inner.id}}" class="glyphicon glyphicon-remove"></span></a>
+		{% endif %}
+		&nbsp;&nbsp;&nbsp;&nbsp;	
+			<span><a href="{% url 'complaint_portal:details' inner.c_id %}">{{inner.c_title}}</a></span>	
+			&nbsp;&nbsp;status changed to {{inner.status}} &nbsp;&nbsp; at {{inner.s_date}}
+			</div>
+		</div>
+		{% endfor %}
+	{% endfor %}
+</div>	
+</div>	
+{% endblock %}
