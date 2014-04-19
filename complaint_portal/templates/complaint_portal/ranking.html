@@ -27,7 +27,7 @@
 
 {% block content %}
 	<div class="container">
-	<div style="color:yellow">
+	<div style="color:#fff">
 	{% if user.is_authenticated %}
 	    {% for users in users_rank %}
 	       {% if users.user.username == user.username %}
@@ -41,7 +41,7 @@
 			<div class="col-md-6">
 				<div class="panel panel-primary">
 					<div class="panel-heading" style="background-color:#000000 ">
-						<h3 class="panel-title" style="background-color:#000000">Ranking</h3>
+						<h3 class="panel-title" style="background-color:#000000;font-family:serif;">Ranking</h3>
 						<div class="pull-right">
 							
 						</div>
@@ -50,14 +50,14 @@
 						<input type="text" class="form-control" id="dev-table-filter" data-action="filter" data-filters="#dev-table" placeholder="Filter Developers" />
 					</div>
 					<table class="table table-hover" id="dev-table">
-						<thead style="background-image:url('{% static "complaint_portal/images/yellow5.jpg" %}') ;background-repeat:repeat-x;">
+						<thead style="background-image:url('{% static "complaint_portal/images/squared_metal.png" %}');font-family:serif;">
 							<tr>
 								<td><b>Rank</b></td>
 								<td><b>Name</b></td>
 								<td><b>Upvotes</b></td>
 							</tr>
 						</thead>
-						<tbody style="background-image:url('{% static "complaint_portal/images/yellow5.jpg" %}') ;background-repeat:repeat-x;">
+						<tbody style="background-image:url('{% static "complaint_portal/images/squared_metal.png" %}');font-family:serif;">
 							{% for users in users_rank %}
 							<tr>
 								<td>{{ forloop.counter }} </td>

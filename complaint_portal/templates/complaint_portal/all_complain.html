@@ -55,6 +55,7 @@ function sendcomment(id){
 		success:function(d){
 			console.log(d['done']);
 			$('#done'+id).html(d['done']);
+			$('#content'+id).val('');
 		},
 		error:function(d){
 			console.log(d['done']);
@@ -75,8 +76,8 @@ $.post("http://localhost:8000/complaint_portal/upvote/2",{complain_id:"c_id"})
 {% block filters %}
 <div class="col-md-4 " >
 		<div class="btn-group">
-			<button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
-     		Filter By Place
+			<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+     		<span style="color:#000;font-weight:bold;">Filter By Place</span>
       		<span class="caret"></span>
     		</button>
     		<ul class="dropdown-menu">
@@ -90,8 +91,8 @@ $.post("http://localhost:8000/complaint_portal/upvote/2",{complain_id:"c_id"})
 
 <div class="col-md-4 ">
 		<div class="btn-group">
-			<button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
-     		Filter By Type
+			<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+     		<span  style="color:#000;font-weight:bold;">Filter By Type</span>
       		<span class="caret"></span>
     		</button>
 			<ul class="dropdown-menu">
@@ -110,9 +111,9 @@ $.post("http://localhost:8000/complaint_portal/upvote/2",{complain_id:"c_id"})
 <div class="container">
 <div class="panel-group" id="accordion">
 	{% for complain in complain_list %}
-	<div class="panel panel-info">
+	<div class="panel panel-default">
 	    <div class="panel-heading">
-	      <h3 class="panel-title">
+	      <h3 class="panel-title" style="font-family:arial;color:#000;">
 	      {{ complain.title }}
 			<span style="position:absolute; left:60%;"><i class="glyphicon glyphicon-time"></i> <span style="font-family:'Times New Roman', Times, serif;">{{complain.complain_date}}</span></span>
 			<span style="position:absolute; left:80%;"><i class="glyphicon glyphicon-thumbs-up"></i><span style="font-family:'Times New Roman', Times, serif;" id="st{{complain.id}}">{{complain.upvotes}}</span></span>
@@ -120,9 +121,9 @@ $.post("http://localhost:8000/complaint_portal/upvote/2",{complain_id:"c_id"})
 	      <br />
 	      <span class="desc">{{complain.description}}.....</span>
 
-	      <a data-toggle="collapse" data-parent="#accordion" href="#{{forloop.counter}}" style="font-family:'Times New Roman', Times, serif;color:#00CC66;" id="show{{forloop.counter}}" onclick="changecontent('show{{forloop.counter}}')">Show more</a>
-	      {% if user.is_authenticated %}	
-	      <a data-target="#myModal{{complain.id}}" data-toggle="modal" style="position:absolute;left:80%;font-family:'Times New Roman', Times, serif;color:#00CC66;">Give a Update</a>	
+	      <a data-toggle="collapse" data-parent="#accordion" href="#{{forloop.counter}}" style="font-family:'Times New Roman', Times, serif;color:#428bca;" id="show{{forloop.counter}}" onclick="changecontent('show{{forloop.counter}}')">Show more</a>
+	      {% if user.is_authenticated and complain.ban_date == null %}	
+	      <a data-target="#myModal{{complain.id}}" data-toggle="modal" style="position:absolute;left:80%;font-family:'Times New Roman', Times, serif;color:#428bca;">Give an Update</a>	
 	  		</h3>
 	      	
 					
@@ -162,47 +163,53 @@ $.post("http://localhost:8000/complaint_portal/upvote/2",{complain_id:"c_id"})
 				<a href="{% static complain.complain_image %}" title="{{complain.title}}" class="thumbnail" target="_blank"><img src="{% static complain.complain_image %}" alt="{{complain.title}}" style="max-width:100%;max-height:100%;" /></a>
 			</div>
 			<div class="col-xs-12 col-sm-12 col-md-3">
-				<ul class="meta-search">
-					<li><i class="glyphicon glyphicon-tags"></i> <span>{{complain.type_of_complain}}</span></li>
-					<li><i class="glyphicon glyphicon-tags"></i> <span>{{complain.complain_place}}</span></li>
-					<li><i class="glyphicon glyphicon-time"></i> <span>By:{{complain.c_user.username}}-{{complain.c_user.userinfos.total_upvotes}}</span></li>
+				<ul class="meta-search" style="font-family:serif;">
+					<li><i class="glyphicon glyphicon-tags"></i> <span style="font-family:serif;">{{complain.type_of_complain}}</span></li>
+					<li><i class="glyphicon glyphicon-tags"></i> <span style="font-family:serif;">{{complain.complain_place}}</span></li>
+					<li><i class="glyphicon glyphicon-time"></i> <span style="font-family:serif;">By:<a target="_blank" href="{% url 'complaint_portal:user_public_profile' complain.c_user.id %}" style="color:#428bca;">{{complain.c_user.username}}</a>:{{complain.c_user.userinfos.total_upvotes}}</span></li>
 				</ul>
 			</div>
-			<div class="col-xs-4 col-sm-4 col-md-6 excerpet">
-				<p style="font-family:'Times New Roman', Times, serif;">{{complain.title}} </p>
-				<p style="font-family:'Times New Roman', Times, serif;">{{complain.description}} </p>
-                <a href="{% url 'complaint_portal:details' complain.id %}"style="font-family:'Times New Roman', Times, serif;" target="blank">Details</a>
+			<div class="col-xs-4 col-sm-4 col-md-6 excerpet" style="font-family:serif;">
+				<p style="font-family:serif;">{{complain.title}} </p>
+				<pstyle="font-family:serif;">{{complain.description}} </p>
+                <a href="{% url 'complaint_portal:details' complain.id %}"style="font-family:serif;color:#428bca;" target="blank" >Complain Details</a>
                 
                 {% if complain.govt_complain_status == 1 %}
-					  <div class="span4">
+					  <div class="span4" style="font-family:serif;">
 						  Complain Validated<span class="pull-right">Sent to govt. employee</span>
 						  <div class="progress progress-striped active">
 						      <div class="progress-bar progress-bar-info" style="width:50%;"></div>
 						  </div>
 					  </div>
                 {% elif complain.govt_complain_status == 2 %}
-                	 <div class="span4">
-						  Rejected Complain<span class="pull-right">Show Reason</span>
+                	 <div class="span4" style="font-family:serif;">
+						  Rejected Complain<span class="pull-right">
+						  {% if complain.rejection_reason == 1 %}
+						  	Not Relevant
+						  {% elif complain.rejection_reason == 2 %}
+						  	Similar Complain exists
+						  {% endif %}	
+						  </span>
 						  <div class="progress progress-striped active">
 						      <div class="progress-bar progress-bar-danger" style="width:100%;"></div>
 						  </div>
 					  </div>
                 {% elif complain.govt_complain_status == 4 or complain.govt_complain_status == 6 %}
-                	<div class="span4">
+                	<div class="span4" style="font-family:serif;">
 						  Work in progress<span class="pull-right">Deadline:{{complain.end_date}}</span>
 						  <div class="progress progress-striped active">
 						      <div class="progress-bar progress-bar-warning" style="width:75%;"></div>
 						  </div>
 					  </div> 
                 {% elif complain.govt_complain_status == 3 %}
-                	<div class="span4">
+                	<div class="span4" style="font-family:serif;">
 						  Completed<span class="pull-right"></span>
 						  <div class="progress progress-striped active">
 						      <div class="progress-bar progress-bar-success" style="width:100%;"></div>
 						  </div>
 					  </div> 
                 {% else %}
-                	<div class="span4">
+                	<div class="span4" style="font-family:serif;">
 						  Submitted not reviewed<span class="pull-right"></span>
 						  <div class="progress progress-striped active">
 						      <div class="progress-bar progress-bar-info" style="width:25%;"></div>
@@ -212,7 +219,7 @@ $.post("http://localhost:8000/complaint_portal/upvote/2",{complain_id:"c_id"})
 	            {% if user.is_authenticated %}
 					<div class="col-xs-12 col-sm-12 col-md-3">
  					<ul class="meta-search">
- 						<button type="submit" class="btn btn-primary btn-lg" value="{{complain.id}}">
+ 						<button type="submit" class="btn btn-info btn-lg" value="{{complain.id}}">
    							<span class="glyphicon glyphicon-thumbs-up" value="{{complain.id}}" ></span> 
  						</button>
  

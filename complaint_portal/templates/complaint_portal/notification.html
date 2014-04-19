@@ -19,6 +19,23 @@ font-size: 24px;
 }
 </style>
 <script>
+function num_notify(){
+	console.log('numqw');
+	$.ajax({
+		url:"http://localhost:8000/complaint_portal/num_notification/",
+		type:"GET",
+		success:function(d){
+			console.log(d['num']);
+			$('#num_not').html(d['num']);
+			$('#num_not1').html(d['num']);
+		},
+		error:function(d){
+			console.log('error');
+			console.log(d['num']);
+		}
+	});
+}
+
 function readcomment(id){
 	console.log("fg");
 	console.log(id);
@@ -29,6 +46,7 @@ function readcomment(id){
 			$('#comment'+id).removeClass('glyphicon glyphicon-ok');
 			$('#comment'+id).addClass('glyphicon glyphicon-remove');
 			$('#cmm'+id).attr("onclick","delcomment('"+id+"')");
+			$('#cmm'+id).attr("title","Click to mark delete");
 			$('#comm'+id).removeClass('panel panel-warning');
 			$('#comm'+id).addClass('panel panel-info');
 		},
@@ -48,6 +66,7 @@ function readstatus(id){
 			$('#status'+id).removeClass('glyphicon glyphicon-ok');
 			$('#status'+id).addClass('glyphicon glyphicon-remove');
 			$('#stt'+id).attr("onclick","delstatus('"+id+"')");
+			$('#stt'+id).attr("title","Click to mark delete");
 			$('#stat'+id).removeClass('panel panel-warning');
 			$('#stat'+id).addClass('panel panel-info');
 		},
@@ -66,6 +85,7 @@ function readupvote(id){
 			$('#upv'+id).removeClass('glyphicon glyphicon-ok');
 			$('#upv'+id).addClass('glyphicon glyphicon-remove');
 			$('#upvote'+id).attr("onclick","delupvote('"+id+"')");
+			$('#upvote'+id).attr("title","Click to mark delete");
 			$('#up'+id).removeClass('panel panel-warning');
 			$('#up'+id).addClass('panel panel-info');	
 		},
@@ -83,11 +103,13 @@ function delcomment(id){
 		type:"GET",
 		success:function(d){
 			$('#comm'+id).remove();
+			num_notify();
 		},
 		error:function(d){
 			console.log("error");
 		}
 	});
+
 }
 
 function delstatus(id){
@@ -98,6 +120,7 @@ function delstatus(id){
 		type:"GET",
 		success:function(d){
 			$('#stat'+id).remove();
+			num_notify();
 		},
 		error:function(d){
 			console.log("error");
@@ -112,6 +135,7 @@ function delupvote(id){
 		type:"GET",
 		success:function(d){
 			$('#up'+id).remove();
+			num_notify();
 		},
 		error:function(d){
 			console.log("error");
@@ -122,31 +146,31 @@ function delupvote(id){
 </script>
 {% endblock %}
 {% block mycontent %}
-<div class="jumbotron jumbotron-sm" style="background-image:url('{% static "complaint_portal/images/yellow5.jpg" %}') ;background-repeat:repeat-x;">
+<div class="jumbotron jumbotron-sm" style="background-image:url('{% static "complaint_portal/images/squared_metal.png" %}') ;background-repeat:repeat-x;">
     <div class="container">
         <div class="row">
             <div class="col-sm-5 col-lg-5">
-                <h4 class="h4">
+                <h4 class="h4" style="color:#000;">
                     Notifications</h4>
             </div>
         </div>
     </div>
 </div>		
 
-<div class="container">	
+<div class="container" style="font-family:serif;">	
 	{% for outer in upvote %}
 		{% for inner in outer %}
 		{% if inner.read = 0 %}
 		<div class="panel panel-warning" id="up{{inner.id}}">
 			<div class="panel-heading">	
-			<a href="#" onclick="readupvote({{inner.id}})" id="upvote{{inner.id}}"><span class="glyphicon glyphicon-ok" id="upv{{inner.id}}"></span></a>
+			<a href="#" onclick="readupvote({{inner.id}})" id="upvote{{inner.id}}" title="Click to mark read"><span class="glyphicon glyphicon-ok" id="upv{{inner.id}}"></span></a>
 		{% elif inner.read = 1 %}
 		<div class="panel panel-info" id="up{{inner.id}}">
 			<div class="panel-heading">	
 			<a href="#" onclick="delupvote({{inner.id}})" id="upvote{{inner.id}}"><span class="glyphicon glyphicon-remove" id="upv{{inner.id}}"></span></a>
 		{% endif %}	
 			&nbsp;&nbsp;&nbsp;&nbsp;	
-			{{inner.u_name}}&nbsp;&nbsp;&nbsp;&nbsp; <span class="glyphicon glyphicon-thumbs-up"></span></a> <a href="{% url 'complaint_portal:details' inner.c_id %}">&nbsp;&nbsp;&nbsp;&nbsp;{{inner.c_title}}</a> &nbsp;&nbsp;&nbsp;&nbsp;at {{inner.u_date}}
+			{{inner.u_name}}&nbsp;&nbsp;&nbsp;&nbsp; <span class="glyphicon glyphicon-thumbs-up"></span></a> <a href="{% url 'complaint_portal:details' inner.c_id %}" target="_blank">&nbsp;&nbsp;&nbsp;&nbsp;{{inner.c_title}}</a> &nbsp;&nbsp;&nbsp;&nbsp;at {{inner.u_date}}
 			</div>
 		</div>
 		{% endfor %}
@@ -158,14 +182,32 @@ function delupvote(id){
 		{% if inner.read = 0 %}
 		<div class="panel panel-warning" id="comm{{inner.id}}">
 			<div class="panel-heading">	
-			<a href="#" onclick="readcomment({{inner.id}})" id="cmm{{inner.id}}"><span id="comment{{inner.id}}" class="glyphicon glyphicon-ok"></span></a>
+			<a href="#" onclick="readcomment({{inner.id}})" id="cmm{{inner.id}}" title="Click to mark read"><span id="comment{{inner.id}}" class="glyphicon glyphicon-ok"></span></a>
 		{% elif inner.read = 1 %}
 		<div class="panel panel-info" id="comm{{inner.id}}">
 			<div class="panel-heading">	
 			<a href="#" onclick="delcomment({{inner.id}})" id="cmm{{inner.id}}"><span id="comment{{inner.id}}" class="glyphicon glyphicon-remove"></span></a>
 		{% endif %}
 			&nbsp;&nbsp;&nbsp;&nbsp;
-			{{inner.u_name}} &nbsp;&nbsp;&nbsp;&nbsp;<a href="#"><span class="glyphicon glyphicon-comment"></span></a>&nbsp;&nbsp;&nbsp;&nbsp; on &nbsp;&nbsp;&nbsp;&nbsp;<span><a href="{% url 'complaint_portal:details' inner.c_id %}">{{inner.c_title}}</a></span>&nbsp;&nbsp;&nbsp;&nbsp; at {{inner.c_date}}
+			{{inner.u_name}} &nbsp;&nbsp;&nbsp;&nbsp;
+			<a data-target="#myModal{{inner.id}}" data-toggle="modal" onclick="readcomment({{inner.id}})"><span class="glyphicon glyphicon-comment"></span></a>
+			<div class="modal fade" id="myModal{{inner.id}}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+					  <div class="modal-dialog">
+					    <div class="modal-content">
+					      <div class="modal-header">
+					        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+					        <h4 class="modal-title">Comment</h4>
+					      </div>
+					      <div class="modal-body">
+					      {{inner.comment}}  		
+					      </div>
+					      <div class="modal-footer">
+					      	By {{inner.u_name}}
+					      </div>
+					      </div><!-- /.modal-content -->
+					  </div><!-- /.modal-dialog -->
+					</div><!-- /.modal -->
+			&nbsp;&nbsp;&nbsp;&nbsp; on &nbsp;&nbsp;&nbsp;&nbsp;<span><a href="{% url 'complaint_portal:details' inner.c_id %}" target="_blank">{{inner.c_title}}</a></span>&nbsp;&nbsp;&nbsp;&nbsp; at {{inner.c_date}}
 			</div>
 		</div>
 		{% endfor %}
@@ -177,15 +219,28 @@ function delupvote(id){
 		{% if inner.read = 0 %}
 		<div class="panel panel-warning" id="stat{{inner.id}}">
 			<div class="panel-heading">	
-			<a href="#" onclick="readstatus({{inner.id}})" id="stt{{inner.id}}"><span id="status{{inner.id}}" class="glyphicon glyphicon-ok"></span></a>
+			<a href="#" onclick="readstatus({{inner.id}})" id="stt{{inner.id}}" title="Click to mark read"><span id="status{{inner.id}}" class="glyphicon glyphicon-ok"></span></a>
 		{% elif inner.read = 1 %}
 		<div class="panel panel-info" id="stat{{inner.id}}">
 			<div class="panel-heading">	
 			<a href="#" onclick="delstatus({{inner.id}})" id="stt{{inner.id}}"><span id="status{{inner.id}}" class="glyphicon glyphicon-remove"></span></a>
 		{% endif %}
 		&nbsp;&nbsp;&nbsp;&nbsp;	
-			<span><a href="{% url 'complaint_portal:details' inner.c_id %}">{{inner.c_title}}</a></span>	
-			&nbsp;&nbsp;status changed to {{inner.status}} &nbsp;&nbsp; at {{inner.s_date}}
+			<span><a href="{% url 'complaint_portal:details' inner.c_id %}" target="_blank">{{inner.c_title}}</a></span>	
+			&nbsp;&nbsp;status changed to&nbsp;&nbsp; 
+			{% if inner.status == 1 %}
+				'Complain Accepted'
+			{% elif inner.status == 2 %}
+				'Complain Rejected'
+			{% elif inner.status == 3 %}
+				'Complain Solved'
+			{% elif inner.status == 4 %}
+				'Added completion date'
+			{% elif inner.status == 6 %}
+				'Changed completion date'
+			{% endif %}
+			
+			 &nbsp;&nbsp; at {{inner.s_date}}
 			</div>
 		</div>
 		{% endfor %}

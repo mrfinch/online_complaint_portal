@@ -1,14 +1,16 @@
 {% load staticfiles %}
 <head>
 <title>Middlemen</title>
-<script type="text/javascript" src="http://code.jquery.com/jquery-latest.min.js"></script>
-<script type="text/javascript" src="{% static 'complaint_portal/js/bootstrap.min.js' %}"></script>
-<script type="text/javascript" src="{% static 'complaint_portal/js/complain.js' %}"></script>
-<link rel="stylesheet" href="{% static 'complaint_portal/css/bootstrap.min.css' %}">
-<link rel="stylesheet" href="{% static 'complaint_portal/css/flat-ui.css' %}">
+	<script type="text/javascript" src="{% static 'complaint_portal/js/jquery.js' %}"></script>
+	<script type="text/javascript" src="{% static 'complaint_portal/js/bootstrap.min.js' %}"></script>
+	<script type="text/javascript" src="{% static 'complaint_portal/js/complain.js' %}"></script>
+	<script type="text/javascript" src="{% static 'complaint_portal/js/check_password.js' %}"></script>
+	<script type="text/javascript" src="{% static 'complaint_portal/js/num_notification.js' %}"></script>
+	<link rel="stylesheet" href="{% static 'complaint_portal/css/bootstrap.min.css' %}">
+	<link rel="stylesheet" href="{% static 'complaint_portal/css/flat-ui.css' %}">
 </head>
 
-<div class="container">
+<div class="container" style="font-family:serif;">
 	<nav class="navbar navbar-inverse navbar-embossed " role="navigation">
 		<div class="collapse navbar-collapse" id="navbar-collapse-01">
 		    <ul class="nav navbar-nav">
@@ -54,16 +56,16 @@
 {% csrf_token %}
 <div class="panel-group" id="accordion">
 {% for f in complain %}
-	<div class="panel panel-default">
+	<div class="panel panel-default" style="font-family:serif;">
 	    <div class="panel-heading">
 	      <h4 class="panel-title">
 	      <input type="checkbox" name="sel_complain" value="{{f.id}}"/>	
 	      <a data-toggle="collapse" data-parent="#accordion" href="#{{forloop.counter}}">
 	      {{ f.title }}
-			<span style="position:absolute; left:650">{{f.type_of_complain}}</span>
-			<span style="position:absolute; left:900">{{f.complain_place}}</span>
-			<span style="position:absolute; left:1100">{{f.complain_date}}</span>
-			<span style="position:absolute; left:550">
+			<span style="position:absolute; left:700">{{f.type_of_complain}}</span>
+			<span style="position:absolute; left:950">{{f.complain_place}}</span>
+			<span style="position:absolute; left:1150">{{f.complain_date}}</span>
+			<span style="position:absolute; left:460">
       		{% if f.forum_visible == 1 %}
       		Still not completed
       		{% else %}
@@ -78,14 +80,14 @@
 	    {% else %}	
 	    	<div id="{{forloop.counter}}" class="panel-collapse collapse in">
 	     {% endif %}
-	      <div class="panel-body">	
+	      <div class="panel-body" style="font-family:serif;">	
 	      <b>Description:</b>{{ f.description }}<br />
 	      <b>Address:</b>{{ f.complain_address }} <br />
+	      <a href="{% url 'complaint_portal:details' f.id %}" target="_blank">Complain Details</a><br />
 	      <b>Username: </b><a href="{% url 'complaint_portal:userprofile_admin' f.c_user.id %}" target="_blank">{{ f.c_user.username }}</a> 
 	       &nbsp;&nbsp;&nbsp;
-	      <a href="{% static f.complain_image %}" target="_blank">Link to Image</a>
-	      &nbsp;&nbsp;&nbsp;&nbsp;Upvotes:{{f.upvotes}}
-	      <b><a href="{% url 'complaint_portal:dforum' f.id %}" target="_blank">Discuss with government employee</a></b>
+	      Upvotes:{{f.upvotes}}<br />
+	      <a href="{% url 'complaint_portal:dforum' f.id %}" target="_blank">Discuss with government employee</a>
 	      </div>
 	    </div>
 	  </div>

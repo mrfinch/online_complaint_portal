@@ -50,7 +50,8 @@ class UserInfos(models.Model):
 	address = models.TextField()
 	locality = models.CharField(max_length=50)
 	total_upvotes = models.IntegerField(default=0)
-
+	ban_date = models.DateTimeField(null=True,blank=True)
+	
 class GovtUserInfo(models.Model):
 	user = models.OneToOneField(User)
 	phone = models.CharField(max_length=20)

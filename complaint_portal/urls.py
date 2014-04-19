@@ -47,17 +47,18 @@ urlpatterns = patterns('',
 	url(r'^adminregister/',views.adminregister,name="adminregister"),
 	url(r'^super_login/',views.super_login,name="super_login"),
 	url(r'^faq/',views.faq,name="faq"),
-	url(r'^hello/',views.hello,name="hello"),
 	url(r'^dforum/(?P<complain_id>\d+)/',views.dforum,name="dforum"),
 	url(r'^comment/(?P<complain_id>\d+)/',views.comment,name="comment"),
 	url(r'^displaycomment/(?P<complain_id>\d+)/',views.displaycomment,name="displaycomment"),
 	url(r'^upvote_notification/',views.upvote_notification,name="upvote_notification"),
+	url(r'^num_notification/',views.num_notification,name="num_notification"),
 	url(r'^readcomment/(?P<id>\d+)/',views.readcomment,name="readcomment"),
 	url(r'^delcomment/(?P<id>\d+)/',views.delcomment,name="delcomment"),
 	url(r'^readupvote/(?P<id>\d+)/',views.readupvote,name="readupvote"),
 	url(r'^delupvote/(?P<id>\d+)/',views.delupvote,name="delupvote"),
 	url(r'^readstatus/(?P<id>\d+)/',views.readstatus,name="readstatus"),
 	url(r'^delstatus/(?P<id>\d+)/',views.delstatus,name="delstatus"),
+	url(r'^public_profile/(?P<id>\d+)/',views.user_public_profile,name="user_public_profile"),
 	) 
 
 #updateform for each complain
@@ -67,4 +68,4 @@ urlpatterns = patterns('',
 #see complainform_update.html give option of complete if it is accepted adn give option of update if it is not reviewed
 
 #0-submitted,1-accept by middlemen,2-rejected by middlemen,3-completed,4-reviewed by govt employee and added days,
-#5-review again,7-middlemen asks for help from govt.,6-changed end date
+#5-review again,6-changed end date

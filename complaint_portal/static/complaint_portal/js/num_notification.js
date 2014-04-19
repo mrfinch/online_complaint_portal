@@ -1,0 +1,16 @@
+$(document).ready(function(){
+	console.log('num');
+	$.ajax({
+		url:"http://localhost:8000/complaint_portal/num_notification/",
+		type:"GET",
+		success:function(d){
+			console.log(d['num']);
+			$('#num_not').html(d['num']);
+			$('#num_not1').html(d['num']);
+		},
+		error:function(d){
+			console.log('error');
+			console.log(d['num']);
+		}
+	});
+});

@@ -13,9 +13,6 @@ import django.core.exceptions
 import json
 # Create your views here.
 
-def hello(request):
-	return render(request,"complaint_portal/hello.html",{})
-
 def index(request):
 	current_complains = Complain.objects.order_by('complain_date')[:3]
 	total_comp = Complain.objects.count()
@@ -124,6 +121,9 @@ def complainform(request):
 	types = Complain_type.objects.all()
 	if not request.user.is_authenticated or not request.user.is_active:
 		return HttpResponseRedirect(reverse("complaint_portal:index"))
+	comp_user = UserInfos.objects.get(pk=request.user.id)
+	if comp_user.ban_date < datetime.now and comp_user.ban_date != None:
+		return render(request,"complaint_portal/complainform.html",{"places":places,"types":types,"msg":"You are banned","end_date":comp_user.ban_date})		
 	if request.method == "POST" and request.user.is_authenticated():
 		u = User.objects.get(pk=request.user.id)
 		form = ComplainForm(request.POST,request.FILES,instance=u)
@@ -221,7 +221,16 @@ def details(request,complain_id):
 	print "gstd"
 	if request.method == "POST":
 		content = request.POST.get("content","")
-		c = Complain_usercomments.objects.create(content=content,comment_user=request.user.username,complain_id=complain_id)
+		name = request.user.username
+		if request.user.is_staff or request.user.is_superuser:
+			name += "(Admin)"
+		print name
+		c = Complain_usercomments.objects.create(content=content,comment_user=name,complain_id=complain_id)
+		co = Complain.objects.get(pk=complain_id)
+		print "abdff"
+		if co.c_user.username != request.user.username:
+			comm = Commentnotifications.objects.create(c_id=complain_id,u_id=request.user.id,c_title=co.title,
+				u_name=name,comment=content)
 	else:
 		pass
 	c_comments = Complain_usercomments.objects.filter(complain_id=complain_id)
@@ -472,6 +481,9 @@ def forward_reject(request):
 		for c in c_list:
 			c_obj = Complain.objects.get(pk=c)
 			c_obj.govt_complain_status=1
+			comp_user = UserInfos.objects.get(pk=c_obj.c_user.id)
+			comp_user.total_upvotes += 5
+			comp_user.save()
 			status = Statusnotifications.objects.create(c_id=c,status=1,c_title=c_obj.title)
 			c_obj.save()
 			#send_mail("Complain Accepted"+c.title,"You will be notified about further actions","saurabh.finch@gmail.com",[c.c_user.email])
@@ -479,6 +491,13 @@ def forward_reject(request):
 		for c in c_list:
 			c_obj = Complain.objects.get(pk=c)
 			c_obj.govt_complain_status=2
+			comp_user = UserInfos.objects.get(pk=c_obj.c_user.id)
+			comp_user.total_upvotes -= 5
+			u_obj = User.objects.get(pk=comp_user.id)
+			num_complains = len(u_obj.complain_set.all())
+			if comp_user.total_upvotes < 0 and num_complains>3:
+				comp_user.ban_date = (datetime.now()+timedelta(days=7))
+			comp_user.save()
 			status = Statusnotifications.objects.create(c_id=c,status=2,c_title=c_obj.title)
 			reason = request.POST.get("reason","")
 			c_obj.rejection_reason=int(reason)
@@ -717,12 +736,16 @@ def comment(request,complain_id):
 	print request.GET
 	print "bdf"
 	content = request.GET.get("content","")
-	c = Complain_usercomments.objects.create(content=content,comment_user=request.user.username,complain_id=complain_id)
+	name = request.user.username
+	if request.user.is_staff or request.user.is_superuser:
+		name += "(Admin)"
+	print name
+	c = Complain_usercomments.objects.create(content=content,comment_user=name,complain_id=complain_id)
 	co = Complain.objects.get(pk=complain_id)
 	print "bdff"
 	if co.c_user.username != request.user.username:
 		comm = Commentnotifications.objects.create(c_id=complain_id,u_id=request.user.id,c_title=co.title,
-			u_name=request.user.username)
+			u_name=name,comment=content)
 	
 	response_data = {}
 	response_data['done'] = "Update Added"
@@ -741,19 +764,19 @@ def upvote_notification(request):
 	status = []
 	for c in c_set:
 		print c['id']
-		u_not = Upvotenotification.objects.filter(c_id=c['id']).filter(Q(read=0) | Q(read=1))
+		u_not = Upvotenotification.objects.filter(c_id=c['id']).filter(Q(read=0) | Q(read=1)).order_by('u_date')
 		print u_not.values()
 		if u_not.values():
 			upvote.append(u_not)
 
 	for c in c_set:
-		c_not = Commentnotifications.objects.filter(c_id=c['id']).filter(Q(read=0) | Q(read=1))
+		c_not = Commentnotifications.objects.filter(c_id=c['id']).filter(Q(read=0) | Q(read=1)).order_by('c_date')
 		print c_not.values()
 		if c_not.values():
 			comment.append(c_not)
 
 	for c in c_set:
-		s_not = Statusnotifications.objects.filter(c_id=c['id']).filter(Q(read=0) | Q(read=1))
+		s_not = Statusnotifications.objects.filter(c_id=c['id']).filter(Q(read=0) | Q(read=1)).order_by('s_date')
 		print s_not.values()
 		if s_not.values():
 			status.append(s_not)		
@@ -763,6 +786,43 @@ def upvote_notification(request):
 	num = len(upvote)+len(comment)+len(status)
 	return render(request,"complaint_portal/notification.html",{"upvote":upvote,"comment":comment,
 		"status":status})	
+
+def num_notification(request):
+	c_set = request.user.complain_set.values('id')
+	print len(c_set),"dhtsdfj"
+	upvote = []
+	comment = []
+	status = []
+	num = 0
+	for c in c_set:
+		print c['id']
+		u_not = Upvotenotification.objects.filter(c_id=c['id']).filter(Q(read=0) | Q(read=1))
+		print u_not.values()
+		num += u_not.count()
+		if u_not.values():
+			upvote.append(u_not)
+
+	for c in c_set:
+		c_not = Commentnotifications.objects.filter(c_id=c['id']).filter(Q(read=0) | Q(read=1))
+		print c_not.values()
+		print c_not.count()
+		num += c_not.count()
+		if c_not.values():
+			comment.append(c_not)
+
+	for c in c_set:
+		s_not = Statusnotifications.objects.filter(c_id=c['id']).filter(Q(read=0) | Q(read=1))
+		num += s_not.count()
+		print s_not.values()
+		if s_not.values():
+			status.append(s_not)		
+	print upvote	
+	print comment
+	print status
+	response_data = {}
+	response_data['num'] = num
+	return HttpResponse(json.dumps(response_data),content_type="application/json")
+	
 
 def readupvote(request,id):
 	obj = Upvotenotification.objects.get(id=id)
@@ -811,3 +871,8 @@ def delstatus(request,id):
 	response_data = {}
 	response_data['done'] = True
 	return HttpResponse(json.dumps(response_data),content_type="application/json")
+
+def user_public_profile(request,id):
+	u_info = User.objects.get(id=id)
+	userinfo = UserInfos.objects.get(id=id)
+	return render(request,"complaint_portal/user_public_profile.html",{"u_info":u_info,"userinfo":userinfo})

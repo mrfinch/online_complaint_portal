@@ -7,6 +7,7 @@
 	<script type="text/javascript" src="{% static 'complaint_portal/js/bootstrap.min.js' %}"></script>
 	<script type="text/javascript" src="{% static 'complaint_portal/js/complain.js' %}"></script>
 	<script type="text/javascript" src="{% static 'complaint_portal/js/check_password.js' %}"></script>
+	<script type="text/javascript" src="{% static 'complaint_portal/js/num_notification.js' %}"></script>
 	<link rel="stylesheet" href="{% static 'complaint_portal/css/bootstrap.min.css' %}">
 	<link rel="stylesheet" href="{% static 'complaint_portal/css/flat-ui.css' %}">
 	{% block css_js %}
@@ -134,17 +135,18 @@
 	</div>
 
 {% endif %}
-				<li style="position:absolute;right:3%;">
 				{% if user.is_authenticated %}
-				<a href="#" class="dropdown-toggle" data-toggle="dropdown">{{ user.username }}<b class="caret"></b></a>
+				<li style="position:absolute;right:3%;">
+				<a href="#" class="dropdown-toggle" data-toggle="dropdown">{{ user.username }}<span id="num_not1" class="badge"></span><b class="caret"></b></a>
 					<ul class="dropdown-menu">
+						<li><a href="{% url 'complaint_portal:upvote_notification' %}">Notifications<span id="num_not" class="badge"></span></a></li>
 						<li id="localfeeds"><a href="{% url 'complaint_portal:userprofile' %}">Local Feeds</a></li>
 						<li id="complains_my"><a href="{% url 'complaint_portal:mycomplains' %}">My Complaints</a></li>
 						<li><a href="{% url 'complaint_portal:profile_update' %}">Profile Update</a></li>
 						<li><a href="{% url 'complaint_portal:logout' %}">Logout</a></li>
 					</ul>
-				{% endif %}
 				</li>
+				{% endif %}
 				
 			</ul>
 		</div>

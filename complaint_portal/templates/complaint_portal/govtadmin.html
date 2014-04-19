@@ -1,11 +1,13 @@
 {% load staticfiles %}
 <head>
 <title>Government Admin</title>
-<script type="text/javascript" src="http://code.jquery.com/jquery-latest.min.js"></script>
-<script type="text/javascript" src="{% static 'complaint_portal/js/bootstrap.min.js' %}"></script>
-<script type="text/javascript" src="{% static 'complaint_portal/js/complain.js' %}"></script>
-<link rel="stylesheet" href="{% static 'complaint_portal/css/bootstrap.min.css' %}">
-<link rel="stylesheet" href="{% static 'complaint_portal/css/flat-ui.css' %}">
+	<script type="text/javascript" src="{% static 'complaint_portal/js/jquery.js' %}"></script>
+	<script type="text/javascript" src="{% static 'complaint_portal/js/bootstrap.min.js' %}"></script>
+	<script type="text/javascript" src="{% static 'complaint_portal/js/complain.js' %}"></script>
+	<script type="text/javascript" src="{% static 'complaint_portal/js/check_password.js' %}"></script>
+	<script type="text/javascript" src="{% static 'complaint_portal/js/num_notification.js' %}"></script>
+	<link rel="stylesheet" href="{% static 'complaint_portal/css/bootstrap.min.css' %}">
+	<link rel="stylesheet" href="{% static 'complaint_portal/css/flat-ui.css' %}">
 </head>
 
 <div class="container">
@@ -84,19 +86,18 @@
 	    {% else %}	
 	    	<div id="{{forloop.counter}}" class="panel-collapse collapse in">
 	    {% endif %}	
-	      <div class="panel-body">	
+	      <div class="panel-body" style="font-family:serif;">	
 	      <b>Description:</b>{{ f.description }}<br />
 	      <b>Address:</b>{{ f.complain_address }} <br />
+	      <a href="{% url 'complaint_portal:details' f.id %}" target="_blank">Complain Details</a><br />
 	      <b>Username: </b><a href="{% url 'complaint_portal:userprofile_admin' f.c_user.id %}" target="_blank">{{ f.c_user.username }}</a>  &nbsp;&nbsp;&nbsp;&nbsp;
-	      <a href="{% static f.complain_image %}" target="_blank">Link to Image</a>
 	      &nbsp;&nbsp;&nbsp;&nbsp;Upvotes:{{ f.upvotes }}<br />
-	      <b><a href="{% url 'complaint_portal:dforum' f.id %}" target="_blank">Discuss with middlemen</a></b>
-	      <a href="{% url 'complaint_portal:displaycomment' f.id %}"style="font-family:'Times New Roman', Times, serif;" target="_blank">&nbsp;&nbsp;&nbsp;&nbsp;User Updates</a>
+	      <a href="{% url 'complaint_portal:dforum' f.id %}" target="_blank">Discuss with middlemen</a>
 	      {% if f.user_complain_reason %}
 	      <b>Problem still faced:</b>{{ f.user_complain_reason }}<br />
 	      {% endif %}
 	      <div class="form-inline" role="form">
-	      {% if f.end_date == null or f.govt_complain_status == 4 or f.govt_complain_status == 6 %}	
+	      {% if f.end_date == null and f.govt_complain_status != 0 or f.govt_complain_status == 4 or f.govt_complain_status == 6 %}	
 		  <div class="form-group">
 		    <label class="sr-only" >No. of days</label>
 		    <input type="date" class="form-control" id="num_days" placeholder="Enter days to complete" name="num_days">

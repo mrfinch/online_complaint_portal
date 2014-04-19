@@ -1,0 +1,39 @@
+{% load staticfiles %}
+<html>
+<head>
+	<title>User Profile</title>
+	<script type="text/javascript" src="http://code.jquery.com/jquery-latest.min.js"></script>
+	<script type="text/javascript" src="{% static 'complaint_portal/js/bootstrap.min.js' %}"></script>
+	<script type="text/javascript" src="{% static 'complaint_portal/js/complain.js' %}"></script>
+	<link rel="stylesheet" href="{% static 'complaint_portal/css/bootstrap.min.css' %}">
+	<link rel="stylesheet" href="{% static 'complaint_portal/css/flat-ui.css' %}">
+	
+</head>
+
+
+<div class="container">
+<div class="">
+  <h2 style="color:#428bca;">{{u_info.username }}<small>'s Profile</small></h2>
+</div>
+
+<table class="table">
+		<tr>
+			<th>Fields</th>
+			<th>Values</th>
+		</tr>
+		<tr>
+			<th>First Name</th>
+			<td>{{u_info.first_name}}</td>
+		</tr>
+			<th>Last Name</th>
+			<td>{{u_info.last_name}}</td>
+		<tr>
+			<th>Locality</th>
+			<td>{{userinfo.locality}} </td>
+		</tr>
+		<tr>
+			<th>Rating</th>
+			<td>{{userinfo.total_upvotes}} </td>
+		</tr>	
+</table>
+</div>

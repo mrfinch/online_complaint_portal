@@ -8,17 +8,17 @@
 <link rel="stylesheet" href="{% static 'complaint_portal/css/flat-ui.css' %}">
 </head>
 
-<div class="container">
+<div class="container" style="font-family:serif;">
 <h2>Discussion Forum </h2>
 <p><b>Title</b>:{{complain.title}}</p>
 <p><b>Description</b>:{{complain.description}}</p>
 <p><b>Date</b>:{{complain.complain_date}}</p>
 <div class="panel panel-primary">
-  <div class="panel-heading">Comments</div>
+  <div class="panel-heading" style="font-family:serif;">Comments</div>
 </div>
 
 {% for comment in comments %}
-<div class="well" style="background-color:#5bc0de;">
+<div class="well" style="background-color:#5bc0de;font-family:serif;">
 	<b>{{comment.comment_user}}</b> : {{comment.content}}<br />
 	{{comment.comment_date}}
 

@@ -5,7 +5,7 @@
 {% block content %}
 
 <div class="container">
-<p style="color:white;font-weight:10px;margin-left:45%;font-size:25px">{{ complain_detail.title }}</p>
+<p style="color:white;font-weight:10px;margin-left:42%;font-size:25px;font-family:serif;">{{ complain_detail.title }}</p>
 </div>
 
 <div class="container">
@@ -15,43 +15,43 @@
 				<br />
 			<div style="color:yellow;">
 
-   			<div class="panel panel-default" style="background-image:url('{% static "complaint_portal/images/index.jpeg" %}') ;background-repeat:repeat-x;" >
+   			<div class="panel panel-default" style="background-image:url('{% static "complaint_portal/images/squared_metal.png" %}') ;background-repeat:repeat-x;font-family:serif;" >
    			    <div class="panel-body" style="padding: .5px;">
    			    <p style="color:black; margin-left:10px;font-size:15px;margin-top:5px;margin-bottom:5px;"> <a style= "font-weight:bold;color:blue;">Subject : </a>{{ complain_detail.title }}</p>
                  </div>
 			  </div>
 	    
-	       <div class="panel panel-default" style="background-image:url('{% static "complaint_portal/images/index.jpeg" %}') ;background-repeat:repeat-x;" >
+	       <div class="panel panel-default" style="background-image:url('{% static "complaint_portal/images/squared_metal.png" %}') ;background-repeat:repeat-x;font-family:serif;" >
    			    <div class="panel-body" style="padding: .5px;">
    			    <p style="color:black; margin-left:10px;font-size:15px;margin-top:5px;margin-bottom:5px;"> <a style= "font-weight:bold;color:blue;">Description : </a>{{ complain_detail.description }}</p>
                  </div>
 		  </div>
 		
-			  <div class="panel panel-default" style="background-image:url('{% static "complaint_portal/images/index.jpeg" %}') ;background-repeat:repeat-x;" >
+			  <div class="panel panel-default" style="background-image:url('{% static "complaint_portal/images/squared_metal.png" %}') ;background-repeat:repeat-x;font-family:serif;" >
    			    <div class="panel-body" style="padding: .5px;">
    			    <p style="color:black; margin-left:10px;font-size:15px;margin-top:5px;margin-bottom:5px;"> <a style= "font-weight:bold;color:blue;">Type : </a>{{ complain_detail.type_of_complain }}</p>
                  </div>
 			  </div>
 		
-			  <div class="panel panel-default" style="background-image:url('{% static "complaint_portal/images/index.jpeg" %}') ;background-repeat:repeat-x;" >
+			  <div class="panel panel-default" style="background-image:url('{% static "complaint_portal/images/squared_metal.png" %}') ;background-repeat:repeat-x;font-family:serif;" >
    			    <div class="panel-body" style="padding: .5px;">
    			    <p style="color:black; margin-left:10px;font-size:15px;margin-top:5px;margin-bottom:5px;"> <a style= "font-weight:bold;color:blue;">Place : </a>{{ complain_detail.complain_place }}</p>
                  </div>
 			  </div>
 		
-			  <div class="panel panel-default" style="background-image:url('{% static "complaint_portal/images/index.jpeg" %}') ;background-repeat:repeat-x;" >
+			  <div class="panel panel-default" style="background-image:url('{% static "complaint_portal/images/squared_metal.png" %}') ;background-repeat:repeat-x;font-family:serif;" >
    			    <div class="panel-body" style="padding: .5px;">
    			    <p style="color:black; margin-left:10px;font-size:15px;margin-top:5px;margin-bottom:5px;"> <a style= "font-weight:bold;color:blue;">Date : </a>{{ complain_detail.complain_date }}</p>
                  </div>
 			  </div>
 		
-			  <div class="panel panel-default" style="background-image:url('{% static "complaint_portal/images/index.jpeg" %}') ;background-repeat:repeat-x;" >
+			  <div class="panel panel-default" style="background-image:url('{% static "complaint_portal/images/squared_metal.png" %}') ;background-repeat:repeat-x;font-family:serif;" >
    			    <div class="panel-body" style="padding: .5px;">
    			    <p style="color:black; margin-left:10px;font-size:15px;margin-top:5px;margin-bottom:5px;"> <a style= "font-weight:bold;color:blue;">Upvotes : </a>{{ complain_detail.upvotes }}</p>
                  </div>
 			  </div>
 		
-			  <div class="panel panel-default" style="background-image:url('{% static "complaint_portal/images/index.jpeg" %}') ;background-repeat:repeat-x;" >
+			  <div class="panel panel-default" style="background-image:url('{% static "complaint_portal/images/squared_metal.png" %}') ;background-repeat:repeat-x;font-family:serif;" >
    			    <div class="panel-body" style="padding: .5px;">
    			    <p style="color:black; margin-left:10px;font-size:15px;margin-top:5px;margin-bottom:5px;"> <a style= "font-weight:bold;color:blue;">Status : </a>
    			    {% if complain_detail.govt_complain_status == 1 %}
@@ -93,7 +93,7 @@
             		</p>
                  </div>
 			  </div>
-			  <div class="panel panel-default" style="background-image:url('{% static "complaint_portal/images/index.jpeg" %}') ;background-repeat:repeat-x;" >
+			  <div class="panel panel-default" style="background-image:url('{% static "complaint_portal/images/squared_metal.png" %}') ;background-repeat:repeat-x;font-family:serif;" >
    			    <div class="panel-body" style="padding: .5px;">
    			    <p style="color:black; margin-left:10px;font-size:15px;margin-top:5px;margin-bottom:5px;"> <a style= "font-weight:bold;color:blue;">Complain Address : </a>{{ complain_detail.complain_address }}</p>
    			    </div>
@@ -104,10 +104,10 @@
 	<div class="col-md-6">
 
 		<div class="panel panel-primary">
-			<div class="panel-heading" style="background-color:black">Comments</div>
+			<div class="panel-heading" style="background-color:black;font-family:serif;">Comments</div>
 
 			{% for comment in comments %}
-				<div class="well" style="background-image:url('{% static "complaint_portal/images/yellow5.jpg" %}') ;background-repeat:repeat-x;">
+				<div class="well" style="background-image:url('{% static "complaint_portal/images/squared_metal.png" %}') ;background-repeat:repeat-x;font-family:serif;">
 				<b>{{comment.comment_user}}</b> : {{comment.content}}<br />
 					{{comment.comment_date}}
 

@@ -7,13 +7,14 @@
 	<script type="text/javascript" src="{% static 'complaint_portal/js/bootstrap.min.js' %}"></script>
 	<script type="text/javascript" src="{% static 'complaint_portal/js/complain.js' %}"></script>
 	<script type="text/javascript" src="{% static 'complaint_portal/js/upvote.js' %}"></script>
+	<script type="text/javascript" src="{% static 'complaint_portal/js/num_notification.js' %}"></script>
 	<link rel="stylesheet" href="{% static 'complaint_portal/css/bootstrap.min.css' %}">
 	<link rel="stylesheet" href="{% static 'complaint_portal/css/flat-ui.css' %}">
 
 	{% block css_js %}{% endblock %}
 </head>
 
-<body style="overflow-x:hidden;background-image:url('{% static "complaint_portal/images/wo.png" %}');background-repeat:repeat;">
+<body style="overflow-x:hidden;background-image:url('{% static "complaint_portal/images/grey_wash_wall.png" %}');background-repeat:repeat;">
 
 	<nav class="navbar navbar-inverse navbar-embossed" style="background-color:#000000"role="navigation">
 	<div class="navbar-header">
@@ -36,8 +37,9 @@
 				{% endif %}
 				<li style="position:absolute;right:3%;">
 				{% if user.is_authenticated %}
-				<a href="#" class="dropdown-toggle" data-toggle="dropdown">{{ user.username }}<b class="caret"></b></a>
+				<a href="#" class="dropdown-toggle" data-toggle="dropdown">{{ user.username }}<span id="num_not1" class="badge"></span><b class="caret"></b></a>
 					<ul class="dropdown-menu">
+						<li><a href="{% url 'complaint_portal:upvote_notification' %}">Notifications<span id="num_not" class="badge"></span></a></li>
 						<li id="localfeeds"><a href="{% url 'complaint_portal:userprofile' %}">Local Feeds</a></li>
 						<li id="complains_my"><a href="{% url 'complaint_portal:mycomplains' %}">My Complaints</a></li>
 						<li><a href="{% url 'complaint_portal:profile_update' %}">Profile Update</a></li>
@@ -55,9 +57,9 @@
 <div class="container">
 	<div class="col-md-6 col-md-offset-3">
 		<div class="btn-group">
-			<button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" style="width:140px" >
-     		Sort By
-      		<span class="caret"></span>
+			<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" style="width:140px">
+     		<span style="color:#000;font-weight:bold;">Sort By</span>
+      		<span class="caret" style="color:#000;font-weight:bold;"></span>
     		</button>
      			<ul class="dropdown-menu">
 		            <li><a href="{% url 'complaint_portal:sorted_complains' 1 %}">Ascending by Time</a></li>
