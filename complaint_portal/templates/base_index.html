@@ -63,7 +63,7 @@
     			<div class="modal-content">
       			<div class="modal-header">
         		<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-        		<h6 class="modal-title" id="myModalLabel">ANAND COMPLAINT PORTAL</h6>
+        		<h6 class="modal-title" id="myModalLabel" style="font-family:serif;">ANAND COMPLAINT PORTAL</h6>
       			</div>
       			<div class="modal-body">
                 
@@ -72,8 +72,8 @@
     			<div class="col-md-4">
 				<form action="{% url 'complaint_portal:login' %}" method="post">
 				{% csrf_token %}
-				<fieldset>
-					<h6>Sign In to complain</h6>
+				<fieldset style="font-family:serif;">
+					<h6 style="font-family:serif;">Sign In to complain</h6>
 					<hr class="colorgraph">
 					<div class="form-group">
                     	<input type="text" name="username" id="username" class="form-control input-lg" placeholder="Username">
@@ -85,15 +85,15 @@
 					<input type="checkbox" name="remember_me" id="remember_me" checked="checked">
           			<button type="button" class="btn" data-color="info">Remember Me</button>
                     
-					<a href="{% url 'complaint_portal:forgot_password' %}" class="btn btn-link pull-right">Forgot Password?</a>
+					<a href="{% url 'complaint_portal:forgot_password' %}" class="btn btn-link pull-right" style="color:#428bca;">Forgot Password?</a>
 					</span>
 					<hr class="colorgraph">
 					<div class="row">
 					<div class="col-xs-6 col-sm-6 col-md-6">
-                        <input type="submit" class="btn btn-lg btn-success btn-block" value="Sign In">
+                        <input type="submit" class="btn btn-lg btn-info btn-block" value="Sign In">
 					</div>
 					<div class="col-xs-6 col-sm-6 col-md-6">
-						<a href="{% url 'complaint_portal:register' %}" class="btn btn-lg btn-primary btn-block">Register</a>
+						<a href="{% url 'complaint_portal:register' %}" class="btn btn-lg btn-info btn-block">Register</a>
 					</div>
 					</div>
 					<div class="row">
