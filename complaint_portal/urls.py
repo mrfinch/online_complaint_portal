@@ -1,10 +1,9 @@
+'''writing a request url corresponding to particular view'''
 from django.conf.urls import url,patterns
 
 from complaint_portal import views
 
-
 urlpatterns = patterns('',
-	
 	url(r'^index/',views.index,name="index"),
 	url(r'^login/',views.login,name="login"),
 	url(r'^activate/(?P<u_id>\d+)/',views.activate,name="activate"),
@@ -61,11 +60,6 @@ urlpatterns = patterns('',
 	url(r'^public_profile/(?P<id>\d+)/',views.user_public_profile,name="user_public_profile"),
 	) 
 
-#updateform for each complain
-#logout button as footer on each page
-#a url and view when user clicks upvote button
-#change password url and views
-#see complainform_update.html give option of complete if it is accepted adn give option of update if it is not reviewed
 
 #0-submitted,1-accept by middlemen,2-rejected by middlemen,3-completed,4-reviewed by govt employee and added days,
 #5-review again,6-changed end date

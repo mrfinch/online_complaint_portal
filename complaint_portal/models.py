@@ -1,15 +1,19 @@
+'''Creating database tables
+@Saurabh and @Dhruv'''
+
 from django.db import models
 from django import forms
 from django.contrib.auth.models import User
 from django.forms import ModelForm
 from datetime import datetime
 from django.contrib.auth.models import User
-# Create your models here.
+
 
 def content_file_name(instance,filename):
+	'''uploaded image's path'''
 	print instance
 	return '/'.join(["complaint_portal/images",instance.c_user.username,filename])
-#make a list and pass it to template which will display it and store result in form of text
+
 class Complain(models.Model):
 	c_user = models.ForeignKey(User)
 	title = models.CharField(max_length=50)

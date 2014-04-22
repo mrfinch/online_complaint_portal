@@ -1,7 +1,9 @@
+'''url for index view'''
 from django.conf.urls import patterns, include, url
 from sen import views
 from django.contrib import admin
 admin.autodiscover()
+
 
 urlpatterns = patterns('',
     # Examples:
