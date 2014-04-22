@@ -75,7 +75,13 @@ def login(request):
 		username = request.POST.get("username","")
 		password = request.POST.get("password","")
 		user = auth.authenticate(username=username,password=password)
-		if user is not None and user.is_active:
+		if user is not None and user.is_staff:
+			auth.login(request,user)
+			return HttpResponseRedirect(reverse('complaint_portal:middlemen'))	
+		elif user is not None and user.is_superuser:
+			auth.login(request,user)
+			return HttpResponseRedirect(reverse('complaint_portal:govtadmin'))
+		elif user is not None and user.is_active:
 			auth.login(request,user)
 			return HttpResponseRedirect(reverse('complaint_portal:mycomplains'))
 		else:
@@ -449,7 +455,7 @@ def mlogin(request):
 def mlogout(request):
 	print "yy"
 	auth.logout(request)
-	return HttpResponseRedirect(reverse('complaint_portal:mlogin'))
+	return HttpResponseRedirect(reverse('complaint_portal:index'))
 
 def mloc_filter(request,loc_id):
 	print "ht"
@@ -599,7 +605,7 @@ def glogout(request):
 	'''This function logout the government admin.	
 	@Amit Masani'''
 	auth.logout(request)
-	return HttpResponseRedirect(reverse('complaint_portal:glogin'))
+	return HttpResponseRedirect(reverse('complaint_portal:index'))
 
 def days_or_complete(request):
 	'''If Complain is reviewed by government admin,
