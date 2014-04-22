@@ -1,4 +1,6 @@
-'''implemented index view'''
+'''implemented index view
+Authors:Saurabh
+'''
 from django.shortcuts import render
 from django.http import HttpResponseRedirect
 

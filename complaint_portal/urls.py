@@ -1,4 +1,6 @@
-'''writing a request url corresponding to particular view'''
+'''writing a request url corresponding to particular view
+Authors: Saurabh,Nidhi,Amit,Shikha,Noopur
+'''
 from django.conf.urls import url,patterns
 
 from complaint_portal import views

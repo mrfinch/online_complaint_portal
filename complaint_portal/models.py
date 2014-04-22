@@ -1,5 +1,5 @@
 '''Creating database tables
-@Saurabh and @Dhruv'''
+Authors:Saurabh and Dhruv'''
 
 from django.db import models
 from django import forms

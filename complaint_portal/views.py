@@ -1,4 +1,6 @@
-'''implementing views corresponding to given url'''
+'''implementing views corresponding to given url
+Authors:Saurabh,Amit,Shikha,Nidhi,Noopur
+'''
 from django.shortcuts import render
 from complaint_portal.models import *
 from django.contrib.auth.models import User

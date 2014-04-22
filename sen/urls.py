@@ -1,4 +1,6 @@
-'''url for index view'''
+'''url for index view
+Authors:Saurabh
+'''
 from django.conf.urls import patterns, include, url
 from sen import views
 from django.contrib import admin
